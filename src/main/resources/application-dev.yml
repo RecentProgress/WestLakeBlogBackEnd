@@ -1,0 +1,27 @@
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/springmvcdemo?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456789
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    platform: mysql
+    filters: stat,wall
+    initialSize: 5
+    minIdle: 10
+    maxActive: 50
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 2000
+    minEvictableIdleTimeMillis: 600000
+    maxEvictableIdleTimeMillis: 900000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    asyncInit: true
+    logSlowSql: true
