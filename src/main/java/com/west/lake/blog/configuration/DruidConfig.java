@@ -17,7 +17,7 @@ import java.sql.SQLException;
  */
 @Component
 @ConfigurationProperties(prefix = "spring.datasource")
-public class DruidConfiguration {
+public class DruidConfig {
 
     /**
      * 数据库地址

@@ -73,6 +73,7 @@
         </dependency>
         <!--</editor-fold>-->
 
+        <!--配置处理器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -94,11 +95,11 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>5.3.6.Final</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.hibernate</groupId>-->
+        <!--<artifactId>hibernate-validator</artifactId>-->
+        <!--<version>5.3.6.Final</version>-->
+        <!--</dependency>-->
         <!--</editor-fold>-->
 
         <dependency>
@@ -128,6 +129,10 @@
         </dependency>
         <!--</editor-fold>-->
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
     </dependencies>
 

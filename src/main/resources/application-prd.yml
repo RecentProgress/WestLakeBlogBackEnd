@@ -1,16 +1,16 @@
 spring:
   messages:
     # 定义国际化文件的文件地址，读取的原则是顺序读取如果存在同名的则读取第一个
-    basename: i18n/errorMessage
+    basename: i18n/login,i18n/errorMessage
   http:
     encoding:
       charset: UTF-8
       enabled: true
   # 数据库
   datasource:
-    url: jdbc:mysql://localhost:3306/west_lake_blog?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.106.247.59:3306/west_lake_blog?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 123456789
+    password: nobug666
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     platform: mysql
@@ -38,9 +38,9 @@ spring:
   # redis
   redis:
     database: 0
-    host: localhost
+    host: 47.106.247.59
     port: 6379
-    password:
+    password: redisPass123.
     jedis:
       pool:
         max-active: 10
@@ -67,13 +67,14 @@ spring:
     add-mappings: false
 server:
   port: 8888
+
 # 系统配置
 west:
   lake:
     blog:
       system:
         config:
-          cacheExpiredSecond: 60
+          cacheExpiredSecond: 300
           enableSwagger: true
           originMaxAge: 86400
 
