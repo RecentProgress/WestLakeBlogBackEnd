@@ -3,6 +3,7 @@ package com.west.lake.blog;
 import com.west.lake.blog.tools.DateTools;
 import org.junit.Test;
 
+import java.util.Date;
 import java.sql.Timestamp;
 
 /**
@@ -10,6 +11,12 @@ import java.sql.Timestamp;
  * Created on 2019-03-25.
  */
 public class NormalTest {
+
+    @Test
+    public void test2() {
+        System.out.println(DateTools.addTimes(new Date(), DateTools.TimeTypeEnum.DAY, -1));
+    }
+
     @Test
     public void test1() {
         String startTime = "2019-01-02";
