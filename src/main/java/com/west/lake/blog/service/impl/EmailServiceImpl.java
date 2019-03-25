@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,6 +26,7 @@ import javax.mail.internet.MimeMessage;
  */
 @Service
 @Slf4j
+@Async
 public class EmailServiceImpl implements EmailService {
 
     @Resource

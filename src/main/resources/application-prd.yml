@@ -77,3 +77,10 @@ west:
           originMaxAge: 86400
           sessionExpiredSecond: 7200
 debug: false
+
+# 线程池配置
+thread:
+  pool:
+    corePoolSize: 5
+    maxPoolSize: 10
+    queueCapacity: 200
