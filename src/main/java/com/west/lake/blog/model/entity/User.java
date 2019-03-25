@@ -2,12 +2,13 @@ package com.west.lake.blog.model.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.west.lake.blog.annotation.EnumStatus;
+import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.model.entity.enums.UserSexEnum;
 import com.west.lake.blog.model.entity.enums.UserStatusEnum;
 import lombok.*;
 
 import javax.validation.constraints.*;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 /**
@@ -25,8 +26,7 @@ public class User extends BaseEntity {
     /**
      * 用户名
      */
-    @Min(value = 2, message = "{01001.user.name.length.illegal}")
-    @Max(value = 8, message = "{01001.user.name.length.illegal}")
+    @Size(max = 8, min = 2, message = "{01001.user.name.length.illegal}")
     private String userName;
 
     /**
@@ -35,39 +35,45 @@ public class User extends BaseEntity {
     @JSONField(serialize = false)
     private String password;
 
-    @Min(value = 11, message = "{01006.mobile.length.illegal}")
-    @Max(value = 11, message = "{01006.mobile.length.illegal}")
+    @Size(min = 11, max = 11, message = "{01006.mobile.length.illegal}")
     private String mobile;
 
     /**
      * 邮件地址
      */
-    @Email(message = "{email.format.error}")
-    @Max(value = 50, message = "{01007.email.too.long}")
+    @Email(message = "{01002.email.format.error}")
+    @Size(max = 50, message = "{01007.email.too.long}")
     private String email;
 
     /**
      * 用户状态
      */
-    @EnumStatus(UserStatusEnum.class)
+    @EnumStatus(value = UserStatusEnum.class, message = ErrorMessage.LogicErrorMessage.USER_STATUS_ILLEGAL)
     private int status;
 
     /**
      * 用户性别
      */
-    @EnumStatus(UserSexEnum.class)
+    @EnumStatus(value = UserSexEnum.class, message = ErrorMessage.LogicErrorMessage.USER_SEX_ILLEGAL)
     private int sex;
 
     /**
      * 生日
      */
+    @Past
     private Date birthday;
 
     /**
      * 简介
      */
-    @Max(value = 255, message = "{01008.user.desc.too.long}")
+    @Size(max = 255, message = "{01008.user.desc.too.long}")
     private String desc = "这个家伙很懒...";
+
+    /**
+     * 当前登录时间
+     */
+    @JSONField(serialize = false)
+    private Timestamp currentLoginTime;
 
     /**
      * 上次登陆时间
@@ -78,4 +84,6 @@ public class User extends BaseEntity {
      * 登陆系统次数
      */
     private int loginTimes;
+
+
 }

@@ -1,0 +1,25 @@
+package com.west.lake.blog.foundation.exception;
+
+/**
+ * 非国际化异常信息
+ *
+ * @author futao
+ * Created on 2019-03-25.
+ */
+public class ErrorMessage {
+
+    public static class ApplicationErrorMessage {
+
+    }
+
+    public static class LogicErrorMessage {
+        public static final String USER_NOT_EXIST = "01020_用户不存在，请先注册";
+        public static final String ACCOUNT_DISABLE = "01021_您的账号被禁用，请联系系统管理员";
+        public static final String PASSWORD_WRONG = "01022_密码错误，请重新输入或找回密码";
+        public static final String MUILTY_REGISTER_SUCCESS = "01023_您已注册成功，请直接登录";
+        public static final String NOT_LOGIN = "01024_您还未登录或者登录已超时，请重新登录";
+        public static final String USER_STATUS_ILLEGAL = "01025_用户状态不合法";
+        public static final String USER_SEX_ILLEGAL = "01025_用户性别不合法";
+    }
+
+}

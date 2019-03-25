@@ -49,4 +49,27 @@ public interface UserDao {
      * @return
      */
     List<User> list();
+
+    /**
+     * 更新登录次数与上一次登录时间
+     *
+     * @param user 实体
+     */
+    void updateLoginTimesAndLastLoginTime(User user);
+
+    /**
+     * 通过id查询用户信息
+     *
+     * @param id 用户id
+     * @return
+     */
+    User byId(String id);
+
+
+    /**
+     * 更新个人信息
+     *
+     * @param user 用户信息
+     */
+    void update(User user);
 }

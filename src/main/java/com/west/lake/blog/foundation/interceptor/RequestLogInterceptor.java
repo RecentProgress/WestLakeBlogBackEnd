@@ -21,8 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.west.lake.blog.tools.RequestTools.getCookies;
-import static com.west.lake.blog.tools.RequestTools.getSessionParameters;
+import static com.west.lake.blog.tools.RequestTools.*;
 
 /**
  * 请求controller记录日志，以及接口请求时间记录
@@ -64,22 +63,9 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         if (handler instanceof HandlerMethod) {
             Method method = ((HandlerMethod) handler).getMethod();
             RestController restController = method.getDeclaringClass().getAnnotation(RestController.class);
-            if (ObjectUtils.allNotNull(restController)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("\n")
-                        .append("From: ").append(request.getRemoteHost()).append("|").append(request.getHeaders("x-forwarded-for") == null ? request.getRemoteAddr() : request.getHeader("x-forwarded-for")).append("|").append(request.getRemotePort())
-                        .append("\n")
-                        .append("请求方式: ").append(request.getMethod())
-                        .append("\n")
-                        .append("请求地址: ").append(request.getRequestURL())
-                        .append("\n")
-                        .append("请求sessions: ").append(getSessionParameters(request.getSession(false)))
-                        .append("\n")
-                        .append("请求参数：").append(queryParameters(request))
-                        .append("\n")
-                        .append("请求cookies: ").append(getCookies(request.getCookies()));
-                logger.info(String.valueOf(sb));
-            }
+//            if (ObjectUtils.allNotNull(restController)) {
+//                requestLog(request, logger);
+//            }
             String methodName = method.getDeclaringClass() + ".< " + method.getName() + " >";
             AtomicInteger atomicInteger = apiRequestStatistic.get(methodName);
             if (atomicInteger == null) {
@@ -88,6 +74,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
                 apiRequestStatistic.put(methodName, new AtomicInteger(atomicInteger.incrementAndGet()));
             }
         }
+        requestLog(request, logger);
         return true;
     }
 
@@ -103,20 +90,6 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         return qStr == null ? "" : URLDecoder.decode(qStr, "UTF-8");
     }
 
-    /**
-     * 获取getParameter中的数据
-     * 使用getParameter代替getQueryString的原因是后者只能拿到url中的参数，对于放在body中的参数是拿不到的
-     * 虽然GET和POST方法都可以将参数放在url中，但是POST放在body中的时候，getQueryString拿不到数据
-     *
-     * @param request 请求
-     * @return
-     */
-    private static String queryParameters(HttpServletRequest request) {
-        Map<String, String[]> map = request.getParameterMap();
-        JSONObject jsonObject = new JSONObject();
-        map.forEach((k, v) -> jsonObject.put(k, Arrays.toString(v)));
-        return jsonObject.toJSONString();
-    }
 
     /**
      * 视图渲染之前

@@ -6,7 +6,8 @@
 <!-- com.futao.springbootdemoo.mapper 为根元素节点， 一个namespace对应一个dao -->
 <mapper namespace="com.west.lake.blog.dao.UserDao">
 
-    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+    <!--<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>-->
+
     <select id="selectByEmail" parameterType="string" resultType="user">
         select *
         from west_lake_blog.wlb_user
@@ -29,6 +30,31 @@
         set `status`=#{status},
             `password`=#{password},
             `last_modify_time`=#{lastModifyTime}
+        where `id` = #{id}
+    </update>
+
+    <update id="updateLoginTimesAndLastLoginTime" parameterType="user">
+        update wlb_user
+        set `login_times`=#{loginTimes},
+            `last_login_time`=#{lastLoginTime},
+            `current_login_time`=#{currentLoginTime}
+        where id = #{id}
+    </update>
+
+    <select id="byId" parameterType="string" resultType="user">
+        select *
+        from wlb_user
+        where `id` = #{id}
+    </select>
+
+    <update id="update" parameterType="user" flushCache="true">
+        update wlb_user
+        set `mobile`=#{mobile},
+            `sex`=#{sex},
+            `user_name`=#{userName},
+            `desc`=#{desc},
+            `birthday`=#{birthday},
+            last_modify_time=#{lastModifyTime}
         where `id` = #{id}
     </update>
 

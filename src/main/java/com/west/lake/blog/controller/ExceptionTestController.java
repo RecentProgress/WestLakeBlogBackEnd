@@ -4,6 +4,7 @@ import com.west.lake.blog.foundation.exception.ApplicationException;
 import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.tools.I18nTools;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,7 @@ import javax.validation.constraints.Min;
  * @author futao
  * Created on 2019-03-22.
  */
-//@Validated
+@Validated
 @RestController
 @RequestMapping("exceptionTest")
 public class ExceptionTestController {
@@ -57,7 +58,7 @@ public class ExceptionTestController {
      */
     @GetMapping("validatorTest")
     public void validatorTest(
-            @Min(value = 3, message = "{user.name.length}")
+            @Min(value = 3, message = "{01001.user.name.length.illegal}")
             @RequestParam("userName") String userName
     ) {
         User user = new User();

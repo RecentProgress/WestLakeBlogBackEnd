@@ -1,5 +1,6 @@
 package com.west.lake.blog.configuration;
 
+import com.west.lake.blog.foundation.interceptor.LoginUserInterceptor;
 import com.west.lake.blog.foundation.interceptor.RequestLogInterceptor;
 import com.west.lake.blog.model.SystemConfig;
 import org.springframework.boot.SpringBootConfiguration;
@@ -33,6 +34,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private HttpMessageConverterConfig httpMessageConverterConfiguration;
 
     @Resource
+    private LoginUserInterceptor loginUserInterceptor;
+
+    @Resource
     private SystemConfig systemConfig;
 
     /**
@@ -44,7 +48,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(requestLogInterceptor).addPathPatterns("/**");
-//        registry.addInterceptor(loginUserInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginUserInterceptor).addPathPatterns("/**");
         //  "/**"和"/*"是有区别的
         registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/**");
     }

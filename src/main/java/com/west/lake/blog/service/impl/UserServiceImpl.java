@@ -1,21 +1,27 @@
 package com.west.lake.blog.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.west.lake.blog.controller.HibernateValidatorConfig;
 import com.west.lake.blog.dao.UserDao;
+import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.RedisKeySet;
+import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.User;
+import com.west.lake.blog.model.entity.enums.UserSexEnum;
 import com.west.lake.blog.model.entity.enums.UserStatusEnum;
 import com.west.lake.blog.service.EmailService;
 import com.west.lake.blog.service.UserService;
-import com.west.lake.blog.tools.CommonTools;
-import com.west.lake.blog.tools.DateTools;
-import com.west.lake.blog.tools.I18nTools;
+import com.west.lake.blog.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,7 +40,15 @@ public class UserServiceImpl implements UserService {
     @Resource
     private EmailService emailService;
 
-    private String SALT = "nobug";
+    @Resource
+    private SystemConfig systemConfig;
+
+    private ThreadLocal<String> threadLocal = new ThreadLocal<>();
+
+    /**
+     * 密码加盐
+     */
+    private static final String SALT = "nobug";
 
     /**
      * 发送注册验证码邮件
@@ -70,10 +84,10 @@ public class UserServiceImpl implements UserService {
     /**
      * 注册
      *
-     * @param email
-     * @param verifyNum
-     * @param password
-     * @param confirmPassword
+     * @param email           邮箱地址
+     * @param verifyNum       验证码
+     * @param password        密码
+     * @param confirmPassword 确认密码
      */
     @Override
     public void registerByEmail(String email, String verifyNum, String password, String confirmPassword) {
@@ -90,8 +104,13 @@ public class UserServiceImpl implements UserService {
         if (!redisVerifyNum.trim().equals(verifyNum.trim())) {
             throw LogicException.le(I18nTools.getMessage("01013.email.redis.verify.num.error"));
         }
+
+        User user = userDao.selectByEmail(email);
+        if (user.getStatus() == UserStatusEnum.NORMAL.getCode()) {
+            throw LogicException.le(ErrorMessage.LogicErrorMessage.MUILTY_REGISTER_SUCCESS);
+        }
         //插入注册信息
-        userDao.register(userDao.selectByEmail(email).getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp());
+        userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp());
         //从缓存中移除
         redisTemplate.delete(RedisKeySet.registerEmailKey(email));
     }
@@ -105,6 +124,116 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> list() {
         return userDao.list();
+    }
+
+    /**
+     * 通过邮箱登录
+     *
+     * @param email    邮箱
+     * @param password 密码
+     * @param response 响应
+     * @return
+     */
+    @Override
+    public User loginByEmail(String email, String password, HttpServletResponse response) {
+        User user = userDao.selectByEmail(email);
+        if (user == null || user.getStatus() == UserStatusEnum.PRE_REGISTER.getCode()) {
+            //用户不存在
+            throw LogicException.le(ErrorMessage.LogicErrorMessage.USER_NOT_EXIST);
+        } else if (Objects.equals(CommonTools.md5(password + SALT), user.getPassword())) {
+            //密码正确
+            if (user.getStatus() == UserStatusEnum.DISABLE.getCode()) {
+                //用户被禁用
+                throw LogicException.le(ErrorMessage.LogicErrorMessage.ACCOUNT_DISABLE);
+            }
+        } else {
+            //密码错误
+            throw LogicException.le(ErrorMessage.LogicErrorMessage.PASSWORD_WRONG);
+        }
+        //用户登录信息存入redis
+        String sessionValue = CommonTools.uuid();
+        String redisKey = SystemConfig.SESSION_KEY + ":" + sessionValue;
+        redisTemplate.opsForSet().add(redisKey, JSON.toJSONString(user));
+        redisTemplate.expire(redisKey, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
+        Cookie cookie = new Cookie(SystemConfig.SESSION_KEY, sessionValue);
+        //https
+        cookie.setSecure(false);
+        //js
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(systemConfig.getSessionExpiredSecond() * 1000);
+        response.addCookie(cookie);
+        updateLoginTimesAndLastLoginTime(user);
+        threadLocal.set(user.getId());
+        return user;
+    }
+
+    /**
+     * 更新登录次数与上一次登录时间
+     *
+     * @param user 实体
+     */
+    private void updateLoginTimesAndLastLoginTime(User user) {
+        user.setLoginTimes(user.getLoginTimes() + 1);
+        user.setLastLoginTime(user.getCurrentLoginTime());
+        user.setCurrentLoginTime(DateTools.currentTimeStamp());
+        userDao.updateLoginTimesAndLastLoginTime(user);
+    }
+
+    /**
+     * 当前用户id
+     *
+     * @return
+     */
+    @Override
+    public String currentUserId() {
+        String userId = ThreadLocalTools.get();
+        if (userId == null) {
+            throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);
+        }
+        return userId;
+    }
+
+
+    /**
+     * 通过id查询用户信息
+     *
+     * @param id 用户id
+     * @return
+     */
+    @Override
+    public User byId(String id) {
+        return userDao.byId(id);
+    }
+
+    /**
+     * 更新个人信息
+     *
+     * @param id       用户id
+     * @param userName 用户名
+     * @param sex      性别
+     * @param mobile   手机号
+     * @param desc     描述
+     * @param birthday 生日
+     * @return 更新后的用户信息
+     */
+    @Override
+    public User update(String id, String userName, int sex, String mobile, String desc, String birthday) {
+        User user = ServiceTools.checkResultNullAndThrow(byId(id), "用户");
+        if (user.getSex() == UserSexEnum.UNKNOWN.getCode()) {
+            user.setSex(sex);
+        }
+        if (user.getMobile() == null) {
+            user.setMobile(mobile);
+        }
+        if (user.getBirthday() == null) {
+            user.setBirthday(DateTools.stringToDate(birthday, DateTools.yyyyMMdd));
+        }
+        user.setUserName(userName);
+        user.setDesc(desc);
+        HibernateValidatorConfig.validate(user);
+        userDao.update(user);
+        return user;
     }
 
 }
