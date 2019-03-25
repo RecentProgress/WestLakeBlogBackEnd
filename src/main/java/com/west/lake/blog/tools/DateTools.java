@@ -63,6 +63,34 @@ public class DateTools {
     }
 
     /**
+     * *
+     * 将时间字符串转为时间对象
+     *
+     * @param dateString 时间字符串
+     * @return 转化之后的时间对象
+     */
+
+    public static Date stringToDate(String dateString) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateTools.yyyyMMdd);
+        try {
+            return simpleDateFormat.parse(dateString);
+        } catch (ParseException e) {
+            LOGGER.error("时间转换异常:", e);
+            throw ApplicationException.ae(I18nTools.getMessage("system.date.parse.error"));
+        }
+    }
+
+    /**
+     * Date转Timestamp
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Timestamp dateToTimestamp(Date date) {
+        return new Timestamp(date.getTime());
+    }
+
+    /**
      * 获取指定格式的今天的时间字符串
      *
      * @param pattern 时间格式
@@ -131,7 +159,7 @@ public class DateTools {
         entity.setLastModifyTime(currentTimeStamp());
     }
 
-    private static Date addTimes(Date date, TimeTypeEnum timeType, int count) {
+    public static Date addTimes(Date date, TimeTypeEnum timeType, int count) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(timeType.getType(), count);

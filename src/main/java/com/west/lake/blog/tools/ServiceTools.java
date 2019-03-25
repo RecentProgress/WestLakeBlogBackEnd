@@ -4,6 +4,7 @@ import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.entity.BaseEntity;
 
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 
 /**
  * Service层工具类
@@ -71,5 +72,25 @@ public class ServiceTools {
     public static <T extends BaseEntity> T setLastModiftTimeNow(T t) {
         t.setLastModifyTime(DateTools.currentTimeStamp());
         return t;
+    }
+
+    /**
+     * 开始时间
+     *
+     * @param startDateString 开始时间
+     * @return
+     */
+    public static Timestamp parseStartTimestamp(String startDateString) {
+        return DateTools.dateToTimestamp(DateTools.stringToDate(startDateString));
+    }
+
+    /**
+     * 结束日期加一天
+     *
+     * @param endDateString 结束日期
+     * @return
+     */
+    public static Timestamp parseEndTimestampAddOneDay(String endDateString) {
+        return DateTools.dateToTimestamp(DateTools.addTimes(DateTools.stringToDate(endDateString), DateTools.TimeTypeEnum.DAY, 1));
     }
 }

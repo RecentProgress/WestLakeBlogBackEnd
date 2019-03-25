@@ -8,7 +8,7 @@ spring:
       enabled: true
   # 数据库
   datasource:
-    url: jdbc:mysql://47.106.247.59:3306/west_lake_blog?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.106.247.59:3306/west_lake_blog?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
     username: root
     password: nobug666
     driver-class-name: com.mysql.jdbc.Driver

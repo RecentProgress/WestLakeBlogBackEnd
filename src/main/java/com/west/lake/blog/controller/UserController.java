@@ -77,15 +77,26 @@ public class UserController {
     }
 
     /**
-     * 用户列表
+     * 列表
      *
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @param userName  用户名
+     * @param status    用户状态
      * @return
      */
     @ApiOperation("用户列表")
     @LoginUser
     @GetMapping("list")
-    public List<User> list() {
-        return userService.list();
+    public List<User> list(
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "userName", required = false) String userName,
+            @RequestParam(value = "status", required = false) Integer status
+
+
+    ) {
+        return userService.list(startDate, endDate, userName, status);
     }
 
     /**

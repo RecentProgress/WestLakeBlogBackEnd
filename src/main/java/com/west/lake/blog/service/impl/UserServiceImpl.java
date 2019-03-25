@@ -13,6 +13,7 @@ import com.west.lake.blog.model.entity.enums.UserStatusEnum;
 import com.west.lake.blog.service.EmailService;
 import com.west.lake.blog.service.UserService;
 import com.west.lake.blog.tools.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -119,11 +121,23 @@ public class UserServiceImpl implements UserService {
     /**
      * 列表
      *
+     * @param startDateString 开始时间
+     * @param endDateString   结束时间
+     * @param userName        用户名
+     * @param status          用户状态
      * @return
      */
     @Override
-    public List<User> list() {
-        return userDao.list();
+    public List<User> list(String startDateString, String endDateString, String userName, Integer status) {
+        Timestamp startTimestamp = null;
+        Timestamp endTimestamp = null;
+        if (StringUtils.isNotEmpty(startDateString)) {
+            startTimestamp = ServiceTools.parseStartTimestamp(startDateString);
+        }
+        if (StringUtils.isNotEmpty(endDateString)) {
+            endTimestamp = ServiceTools.parseEndTimestampAddOneDay(endDateString);
+        }
+        return userDao.list(startTimestamp, endTimestamp, userName, status);
     }
 
     /**
@@ -231,6 +245,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setUserName(userName);
         user.setDesc(desc);
+        ServiceTools.setLastModiftTimeNow(user);
         HibernateValidatorConfig.validate(user);
         userDao.update(user);
         return user;

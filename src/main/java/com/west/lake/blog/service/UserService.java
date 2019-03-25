@@ -35,9 +35,13 @@ public interface UserService {
     /**
      * 列表
      *
+     * @param startDateString 开始时间
+     * @param endDateString   结束时间
+     * @param userName        用户名
+     * @param status          用户状态
      * @return
      */
-    List<User> list();
+    List<User> list(String startDateString, String endDateString, String userName, Integer status);
 
     /**
      * 通过邮箱登录

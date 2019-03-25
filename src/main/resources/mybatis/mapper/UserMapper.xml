@@ -14,9 +14,25 @@
         where email = #{email}
         limit 1
     </select>
+
     <select id="list" resultType="user">
         select *
-        from wlb_user;
+        from wlb_user
+        <where>
+            <if test="startTimestamp!=null">
+                create_time &gt; #{startTimestamp}
+            </if>
+            <if test="endTimestamp">
+                and create_time &lt;= #{endTimestamp}
+            </if>
+            <if test="userName!=null">
+                and user_name like concat('%',#{userName},'%')
+            </if>
+            <if test="status!=null">
+                and `status` =#{status}
+            </if>
+        </where>
+        order by create_time desc
     </select>
 
     <insert id="insertPreRegister">

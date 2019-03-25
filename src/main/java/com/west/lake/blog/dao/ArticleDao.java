@@ -28,7 +28,6 @@ public interface ArticleDao {
      */
     void delete(String id);
 
-
     /**
      * 修改文章
      *
