@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>每日统计</title>
+</head>
+<body>
+
+<h2>今日注册人数: <span th:text="${total}"></span></h2>
+<table border="1">
+    <tr>
+        <th>用户名</th>
+        <th>邮箱</th>
+        <th>手机号</th>
+        <th>注册时间</th>
+        <th>状态</th>
+        <th>性别</th>
+        <th>生日</th>
+        <th>登陆次数</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.userName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.mobile}"></td>
+        <td th:text="${#dates.format(user.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td th:text="${user.status}"></td>
+        <td th:text="${user.sex}"></td>
+        <td th:text="${#dates.format(user.birthday, 'yyyy-MM-dd')}"></td>
+        <td th:text="${user.loginTimes}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

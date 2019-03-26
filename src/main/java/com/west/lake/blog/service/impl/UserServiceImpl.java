@@ -67,11 +67,11 @@ public class UserServiceImpl implements UserService {
             String registerEmailKey = RedisKeySet.registerEmailKey(email);
             if (redisTemplate.opsForValue().get(registerEmailKey) == null) {
                 if (user == null) {
-                    userDao.insertPreRegister(CommonTools.uuid(), email, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
+                    userDao.insertPreRegister(CommonTools.uuid(), email, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
                 }
                 //发送注册验证码
                 String verifyNum = CommonTools.verifyNum(4);
-                emailService.sendSimpleEmail(email, "1185172056@qq.com", "WestLakeBlog | 注册验证码", String.format("您的验证码为%s，有效时间为5分钟，请尽快验证。", verifyNum));
+                emailService.sendSimpleEmail(email, "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + "注册验证码", String.format("您的验证码为%s，有效时间为5分钟，请尽快验证。", verifyNum));
                 redisTemplate.opsForValue().set(registerEmailKey, verifyNum, 5, TimeUnit.MINUTES);
 
             } else {
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
             throw LogicException.le(ErrorMessage.LogicErrorMessage.MUILTY_REGISTER_SUCCESS);
         }
         //插入注册信息
-        userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp());
+        userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
         //从缓存中移除
         redisTemplate.delete(RedisKeySet.registerEmailKey(email));
     }

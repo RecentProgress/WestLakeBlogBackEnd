@@ -25,13 +25,12 @@ public interface UserDao {
     /**
      * 插入预注册信息
      *
-     * @param id             主键
-     * @param email          邮箱
-     * @param status         状态
-     * @param createTime     创建时间
-     * @param lastModifyTime 最后修改时间
+     * @param id              主键
+     * @param email           邮箱
+     * @param status          状态
+     * @param preRegisterTime 预注册时间
      */
-    void insertPreRegister(@Param("id") String id, @Param("email") String email, @Param("status") int status, @Param("createTime") Timestamp createTime, @Param("lastModifyTime") Timestamp lastModifyTime);
+    void insertPreRegister(@Param("id") String id, @Param("email") String email, @Param("status") int status, @Param("preRegisterTime") Timestamp preRegisterTime);
 
     /**
      * 注册
@@ -39,9 +38,10 @@ public interface UserDao {
      * @param id             用户预注册id
      * @param password       密码
      * @param status         状态
+     * @param createTime     创建时间
      * @param lastModifyTime 最后修改时间
      */
-    void register(@Param("id") String id, @Param("password") String password, @Param("status") int status, @Param("lastModifyTime") Timestamp lastModifyTime);
+    void register(@Param("id") String id, @Param("password") String password, @Param("status") int status, @Param("createTime") Timestamp createTime, @Param("lastModifyTime") Timestamp lastModifyTime);
 
     /**
      * 列表

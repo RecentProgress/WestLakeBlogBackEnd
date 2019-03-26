@@ -1,9 +1,6 @@
 package com.west.lake.blog.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 
@@ -31,6 +28,10 @@ public class SystemConfig {
      */
     public static final String SESSION_KEY = "wlbsk";
 
+    /**
+     * 邮件主题前缀
+     */
+    public static final String EMAIL_SUBJECT_PREFIX = "WestLakeBlog | ";
 
     /**
      * 下一次啊检查跨域的间隔时间

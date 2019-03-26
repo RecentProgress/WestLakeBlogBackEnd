@@ -36,8 +36,8 @@
     </select>
 
     <insert id="insertPreRegister">
-        insert into wlb_user (`id`, `email`, `status`, `create_time`, `last_modify_time`)
-        values (#{id}, #{email}, #{status}, #{createTime}, #{lastModifyTime});
+        insert into wlb_user (`id`, `email`, `status`, `pre_register_time`)
+        values (#{id}, #{email}, #{status}, #{preRegisterTime});
     </insert>
 
     <update id="register">
@@ -45,6 +45,7 @@
             wlb_user
         set `status`=#{status},
             `password`=#{password},
+            `create_time`=#{createTime},
             `last_modify_time`=#{lastModifyTime}
         where `id` = #{id}
     </update>

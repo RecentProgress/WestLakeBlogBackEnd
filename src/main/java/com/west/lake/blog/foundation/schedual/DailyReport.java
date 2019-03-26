@@ -1,8 +1,7 @@
 package com.west.lake.blog.foundation.schedual;
 
-import com.alibaba.fastjson.JSON;
-import com.west.lake.blog.configuration.HttpMessageConverterConfig;
 import com.west.lake.blog.dao.UserDao;
+import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.EmailService;
 import com.west.lake.blog.tools.DateTools;
@@ -11,9 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.context.Context;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -32,13 +33,18 @@ public class DailyReport {
 
     /**
      * 注册人数统计
-     * 每天凌晨一点执行
+     * 每天凌晨一点执行，统计前一天的注册人数
      */
     @Scheduled(cron = "0 0 1 * * ?")
     public void dailyRegisterReport() {
         String yesterday = DateTools.dateToString(DateTools.addTimes(new Date(), DateTools.TimeTypeEnum.DAY, -1), DateTools.yyyyMMdd);
         List<User> list = userDao.list(ServiceTools.parseStartTimestamp(yesterday), ServiceTools.parseEndTimestampAddOneDay(yesterday), null, null);
-        emailService.sendSimpleEmail("1185172056@qq.com", "1185172056@qq.com", "westLakeBlog|" + yesterday + "统计", JSON.toJSONString(list, HttpMessageConverterConfig.SERIALIZER_FEATURES));
+        HashMap<String, Object> map = new HashMap<>(2);
+        map.put("total", list.size());
+        map.put("users", list);
+        Context context = new Context();
+        context.setVariables(map);
+        emailService.sendHtmlEmailWithTemplate("1185172056@qq.com", "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + yesterday + "统计", "/dailyReport.html", context);
     }
 
 }
