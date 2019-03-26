@@ -65,26 +65,6 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
                     }
                     ThreadLocalTools.set(JSON.parseObject(members.toArray(new String[1])[0]).getString("id"));
                 }
-
-
-//                HttpSession session = request.getSession(false);
-//                //session不为空
-//                if (ObjectUtils.allNotNull(session)) {
-//                    String loginUserId = (String) session.getAttribute(Constant.LOGIN_USER_SESSION_KEY);
-//                    if (ObjectUtils.allNotNull(loginUserId)) {
-//                        User currentUser = userService.getUserById(loginUserId);
-//                        LOGGER.info("当前登陆用户为：" + currentUser);
-//                        //将当前用户的信息存入threadLocal中
-//                        threadLocalUtils.set(currentUser);
-//                    } else {
-//                        LOGGER.info("用户不存在");
-//                        return false;
-//                    }
-//                } else {//session为空，用户未登录
-//                    RestResult restResult = new RestResult(false, "-1", ErrorMessage.LogicErrorMessage.NOT_LOGIN, ErrorMessage.LogicErrorMessage.NOT_LOGIN.substring(6));
-//                    response.getWriter().append(JSON.toJSONString(restResult));
-//                    return false;
-//                }
             }
         }
         return true;

@@ -50,8 +50,6 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
         if (MediaType.IMAGE_JPEG.getType().equalsIgnoreCase(selectedContentType.getType())) {
             return body;
         }
-        //为什么不在这里转为JSON的原因是，这样的话HttpMessageConvert就没用了
-//        return JSON.toJSON(result);
         return new RestResult(true, RestResult.SUCCESS_CODE, body, null);
     }
 }

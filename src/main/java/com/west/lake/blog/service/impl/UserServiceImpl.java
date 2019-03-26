@@ -45,8 +45,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private SystemConfig systemConfig;
 
-    private ThreadLocal<String> threadLocal = new ThreadLocal<>();
-
     /**
      * 密码加盐
      */
@@ -178,7 +176,7 @@ public class UserServiceImpl implements UserService {
         cookie.setMaxAge(systemConfig.getSessionExpiredSecond() * 1000);
         response.addCookie(cookie);
         updateLoginTimesAndLastLoginTime(user);
-        threadLocal.set(user.getId());
+        ThreadLocalTools.set(user.getId());
         return user;
     }
 

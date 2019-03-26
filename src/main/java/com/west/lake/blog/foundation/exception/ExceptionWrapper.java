@@ -62,6 +62,8 @@ public class ExceptionWrapper {
     }
 
 
+    private static final String SPLITER = "_";
+
     /**
      * Validator验证框架抛出的业务逻辑异常
      *
@@ -74,7 +76,7 @@ public class ExceptionWrapper {
     public Object constraintViolationException(ConstraintViolationException e, HttpServletRequest request, HttpServletResponse response) {
         String message = e.getConstraintViolations().iterator().next().getMessage();
         RestResult result = new RestResult(false, RestResult.SYSTEM_ERROR_CODE, e.getMessage(), I18nTools.getMessage("system.exception"));
-        if (message.contains("_")) {
+        if (message.contains(SPLITER)) {
             result.setCode(message.substring(0, 5));
             result.setErrorMessage(message.substring(6));
         } else {
@@ -120,8 +122,6 @@ public class ExceptionWrapper {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else if (e instanceof NoHandlerFoundException) {
             result.setCode(String.valueOf(HttpServletResponse.SC_NOT_FOUND));
-            //url目前获取不到，都是/error
-            //result.setErrorMessage(String.format(ErrorMessage.ApplicationErrorMessage.NOT_FOUND, ((NoHandlerFoundException) e).getRequestURL()));
             result.setErrorMessage(I18nTools.getMessage("system.not.found"));
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {

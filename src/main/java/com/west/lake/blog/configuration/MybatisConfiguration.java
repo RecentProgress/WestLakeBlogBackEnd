@@ -58,7 +58,6 @@ public class MybatisConfiguration implements TransactionManagementConfigurer {
         return sqlSessionFactoryBean;
     }
 
-    //    @Bean(name = ["transactionManager"])
     private DataSourceTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource);
