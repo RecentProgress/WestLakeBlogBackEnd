@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import com.west.lake.blog.controller.HibernateValidatorConfig;
+import com.west.lake.blog.configuration.HibernateValidatorConfig;
 
 
 /**

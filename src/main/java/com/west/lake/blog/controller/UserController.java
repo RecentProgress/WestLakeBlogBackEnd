@@ -106,7 +106,7 @@ public class UserController {
      * @return
      */
     @ApiOperation("通过邮箱登录")
-    @GetMapping("loginByEmail")
+    @PostMapping("loginByEmail")
     public User loginByEmail(
             @RequestParam("email")
             @Email(message = "{01002.email.format.error}")
@@ -138,7 +138,7 @@ public class UserController {
      * @return
      */
     @ApiOperation("更新个人资料")
-    @PostMapping("update")
+    @PutMapping("update")
     @LoginUser
     public User update(
             @RequestParam("userName") String userName,

@@ -1,6 +1,6 @@
 package com.west.lake.blog.service.impl;
 
-import com.west.lake.blog.controller.HibernateValidatorConfig;
+import com.west.lake.blog.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.ArticleDao;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.Article;

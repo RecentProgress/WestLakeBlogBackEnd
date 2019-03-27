@@ -13,6 +13,11 @@ import java.sql.Timestamp;
 public class NormalTest {
 
     @Test
+    public void test3() {
+
+    }
+
+    @Test
     public void test2() {
         System.out.println(DateTools.addTimes(new Date(), DateTools.TimeTypeEnum.DAY, -1));
     }

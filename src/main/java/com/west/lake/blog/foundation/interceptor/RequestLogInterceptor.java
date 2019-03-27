@@ -1,7 +1,5 @@
 package com.west.lake.blog.foundation.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,13 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.west.lake.blog.tools.RequestTools.*;
+import static com.west.lake.blog.tools.RequestTools.requestLog;
 
 /**
  * 请求controller记录日志，以及接口请求时间记录
@@ -117,7 +113,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("请求(id={})结束:结束时间:{}：本次请求所消耗的时间（毫秒）：{}", request.getAttribute("uuid"), currentTimeMillis, ((currentTimeMillis - (Long.valueOf(request.getAttribute("startTime").toString())))));
+        logger.info("请求(id={})结束:结束时间:{}：本次请求耗时（毫秒）：{}", request.getAttribute("uuid"), currentTimeMillis, ((currentTimeMillis - (Long.valueOf(request.getAttribute("startTime").toString())))));
     }
 
     public ConcurrentHashMap<String, AtomicInteger> getApiRequestStatistic() {

@@ -1,7 +1,7 @@
 package com.west.lake.blog.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.west.lake.blog.controller.HibernateValidatorConfig;
+import com.west.lake.blog.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.UserDao;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.foundation.exception.LogicException;

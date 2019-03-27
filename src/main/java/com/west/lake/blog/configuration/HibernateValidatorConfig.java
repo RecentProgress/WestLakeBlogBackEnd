@@ -1,4 +1,4 @@
-package com.west.lake.blog.controller;
+package com.west.lake.blog.configuration;
 
 import com.west.lake.blog.foundation.exception.LogicException;
 import org.hibernate.validator.HibernateValidator;

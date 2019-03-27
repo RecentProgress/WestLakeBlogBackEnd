@@ -1,4 +1,4 @@
-package com.west.lake.blog.controller;
+package com.west.lake.blog.controller.support;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
