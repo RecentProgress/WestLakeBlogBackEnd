@@ -52,7 +52,18 @@ public interface UserDao {
      * @param status         用户状态
      * @return
      */
-    List<User> list(@Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp") Timestamp endTimestamp, @Param("userName") String userName, @Param("status") Integer status);
+    List<User> list(@Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp") Timestamp endTimestamp, @Param("userName") String userName, @Param("status") Integer status, @Param("start") int start, @Param("limit") int limit);
+
+    /**
+     * count
+     *
+     * @param startTimestamp 开始时间
+     * @param endTimestamp   结束时间
+     * @param userName       用户名
+     * @param status         用户状态
+     * @return
+     */
+    int listCount(@Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp") Timestamp endTimestamp, @Param("userName") String userName, @Param("status") Integer status, @Param("start") int start, @Param("limit") int limit);
 
     /**
      * 更新登录次数与上一次登录时间

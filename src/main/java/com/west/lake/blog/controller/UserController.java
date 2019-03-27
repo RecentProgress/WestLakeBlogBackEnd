@@ -1,6 +1,7 @@
 package com.west.lake.blog.controller;
 
 import com.west.lake.blog.annotation.LoginUser;
+import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.UserService;
@@ -12,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import javax.validation.constraints.*;
 
 /**
  * 用户
@@ -83,20 +82,24 @@ public class UserController {
      * @param endDate   结束时间
      * @param userName  用户名
      * @param status    用户状态
+     * @param start     页
+     * @param limit     分页大小
      * @return
      */
     @ApiOperation("用户列表")
     @LoginUser
     @GetMapping("list")
-    public List<User> list(
+    public PageResult<User> list(
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "userName", required = false) String userName,
-            @RequestParam(value = "status", required = false) Integer status
-
-
+            @RequestParam(value = "status", required = false) Integer status,
+            @Positive
+            @RequestParam(value = "start", required = false, defaultValue = "0") int start,
+            @PositiveOrZero
+            @RequestParam(value = "limit", required = false, defaultValue = "5") int limit
     ) {
-        return userService.list(startDate, endDate, userName, status);
+        return userService.list(startDate, endDate, userName, status, start, limit);
     }
 
     /**

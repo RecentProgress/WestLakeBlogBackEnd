@@ -1,11 +1,11 @@
 package com.west.lake.blog.service;
 
+import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.entity.User;
 import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Email;
-import java.util.List;
 
 /**
  * @author futao
@@ -39,9 +39,11 @@ public interface UserService {
      * @param endDateString   结束时间
      * @param userName        用户名
      * @param status          用户状态
+     * @param start           开始位置
+     * @param limit           分页大小
      * @return
      */
-    List<User> list(String startDateString, String endDateString, String userName, Integer status);
+    PageResult<User> list(String startDateString, String endDateString, String userName, Integer status, int start, int limit);
 
     /**
      * 通过邮箱登录

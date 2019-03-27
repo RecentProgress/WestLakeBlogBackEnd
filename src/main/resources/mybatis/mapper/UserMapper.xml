@@ -17,6 +17,16 @@
 
     <select id="list" resultType="user">
         select *
+        <include refid="listSql"/>
+        <include refid="pageable"/>
+    </select>
+
+    <select id="listCount" resultType="int">
+        select count(*)
+        <include refid="listSql"/>
+    </select>
+
+    <sql id="listSql">
         from wlb_user
         <where>
             <if test="startTimestamp!=null">
@@ -33,7 +43,14 @@
             </if>
         </where>
         order by create_time desc
-    </select>
+    </sql>
+
+    <!--分页公共sql-->
+    <sql id="pageable">
+        <bind name="startNum" value="(start-1)*limit"/>
+        limit #{startNum,jdbcType=INTEGER} ,#{limit,jdbcType=INTEGER}
+    </sql>
+
 
     <insert id="insertPreRegister">
         insert into wlb_user (`id`, `email`, `status`, `pre_register_time`)

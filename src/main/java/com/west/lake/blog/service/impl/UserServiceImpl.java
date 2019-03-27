@@ -5,6 +5,7 @@ import com.west.lake.blog.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.UserDao;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.foundation.exception.LogicException;
+import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.RedisKeySet;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.User;
@@ -22,7 +23,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -123,10 +123,12 @@ public class UserServiceImpl implements UserService {
      * @param endDateString   结束时间
      * @param userName        用户名
      * @param status          用户状态
+     * @param start           开始位置
+     * @param limit           分页大小
      * @return
      */
     @Override
-    public List<User> list(String startDateString, String endDateString, String userName, Integer status) {
+    public PageResult<User> list(String startDateString, String endDateString, String userName, Integer status, int start, int limit) {
         Timestamp startTimestamp = null;
         Timestamp endTimestamp = null;
         if (StringUtils.isNotEmpty(startDateString)) {
@@ -135,7 +137,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotEmpty(endDateString)) {
             endTimestamp = ServiceTools.parseEndTimestampAddOneDay(endDateString);
         }
-        return userDao.list(startTimestamp, endTimestamp, userName, status);
+        return new PageResult<>(userDao.listCount(startTimestamp, endTimestamp, userName, status, start, limit), userDao.list(startTimestamp, endTimestamp, userName, status, start, limit));
     }
 
     /**
