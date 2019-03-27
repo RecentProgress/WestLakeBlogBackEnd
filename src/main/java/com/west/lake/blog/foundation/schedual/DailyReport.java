@@ -35,8 +35,8 @@ public class DailyReport {
      * 注册人数统计
      * 每天凌晨一点执行，统计前一天的注册人数
      */
-//    @Scheduled(cron = "0 0 1 * * ?")
-    @Scheduled(cron = "*/5 * * * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "*/5 * * * * ?")
     public void dailyRegisterReport() {
         log.info(">>>dailyReport start");
         String yesterday = DateTools.dateToString(DateTools.addTimes(new Date(), DateTools.TimeTypeEnum.DAY, -1), DateTools.yyyyMMdd);
