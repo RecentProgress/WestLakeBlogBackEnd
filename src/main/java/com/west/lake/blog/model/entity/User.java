@@ -85,5 +85,9 @@ public class User extends BaseEntity {
      */
     private int loginTimes;
 
+    /**
+     * 预注册时间
+     */
+    private Timestamp preRegisterTime;
 
 }

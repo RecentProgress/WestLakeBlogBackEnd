@@ -35,8 +35,10 @@ public class DailyReport {
      * 注册人数统计
      * 每天凌晨一点执行，统计前一天的注册人数
      */
-    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "*/5 * * * * ?")
     public void dailyRegisterReport() {
+        log.info(">>>dailyReport start");
         String yesterday = DateTools.dateToString(DateTools.addTimes(new Date(), DateTools.TimeTypeEnum.DAY, -1), DateTools.yyyyMMdd);
         List<User> list = userDao.list(ServiceTools.parseStartTimestamp(yesterday), ServiceTools.parseEndTimestampAddOneDay(yesterday), null, null);
         HashMap<String, Object> map = new HashMap<>(2);
@@ -44,7 +46,8 @@ public class DailyReport {
         map.put("users", list);
         Context context = new Context();
         context.setVariables(map);
-        emailService.sendHtmlEmailWithTemplate("1185172056@qq.com", "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + yesterday + "统计", "/dailyReport.html", context);
+        emailService.sendHtmlEmailWithTemplate("1185172056@qq.com", "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + yesterday + "统计", "dailyReport.html", context);
+        log.info(">>>dailyReport end");
     }
 
 }
