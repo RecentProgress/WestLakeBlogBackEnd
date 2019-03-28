@@ -20,6 +20,15 @@ public class ErrorMessage {
         public static final String NOT_LOGIN = "01024_您还未登录或者登录已超时，请重新登录";
         public static final String USER_STATUS_ILLEGAL = "01025_用户状态不合法";
         public static final String USER_SEX_ILLEGAL = "01025_用户性别不合法";
+        public static final String GEN_URI_FAIL = "00026_构造请求地址时发生异常";
+        public static final String REQUEST_FAIL = "00027_请求时发生异常%s";
+        public static final String GET_RESPONSE_FAIL = "00028_获取响应失败%s";
+        public static final String CLOSE_RESPONSE_FAIL = "00029_关闭response失败%s";
+        public static final String ADD_AUTH_HEAD_FAIL = "00030_request authentication fail %s";
+        public static final String REQUEST_METHOD_NOT_EXISTS = "00031_请求方式不存在";
+
+
+
     }
 
 }

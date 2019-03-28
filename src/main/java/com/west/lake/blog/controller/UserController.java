@@ -95,7 +95,7 @@ public class UserController {
             @RequestParam(value = "userName", required = false) String userName,
             @RequestParam(value = "status", required = false) Integer status,
             @Positive
-            @RequestParam(value = "start", required = false, defaultValue = "0") int start,
+            @RequestParam(value = "start", required = false, defaultValue = "1") int start,
             @PositiveOrZero
             @RequestParam(value = "limit", required = false, defaultValue = "5") int limit
     ) {

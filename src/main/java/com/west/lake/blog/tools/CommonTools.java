@@ -1,5 +1,7 @@
 package com.west.lake.blog.tools;
 
+import com.alibaba.fastjson.JSON;
+import com.west.lake.blog.configuration.HttpMessageConverterConfig;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,6 +64,10 @@ public class CommonTools {
         } else {
             return null;
         }
+    }
+
+    public static String formatJsonString(String jsonString) {
+        return StringUtils.isEmpty(jsonString) ? "{}" : JSON.toJSONString(JSON.parseObject(jsonString), HttpMessageConverterConfig.SERIALIZER_FEATURES);
     }
 
 }

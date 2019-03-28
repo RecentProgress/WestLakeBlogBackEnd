@@ -34,6 +34,11 @@ public class SystemConfig {
     public static final String EMAIL_SUBJECT_PREFIX = "WestLakeBlog | ";
 
     /**
+     * 图灵机器人
+     */
+    public static final String TULING = "http://openapi.tuling123.com/openapi/api/v2";
+
+    /**
      * 下一次啊检查跨域的间隔时间
      */
     private int originMaxAge;
@@ -53,6 +58,12 @@ public class SystemConfig {
      */
     private int sessionExpiredSecond;
 
+
+    public static class RequestConst {
+        public static final int CONNECTION_REQUEST_TIMEOUT = 5000;
+        public static final int CONNECT_TIMEOUT = 5000;
+        public static final int SOCKET_TIMEOUT = 5000;
+    }
 
     public int getOriginMaxAge() {
         return originMaxAge;

@@ -87,6 +87,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                //允许带cookie的跨域
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("Content-Type")
