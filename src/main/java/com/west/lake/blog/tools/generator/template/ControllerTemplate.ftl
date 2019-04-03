@@ -1,12 +1,12 @@
 package ${controllerPackagePath};
 
+import com.west.lake.blog.model.SingleValueResult;
 import ${entityPackagePath}.${className};
 import ${serviceFacePackagePath}.${className}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import com.futao.springbootdemo.model.entity.SingleValueResult;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -45,12 +45,11 @@ return ${className?lower_case}Service.add();
 * @return
 */
 @DeleteMapping("{id}")
-public SingleValueResult
-<T> delete(
+public SingleValueResult<String> delete(
     @PathVariable("id") String id
     ) {
-    return new SingleValueResult
-    <T>(${className?lower_case}Service.delete(id));
+    ${className?lower_case}Service.delete(id)
+    return new SingleValueResult<>("delete success");
         }
 
         /**

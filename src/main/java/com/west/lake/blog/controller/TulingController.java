@@ -10,11 +10,13 @@ import com.west.lake.blog.tools.http.PostRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author futao
  * Created on 2019-03-28.
  */
+@ApiIgnore
 @RestController
 @RequestMapping("tuling")
 public class TulingController {

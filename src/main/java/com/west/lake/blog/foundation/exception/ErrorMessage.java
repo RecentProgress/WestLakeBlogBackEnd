@@ -28,6 +28,8 @@ public class ErrorMessage {
         public static final String REQUEST_METHOD_NOT_EXISTS = "00031_请求方式不存在";
 
 
+        public static final String REVIEW_CONTENT_MIN_MAX = "00032_评论内容长度限制{min}-{max}";
+
 
     }
 

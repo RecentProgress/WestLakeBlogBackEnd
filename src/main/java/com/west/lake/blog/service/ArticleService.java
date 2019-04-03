@@ -17,7 +17,7 @@ public interface ArticleService {
      *
      * @return 文章
      */
-    Article add();
+    Article add(String title, String desc, String content);
 
     /**
      * 删除文章

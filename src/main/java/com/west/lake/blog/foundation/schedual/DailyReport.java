@@ -40,6 +40,7 @@ public class DailyReport {
     @Scheduled(cron = "0 0 1 * * ?")
 //    @Scheduled(cron = "*/5 * * * * ?")
     public void dailyRegisterReport() {
+        long startTime = System.currentTimeMillis();
         log.info(">>>dailyReport start");
         String yesterday = DateTools.dateToString(DateTools.addTimes(new Date(), DateTools.TimeTypeEnum.DAY, -1), DateTools.yyyyMMdd);
         List<User> list = userDao.list(ServiceTools.parseStartTimestamp(yesterday), ServiceTools.parseEndTimestampAddOneDay(yesterday), null, null, 1, Integer.MAX_VALUE);
@@ -49,7 +50,8 @@ public class DailyReport {
         Context context = new Context();
         context.setVariables(map);
         emailService.sendHtmlEmailWithTemplate("1185172056@qq.com", "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + yesterday + "统计", "dailyReport.html", context);
-        log.info(">>>dailyReport end");
+        long endTime = System.currentTimeMillis();
+        log.info(">>>dailyReport end; 耗时: {}毫秒", endTime - startTime);
     }
 
 }

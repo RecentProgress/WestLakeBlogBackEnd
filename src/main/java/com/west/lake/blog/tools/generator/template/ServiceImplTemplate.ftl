@@ -52,10 +52,9 @@ return ${className?lower_case};
 * @return ${classDesc}
 */
 @Override
-public ${className} delete(String id){
+public void delete(String id){
 //调用dao层
 ${className?lower_case}Dao.delete(${className?lower_case}Dao.byId(id).getId());
-return ${className?lower_case};
 }
 
 /**
@@ -67,7 +66,7 @@ return ${className?lower_case};
 @Override
 public ${className} update(String id){
 //先查询数据是否存在
-${className} ${className?lower_case} = ServiceTools.checkResultNullAndThrow(${className?lower_case}Dao.byId(id));
+${className} ${className?lower_case} = ServiceTools.checkResultNullAndThrow(${className?lower_case}Dao.byId(id),"${classDesc}");
 //TODO("赋用户修改之后的值")
 
 //参数合法性校验

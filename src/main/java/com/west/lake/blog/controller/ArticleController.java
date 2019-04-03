@@ -1,11 +1,13 @@
 package com.west.lake.blog.controller;
 
+import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.entity.Article;
 import com.west.lake.blog.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -20,7 +22,6 @@ import java.util.List;
  */
 @Api("文章")
 @RestController
-@ApiIgnore
 @RequestMapping(path = "article", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ArticleController {
 
@@ -32,12 +33,16 @@ public class ArticleController {
      *
      * @return
      */
+    @LoginUser
     @ApiOperation("新增文章")
     @PostMapping(path = "add")
     public Article add(
+            @RequestParam("title") String title,
+            @RequestParam("desc") String desc,
+            @RequestParam("content") String content
     ) {
 //TODO("not implement")
-        return articleService.add();
+        return articleService.add(title, desc, content);
     }
 
     /**

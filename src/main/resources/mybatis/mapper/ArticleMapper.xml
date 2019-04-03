@@ -13,30 +13,30 @@
 
     <insert id="add" parameterType="article">
         insert
-        into springmvcdemo.futao_article ()
-        values ();
+        into wlb_article(id, user, title, `desc`, content, visit_times, like_times, create_time, last_modify_time)
+        values (#{id}, #{user.id}, #{title}, #{desc}, #{content}, #{visitTimes}, #{likeTimes}, #{createTime},
+                #{lastModifyTime});
     </insert>
 
     <delete id="delete" parameterType="string">
         delete
-        from springmvcdemo.futao_article
+        from wlb_article
         where id = #{id}
     </delete>
 
     <update id="update" parameterType="article">
-        update springmvcdemo.futao_article
-        set
-        where id = #{id}
+        update wlb_article
+        set where id = #{id}
     </update>
 
-    <select id="list">
+    <select id="list" resultType="article">
         select *
-        from springmvcdemo.futao_article
+        from wlb_article
     </select>
 
-    <select id="byId" parameterType="string">
+    <select id="byId" parameterType="string" resultType="article">
         select *
-        from springmvcdemo.futao_article
+        from wlb_article
         where id = #{id}
     </select>
 </mapper>

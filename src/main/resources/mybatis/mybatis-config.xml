@@ -44,7 +44,7 @@
         <typeAlias type="com.west.lake.blog.model.entity.User" alias="user"/>
         <typeAlias type="com.west.lake.blog.model.entity.Tag" alias="tag"/>
         <typeAlias type="com.west.lake.blog.model.entity.Article" alias="article"/>
-
+        <typeAlias type="com.west.lake.blog.model.entity.Review" alias="review"/>
 
     </typeAliases>
 

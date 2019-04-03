@@ -90,4 +90,8 @@ public class User extends BaseEntity {
      */
     private Timestamp preRegisterTime;
 
+    public User(String id) {
+        this.setId(id);
+    }
+
 }

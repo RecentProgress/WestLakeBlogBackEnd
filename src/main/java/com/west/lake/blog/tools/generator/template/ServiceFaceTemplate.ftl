@@ -25,7 +25,7 @@ ${className} add();
 * @param id 要删除的${classDesc}主键
 * @return ${classDesc}
 */
-${className} delete(String id);
+void delete(String id);
 
 
 /**
