@@ -13,30 +13,54 @@
 
     <insert id="add" parameterType="tag">
         insert
-        into springmvcdemo.futao_tag ()
-        values ();
+        into west_lake_blog.wlb_tag (`id`, `tag_name`, `type`, `create_time`, `last_modify_time`)
+        values (#{id}, #{tagName}, #{type}, #{createTime}, #{lastModifyTime});
     </insert>
 
     <delete id="delete" parameterType="string">
         delete
-        from springmvcdemo.futao_tag
+        from west_lake_blog.wlb_tag
         where id = #{id}
     </delete>
 
     <update id="update" parameterType="tag">
-        update springmvcdemo.futao_tag
-        set
+        update west_lake_blog.wlb_tag
+        set tag_name=#{tagName},
+            last_modify_time=#{lastModifyTime}
         where id = #{id}
     </update>
 
-    <select id="list">
+    <select id="list" resultType="tag">
         select *
-        from springmvcdemo.futao_tag
+        <include refid="listSql"/>
+    </select>
+    <sql id="listSql">
+        from west_lake_blog.wlb_tag
+        <where>
+            <if test="tagName!=null and tagName!=''">
+                tag_name like concat('%', #{tagName}, '%')
+            </if>
+            <if test="type!=null">
+                type=#{type}
+            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="int">
+        select count(*)
+        <include refid="listSql"/>
     </select>
 
-    <select id="byId" parameterType="string">
+    <select id="byId" parameterType="string" resultType="tag">
         select *
-        from springmvcdemo.futao_tag
+        from west_lake_blog.wlb_tag
         where id = #{id}
+    </select>
+
+    <select id="byNameAndType" resultType="tag">
+        select *
+        from wlb_tag
+        where tag_name = #{tagName}
+          and type = #{type}
     </select>
 </mapper>

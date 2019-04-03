@@ -1,5 +1,7 @@
 package com.west.lake.blog.controller;
 
+import com.west.lake.blog.annotation.LoginUser;
+import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.entity.Tag;
 import com.west.lake.blog.service.TagService;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 标签操作接口
@@ -18,7 +19,6 @@ import java.util.List;
  * @author futao
  * Created on 2019-03-23.
  */
-@ApiIgnore
 @Api("标签")
 @RestController
 @RequestMapping(path = "tag", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -32,12 +32,14 @@ public class TagController {
      *
      * @return
      */
+    @LoginUser
     @ApiOperation("新增标签")
     @PostMapping(path = "add")
     public Tag add(
+            @RequestParam("tagName") String tagName,
+            @RequestParam("type") int type
     ) {
-//TODO("not implement")
-        return tagService.add();
+        return tagService.add(tagName, type);
     }
 
     /**
@@ -46,6 +48,7 @@ public class TagController {
      * @param id 要删除的标签的id
      * @return
      */
+    @LoginUser
     @DeleteMapping("{id}")
     public SingleValueResult<String> delete(
             @PathVariable("id") String id
@@ -60,12 +63,14 @@ public class TagController {
      * @param id 要更新的标签的id
      * @return
      */
-    @PutMapping("{id}")
+    @LoginUser
+    @PutMapping("update")
     public Tag update(
-            @PathVariable("id") String id
+            @RequestParam("id") String id,
+            @RequestParam("tagName") String tagName
     ) {
         //TODO("not implement")
-        return tagService.update(id);
+        return tagService.update(id, tagName);
     }
 
 
@@ -75,8 +80,11 @@ public class TagController {
      * @return
      */
     @GetMapping("list")
-    public List<Tag> list() {
-        return tagService.list();
+    public PageResult<Tag> list(
+            @RequestParam(value = "tagName", required = false) String tagName,
+            @RequestParam(value = "type", required = false) Integer type
+    ) {
+        return tagService.list(tagName, type);
     }
 
     /**

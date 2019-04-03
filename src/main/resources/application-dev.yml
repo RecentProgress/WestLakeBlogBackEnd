@@ -78,7 +78,6 @@ west:
           sessionExpiredSecond: 7200
 
 debug: false
-
 # 线程池配置
 thread:
   pool:

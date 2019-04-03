@@ -1,6 +1,6 @@
 package ${entityPackagePath};
 
-import lombok.Data;
+import lombok.*;
 
 /**
 * ${classDesc}
@@ -8,7 +8,11 @@ import lombok.Data;
 * @author ${authorName}
 * Created on ${createDate}.
 */
-@Data
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ${className} extends BaseEntity {
 //TODO("not implement")]
 

@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
         //js
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setMaxAge(systemConfig.getSessionExpiredSecond() * 1000);
+        cookie.setMaxAge(systemConfig.getSessionExpiredSecond());
         response.addCookie(cookie);
         updateLoginTimesAndLastLoginTime(user);
         ThreadLocalTools.set(user.getId());

@@ -58,9 +58,9 @@ public SingleValueResult<String> delete(
         * @param id 要更新的${classDesc}的id
         * @return
         */
-        @PutMapping("{id}")
+        @PutMapping("update")
         public ${className} update(
-        @PathVariable("id") String id
+        @RequestParam("id") String id
         ) {
         //TODO("not implement")
         return ${className?lower_case}Service.update(id);

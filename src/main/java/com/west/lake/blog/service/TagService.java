@@ -1,5 +1,6 @@
 package com.west.lake.blog.service;
 
+import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.entity.Tag;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface TagService {
      *
      * @return 标签
      */
-    Tag add();
+    Tag add(String tagName, int type);
 
     /**
      * 删除标签
@@ -34,14 +35,14 @@ public interface TagService {
      * @param id 要修改的标签主键
      * @return 标签
      */
-    Tag update(String id);
+    Tag update(String id, String tagName);
 
     /**
      * 查询标签列表
      *
      * @return 标签列表
      */
-    List<Tag> list();
+    PageResult<Tag> list(String tagName, Integer type);
 
     /**
      * 获取标签详情

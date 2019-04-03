@@ -33,9 +33,6 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginUserInterceptor.class);
 
     @Resource
-    private UserService userService;
-
-    @Resource
     private RedisTemplate<String, String> redisTemplate;
 
     /**

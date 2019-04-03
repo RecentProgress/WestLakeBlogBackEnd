@@ -1,6 +1,10 @@
 package com.west.lake.blog.model.entity;
 
-import lombok.Data;
+import com.west.lake.blog.annotation.EnumStatus;
+import com.west.lake.blog.model.entity.enums.TagType;
+import lombok.*;
+
+import javax.validation.constraints.Size;
 
 /**
  * 标签
@@ -8,10 +12,22 @@ import lombok.Data;
  * @author futao
  * Created on 2019-03-23.
  */
-@Data
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tag extends BaseEntity {
 
+    /**
+     * 标签名称
+     */
+    @Size(min = 1, max = 10)
     private String tagName;
 
-    private String type;
+    /**
+     * 标签类型
+     */
+    @EnumStatus(TagType.class)
+    private int type;
 }
