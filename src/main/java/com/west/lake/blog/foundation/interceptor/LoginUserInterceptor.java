@@ -1,10 +1,12 @@
 package com.west.lake.blog.foundation.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.SystemConfig;
+import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.UserService;
 import com.west.lake.blog.tools.RequestTools;
 import com.west.lake.blog.tools.ThreadLocalTools;
@@ -33,7 +35,7 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginUserInterceptor.class);
 
     @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, User> redisTemplate;
 
     /**
      * 在请求到达Controller之前进行拦截并处理
@@ -54,15 +56,19 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
             if (ObjectUtils.anyNotNull(loginUserAnnotation, classLoginUserAnnotation)) {
                 String cookieValue = RequestTools.getCookieValue(request.getCookies(), SystemConfig.SESSION_KEY);
                 if (cookieValue == null) {
+                    //前端cookie不存在->未登录
                     throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);
                 } else {
-                    Set<String> members = redisTemplate.opsForSet().members(SystemConfig.SESSION_KEY + ":" + cookieValue);
+                    Set<User> members = redisTemplate.opsForSet().members(SystemConfig.SESSION_KEY + ":" + cookieValue);
                     if (members == null || members.isEmpty()) {
+                        //后端redis中不存在sessionKey->未登录
                         throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);
                     }
-                    ThreadLocalTools.set(JSON.parseObject(members.toArray(new String[1])[0]).getString("id"));
+                    ThreadLocalTools.set(((JSONObject) members.toArray()[0]).toJavaObject(User.class).getId());
                 }
             }
+            //未被标记，直接放行
+            return true;
         }
         return true;
     }

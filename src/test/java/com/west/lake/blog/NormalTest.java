@@ -21,7 +21,7 @@ public class NormalTest {
 
     @Test
     public void reply() {
-        String ques="今天天气怎么样";
+        String ques = "今天天气怎么样";
         JSONObject jsonObject = new JSONObject();
         jsonObject.fluentPut("reqType", 0).fluentPut("perception", new JSONObject().fluentPut("inputText", new JSONObject().fluentPut("ques", ques))).fluentPut("userInfo", new JSONObject().fluentPut("apiKey", "c9610a0052f04ff685b56887720c658a").fluentPut("userId", "FutaoSmile"));
         AbstractBaseRequest request = new PostRequest(SystemConfig.TULING);

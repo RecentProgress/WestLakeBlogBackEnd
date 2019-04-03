@@ -67,7 +67,11 @@ public class CommonTools {
     }
 
     public static String formatJsonString(String jsonString) {
-        return StringUtils.isEmpty(jsonString) ? "{}" : JSON.toJSONString(JSON.parseObject(jsonString), HttpMessageConverterConfig.SERIALIZER_FEATURES);
+        try {
+            return StringUtils.isEmpty(jsonString) ? "{}" : JSON.toJSONString(JSON.parseObject(jsonString), HttpMessageConverterConfig.SERIALIZER_FEATURES);
+        } catch (Exception e) {
+            return jsonString;
+        }
     }
 
 }

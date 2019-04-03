@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
+    @Resource
+    private RedisTemplate<String, User> userRedisTemplate;
+
     @Autowired
     private UserDao userDao;
 
@@ -167,8 +170,8 @@ public class UserServiceImpl implements UserService {
         //用户登录信息存入redis
         String sessionValue = CommonTools.uuid();
         String redisKey = SystemConfig.SESSION_KEY + ":" + sessionValue;
-        redisTemplate.opsForSet().add(redisKey, JSON.toJSONString(user));
-        redisTemplate.expire(redisKey, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
+        userRedisTemplate.opsForSet().add(redisKey, user);
+        userRedisTemplate.expire(redisKey, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
         Cookie cookie = new Cookie(SystemConfig.SESSION_KEY, sessionValue);
         //https
         cookie.setSecure(false);
