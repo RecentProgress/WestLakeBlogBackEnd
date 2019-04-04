@@ -16,4 +16,14 @@ public class RedisKeySet {
     public static String registerEmailKey(String email) {
         return "register:email:" + email;
     }
+
+    /**
+     * 注册验证码key
+     *
+     * @param mobile
+     * @return
+     */
+    public static String registerMessageKey(String mobile) {
+        return "register:mobile:" + mobile;
+    }
 }

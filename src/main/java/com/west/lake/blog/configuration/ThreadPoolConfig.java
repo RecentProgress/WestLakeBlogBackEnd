@@ -15,7 +15,6 @@ import java.util.concurrent.Executor;
  */
 @Component
 @ConfigurationProperties("thread.pool")
-@EnableAsync
 public class ThreadPoolConfig implements AsyncConfigurer {
     private int corePoolSize;
     private int maxPoolSize;

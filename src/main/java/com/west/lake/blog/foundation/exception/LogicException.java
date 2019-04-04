@@ -1,7 +1,7 @@
 package com.west.lake.blog.foundation.exception;
 
 /**
- * v
+ * 逻辑异常
  *
  * @author futao
  * Created on 2018/9/20-15:22.

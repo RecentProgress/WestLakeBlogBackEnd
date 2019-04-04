@@ -23,6 +23,13 @@ public interface UserService {
 
 
     /**
+     * 预注册
+     *
+     * @param mobile 手机号
+     */
+    void sendRegisterMessage(String mobile);
+
+    /**
      * 注册
      *
      * @param email           邮箱地址
@@ -31,6 +38,16 @@ public interface UserService {
      * @param confirmPassword 确认密码
      */
     void registerByEmail(String email, String verifyNum, String password, String confirmPassword);
+
+    /**
+     * 手机注册
+     *
+     * @param mobile          手机号
+     * @param verifyNum       验证码
+     * @param password        密码
+     * @param confirmPassword 确认密码
+     */
+    void registerByMobile(String mobile, String verifyNum, String password, String confirmPassword);
 
     /**
      * 列表
@@ -53,7 +70,17 @@ public interface UserService {
      * @param response 响应
      * @return
      */
-    User loginByEmail(String email, String password, HttpServletResponse response);
+    User emailLogin(String email, String password, HttpServletResponse response);
+
+    /**
+     * 手机号登录
+     *
+     * @param mobile   手机号
+     * @param password 密码
+     * @param response 响应
+     * @return
+     */
+    User mobileLogin(String mobile, String password, HttpServletResponse response);
 
     /**
      * 当前用户id

@@ -23,6 +23,14 @@ public interface UserDao {
     User selectByEmail(@Param("email") String email);
 
     /**
+     * 通过手机号查询用户信息
+     *
+     * @param mobile 手机号
+     * @return
+     */
+    User selectByMobile(@Param("mobile") String mobile);
+
+    /**
      * 插入预注册信息
      *
      * @param id              主键
@@ -30,7 +38,18 @@ public interface UserDao {
      * @param status          状态
      * @param preRegisterTime 预注册时间
      */
-    void insertPreRegister(@Param("id") String id, @Param("email") String email, @Param("status") int status, @Param("preRegisterTime") Timestamp preRegisterTime);
+    void insertEmailPreRegister(@Param("id") String id, @Param("email") String email, @Param("status") int status, @Param("preRegisterTime") Timestamp preRegisterTime);
+
+
+    /**
+     * 短信预注册
+     *
+     * @param id              用户主键
+     * @param mobile          手机号
+     * @param status          状态
+     * @param preRegisterTime 预注册时间
+     */
+    void insertMobilePreRegister(@Param("id") String id, @Param("mobile") String mobile, @Param("status") int status, @Param("preRegisterTime") Timestamp preRegisterTime);
 
     /**
      * 注册

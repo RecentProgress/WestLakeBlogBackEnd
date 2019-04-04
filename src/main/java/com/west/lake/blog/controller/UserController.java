@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,7 @@ public class UserController {
      * @param email 邮件
      * @return
      */
+    @ApiIgnore
     @ApiOperation("发送注册邮件")
     @PostMapping("sendRegisterEmail")
     public SingleValueResult<String> sendRegisterEmail(
@@ -50,6 +52,24 @@ public class UserController {
 
 
     /**
+     * 发送注册验证码
+     *
+     * @param mobile 手机号
+     * @return
+     */
+    @ApiOperation("发送注册短信验证码")
+    @PostMapping("sendRegisterVerifyCode")
+    public SingleValueResult<String> sendRegisterVerifyCode(
+            @RequestParam("mobile")
+            @Size(min = 11, max = 11)
+                    String mobile
+    ) {
+        userService.sendRegisterMessage(mobile);
+        return new SingleValueResult<>("send success");
+    }
+
+
+    /**
      * 通过邮件注册
      *
      * @param email           邮箱
@@ -57,6 +77,7 @@ public class UserController {
      * @param password        密码
      * @param confirmPassword 确认密码
      */
+    @ApiIgnore
     @ApiOperation("通过邮件注册")
     @PostMapping("registerByEmail")
     public SingleValueResult<String> registerByEmail(@RequestParam("email")
@@ -72,6 +93,32 @@ public class UserController {
                                                      @NotNull
                                                              String confirmPassword) {
         userService.registerByEmail(email, verifyNum, password, confirmPassword);
+        return new SingleValueResult<>("注册成功");
+    }
+
+    /**
+     * 通过手机号注册
+     *
+     * @param mobile          手机号
+     * @param verifyNum       验证码
+     * @param password        密码
+     * @param confirmPassword 确认密码
+     */
+    @ApiOperation("通过手机号注册")
+    @PostMapping("registerByMobile")
+    public SingleValueResult<String> registerByMobile(@RequestParam("mobile")
+                                                      @Size(min = 11, max = 11)
+                                                              String mobile,
+                                                      @RequestParam("verifyNum")
+                                                      @NotNull
+                                                              String verifyNum,
+                                                      @RequestParam("password")
+                                                      @NotNull
+                                                              String password,
+                                                      @RequestParam("confirmPassword")
+                                                      @NotNull
+                                                              String confirmPassword) {
+        userService.registerByMobile(mobile, verifyNum, password, confirmPassword);
         return new SingleValueResult<>("注册成功");
     }
 
@@ -108,8 +155,9 @@ public class UserController {
      * @param response 响应
      * @return
      */
+    @ApiIgnore
     @ApiOperation("通过邮箱登录")
-    @PostMapping("loginByEmail")
+    @PostMapping("emailLogin")
     public User loginByEmail(
             @RequestParam("email")
             @Email(message = "{01002.email.format.error}")
@@ -118,7 +166,28 @@ public class UserController {
             @NotNull
                     String password,
             HttpServletResponse response) {
-        return userService.loginByEmail(email, password, response);
+        return userService.emailLogin(email, password, response);
+    }
+
+    /**
+     * 手机号密码登录
+     *
+     * @param mobile   手机号
+     * @param password 密码
+     * @param response 响应
+     * @return
+     */
+    @ApiOperation("通过手机号密码登录")
+    @PostMapping("mobileLogin")
+    public User mobileLogin(
+            @RequestParam("mobile")
+            @Size(min = 11, max = 11)
+                    String mobile,
+            @RequestParam("password")
+            @NotNull
+                    String password,
+            HttpServletResponse response) {
+        return userService.mobileLogin(mobile, password, response);
     }
 
 

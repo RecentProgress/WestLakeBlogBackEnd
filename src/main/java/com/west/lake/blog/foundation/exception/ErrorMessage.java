@@ -30,6 +30,7 @@ public class ErrorMessage {
 
         public static final String REVIEW_CONTENT_MIN_MAX = "00032_评论内容长度限制{min}-{max}";
 
+        public static final String SEND_MESSAGE_FAIL = "00033_短信发送失败，请稍后重试";
 
     }
 

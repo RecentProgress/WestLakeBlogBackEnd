@@ -1,6 +1,5 @@
 package com.west.lake.blog.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.west.lake.blog.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.UserDao;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
@@ -8,10 +7,12 @@ import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.RedisKeySet;
 import com.west.lake.blog.model.SystemConfig;
+import com.west.lake.blog.model.entity.MessageTemplateEnum;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.model.entity.enums.UserSexEnum;
 import com.west.lake.blog.model.entity.enums.UserStatusEnum;
 import com.west.lake.blog.service.EmailService;
+import com.west.lake.blog.service.MessageService;
 import com.west.lake.blog.service.UserService;
 import com.west.lake.blog.tools.*;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +49,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     private SystemConfig systemConfig;
 
+    @Resource
+    private MessageService messageService;
+
     /**
      * 密码加盐
      */
@@ -68,12 +72,12 @@ public class UserServiceImpl implements UserService {
             String registerEmailKey = RedisKeySet.registerEmailKey(email);
             if (redisTemplate.opsForValue().get(registerEmailKey) == null) {
                 if (user == null) {
-                    userDao.insertPreRegister(CommonTools.uuid(), email, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
+                    userDao.insertEmailPreRegister(CommonTools.uuid(), email, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
                 }
                 //发送注册验证码
                 String verifyNum = CommonTools.verifyNum(4);
-                emailService.sendSimpleEmail(email, "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + "注册验证码", String.format("您的验证码为%s，有效时间为5分钟，请尽快验证。", verifyNum));
-                redisTemplate.opsForValue().set(registerEmailKey, verifyNum, 5, TimeUnit.MINUTES);
+                emailService.sendSimpleEmail(email, "1185172056@qq.com", SystemConfig.EMAIL_SUBJECT_PREFIX + "注册验证码", String.format("您的验证码为%s，有效时间为" + SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES + "分钟，请尽快验证。", verifyNum));
+                redisTemplate.opsForValue().set(registerEmailKey, verifyNum, SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES, TimeUnit.MINUTES);
 
             } else {
                 throw LogicException.le(I18nTools.getMessage("01010.email.already.sended"));
@@ -81,6 +85,37 @@ public class UserServiceImpl implements UserService {
         } else {
             //已注册
             throw LogicException.le(I18nTools.getMessage("01009.email.already.exist"));
+        }
+    }
+
+    /**
+     * 预注册
+     *
+     * @param mobile 手机号
+     */
+    @Override
+    public void sendRegisterMessage(String mobile) {
+        //查询该手机号是否已经注册
+        User user = userDao.selectByMobile(mobile);
+        if (user == null || UserStatusEnum.PRE_REGISTER.getCode() == user.getStatus()) {
+            //未注册成功
+            String registerMessageKey = RedisKeySet.registerMessageKey(mobile);
+            if (redisTemplate.opsForValue().get(registerMessageKey) == null) {
+                if (user == null) {
+                    //插预注册信息
+                    userDao.insertMobilePreRegister(CommonTools.uuid(), mobile, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
+                    //生成验证码
+                    String verifyNum = CommonTools.verifyNum(4);
+                    //发送验证码
+                    messageService.send(mobile, MessageTemplateEnum.REGISTER, verifyNum, String.valueOf(SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES));
+                    //存入缓存并设置过期时间
+                    redisTemplate.opsForValue().set(registerMessageKey, verifyNum, SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES, TimeUnit.MINUTES);
+                }
+            } else {
+                throw LogicException.le(I18nTools.getMessage("01010.message.already.sended"));
+            }
+        } else {
+            throw LogicException.le(I18nTools.getMessage("01016.mobile.already.exist"));
         }
     }
 
@@ -107,7 +142,6 @@ public class UserServiceImpl implements UserService {
         if (!redisVerifyNum.trim().equals(verifyNum.trim())) {
             throw LogicException.le(I18nTools.getMessage("01013.email.redis.verify.num.error"));
         }
-
         User user = userDao.selectByEmail(email);
         if (user.getStatus() == UserStatusEnum.NORMAL.getCode()) {
             throw LogicException.le(ErrorMessage.LogicErrorMessage.MUILTY_REGISTER_SUCCESS);
@@ -116,6 +150,42 @@ public class UserServiceImpl implements UserService {
         userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
         //从缓存中移除
         redisTemplate.delete(RedisKeySet.registerEmailKey(email));
+    }
+
+
+    /**
+     * 手机注册
+     *
+     * @param mobile          手机号
+     * @param verifyNum       验证码
+     * @param password        密码
+     * @param confirmPassword 确认密码
+     */
+    @Override
+    public void registerByMobile(String mobile, String verifyNum, String password, String confirmPassword) {
+        //验证密码是否一致
+        if (password == null || !password.equals(confirmPassword)) {
+            throw LogicException.le(I18nTools.getMessage("01011.password.not.equals"));
+        }
+        //从缓存中获取验证码
+        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.registerMessageKey(mobile));
+        //验证码过期
+        if (redisVerifyNum == null) {
+            throw LogicException.le(I18nTools.getMessage("01012.email.redis.expired"));
+        }
+        //验证码错误
+        if (!redisVerifyNum.trim().equals(verifyNum.trim())) {
+            throw LogicException.le(I18nTools.getMessage("01013.email.redis.verify.num.error"));
+        }
+        User user = userDao.selectByMobile(mobile);
+        if (user.getStatus() == UserStatusEnum.NORMAL.getCode()) {
+            throw LogicException.le(ErrorMessage.LogicErrorMessage.MUILTY_REGISTER_SUCCESS);
+        }
+        //插入注册信息
+        userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
+        //从缓存中移除
+        redisTemplate.delete(RedisKeySet.registerMessageKey(mobile));
+
     }
 
 
@@ -152,8 +222,33 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User loginByEmail(String email, String password, HttpServletResponse response) {
-        User user = userDao.selectByEmail(email);
+    public User emailLogin(String email, String password, HttpServletResponse response) {
+        return loginLogic(userDao.selectByEmail(email), password, response);
+
+    }
+
+    /**
+     * 手机号登录
+     *
+     * @param mobile   手机号
+     * @param password 密码
+     * @param response 响应
+     * @return
+     */
+    @Override
+    public User mobileLogin(String mobile, String password, HttpServletResponse response) {
+        return loginLogic(userDao.selectByMobile(mobile), password, response);
+    }
+
+    /**
+     * 登录逻辑
+     *
+     * @param user     用户信息
+     * @param password 密码
+     * @param response 响应
+     * @return
+     */
+    private User loginLogic(User user, String password, HttpServletResponse response) {
         if (user == null || user.getStatus() == UserStatusEnum.PRE_REGISTER.getCode()) {
             //用户不存在
             throw LogicException.le(ErrorMessage.LogicErrorMessage.USER_NOT_EXIST);
@@ -253,5 +348,4 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
         return user;
     }
-
 }

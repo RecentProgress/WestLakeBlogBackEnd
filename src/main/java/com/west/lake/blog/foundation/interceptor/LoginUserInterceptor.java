@@ -1,13 +1,11 @@
 package com.west.lake.blog.foundation.interceptor;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.User;
-import com.west.lake.blog.service.UserService;
 import com.west.lake.blog.tools.RequestTools;
 import com.west.lake.blog.tools.ThreadLocalTools;
 import org.apache.commons.lang3.ObjectUtils;

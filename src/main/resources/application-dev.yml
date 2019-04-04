@@ -53,7 +53,7 @@ spring:
     host: smtp.qq.com
     port: 587
     username: 1185172056@qq.com
-    password: rjrbbvyogltahbja
+    password:
     properties:
       smtp:
         auth: true
@@ -77,6 +77,8 @@ west:
           originMaxAge: 86400
           sessionExpiredSecond: 7200
 
+
+
 debug: false
 # 线程池配置
 thread:
@@ -84,3 +86,13 @@ thread:
     corePoolSize: 5
     maxPoolSize: 10
     queueCapacity: 200
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+tencent:
+  message:
+    appId:
+    appKey:
+    smsSign:

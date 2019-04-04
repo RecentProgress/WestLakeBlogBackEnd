@@ -84,3 +84,9 @@ thread:
     corePoolSize: 5
     maxPoolSize: 10
     queueCapacity: 200
+
+tencent:
+  message:
+    appId:
+    appKey:
+    smsSign:

@@ -1,7 +1,7 @@
 package com.west.lake.blog.foundation.exception;
 
 /**
- * 统一提示系统异常
+ * 统一提示系统繁忙
  *
  * @author futao
  * Created on 2019-01-25.

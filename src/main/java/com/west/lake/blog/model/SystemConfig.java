@@ -31,7 +31,16 @@ public class SystemConfig {
     /**
      * 邮件主题前缀
      */
-    public static final String EMAIL_SUBJECT_PREFIX = "WestLakeBlog | ";
+    public static final String EMAIL_SUBJECT_PREFIX = SystemConfig.SITE_NAME + " | ";
+
+    /**
+     * 注册短信与邮件验证码有效期分钟数
+     */
+    public static final int REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES = 5;
+    /**
+     * 站点名称
+     */
+    public static final String SITE_NAME = "WestLakeBlog";
 
     /**
      * 图灵机器人
@@ -58,6 +67,50 @@ public class SystemConfig {
      */
     private int sessionExpiredSecond;
 
+
+    /**
+     * 腾讯短信配置
+     */
+    @Component
+    @ConfigurationProperties(prefix = "tencent.message")
+    public static class TencentMessage {
+        /**
+         * 短信应用SDK AppID
+         */
+        private int appId;
+        /**
+         * 短信应用SDK AppKey
+         */
+        private String appKey;
+        /**
+         * 签名 签名参数使用的是`签名内容`，而不是`签名ID`。这里的签名"腾讯云"只是一个示例，真实的签名需要在短信控制台申请。
+         */
+        private String smsSign;
+
+        public int getAppId() {
+            return appId;
+        }
+
+        public void setAppId(int appId) {
+            this.appId = appId;
+        }
+
+        public String getAppKey() {
+            return appKey;
+        }
+
+        public void setAppKey(String appKey) {
+            this.appKey = appKey;
+        }
+
+        public String getSmsSign() {
+            return smsSign;
+        }
+
+        public void setSmsSign(String smsSign) {
+            this.smsSign = smsSign;
+        }
+    }
 
     public static class RequestConst {
         public static final int CONNECTION_REQUEST_TIMEOUT = 5000;

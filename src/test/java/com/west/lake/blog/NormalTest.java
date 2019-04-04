@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.west.lake.blog.configuration.HttpMessageConverterConfig;
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.SystemConfig;
+import com.west.lake.blog.model.entity.MessageTemplateEnum;
+import com.west.lake.blog.service.impl.MessageTengcentServiceImpl;
 import com.west.lake.blog.tools.DateTools;
 import com.west.lake.blog.tools.http.AbstractBaseRequest;
 import com.west.lake.blog.tools.http.PostRequest;
@@ -18,6 +20,7 @@ import java.sql.Timestamp;
  * Created on 2019-03-25.
  */
 public class NormalTest {
+
 
     @Test
     public void reply() {
