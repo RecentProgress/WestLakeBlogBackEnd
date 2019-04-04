@@ -37,9 +37,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Resource
-    private RedisTemplate<String, User> userRedisTemplate;
-
     @Autowired
     private UserDao userDao;
 
@@ -69,7 +66,7 @@ public class UserServiceImpl implements UserService {
         if (user == null || UserStatusEnum.PRE_REGISTER.getCode() == user.getStatus()) {
             //未注册成功
             //从redis中查询是否已经发送邮件
-            String registerEmailKey = RedisKeySet.registerEmailKey(email);
+            String registerEmailKey = RedisKeySet.User.registerEmailKey(email);
             if (redisTemplate.opsForValue().get(registerEmailKey) == null) {
                 if (user == null) {
                     userDao.insertEmailPreRegister(CommonTools.uuid(), email, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
@@ -99,18 +96,18 @@ public class UserServiceImpl implements UserService {
         User user = userDao.selectByMobile(mobile);
         if (user == null || UserStatusEnum.PRE_REGISTER.getCode() == user.getStatus()) {
             //未注册成功
-            String registerMessageKey = RedisKeySet.registerMessageKey(mobile);
+            String registerMessageKey = RedisKeySet.User.registerMessageKey(mobile);
             if (redisTemplate.opsForValue().get(registerMessageKey) == null) {
                 if (user == null) {
                     //插预注册信息
                     userDao.insertMobilePreRegister(CommonTools.uuid(), mobile, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
-                    //生成验证码
-                    String verifyNum = CommonTools.verifyNum(4);
-                    //发送验证码
-                    messageService.send(mobile, MessageTemplateEnum.REGISTER, verifyNum, String.valueOf(SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES));
-                    //存入缓存并设置过期时间
-                    redisTemplate.opsForValue().set(registerMessageKey, verifyNum, SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES, TimeUnit.MINUTES);
                 }
+                //生成验证码
+                String verifyNum = CommonTools.verifyNum(4);
+                //发送验证码
+                messageService.send(mobile, MessageTemplateEnum.REGISTER, verifyNum, String.valueOf(SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES));
+                //存入缓存并设置过期时间
+                redisTemplate.opsForValue().set(registerMessageKey, verifyNum, SystemConfig.REGISTER_MESSAGE_AND_EMAIL_EXPIRED_MINUTES, TimeUnit.MINUTES);
             } else {
                 throw LogicException.le(I18nTools.getMessage("01010.message.already.sended"));
             }
@@ -133,7 +130,7 @@ public class UserServiceImpl implements UserService {
         if (password == null || !password.equals(confirmPassword)) {
             throw LogicException.le(I18nTools.getMessage("01011.password.not.equals"));
         }
-        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.registerEmailKey(email));
+        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.User.registerEmailKey(email));
         //验证码过期
         if (redisVerifyNum == null) {
             throw LogicException.le(I18nTools.getMessage("01012.email.redis.expired"));
@@ -149,7 +146,7 @@ public class UserServiceImpl implements UserService {
         //插入注册信息
         userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
         //从缓存中移除
-        redisTemplate.delete(RedisKeySet.registerEmailKey(email));
+        redisTemplate.delete(RedisKeySet.User.registerEmailKey(email));
     }
 
 
@@ -168,7 +165,7 @@ public class UserServiceImpl implements UserService {
             throw LogicException.le(I18nTools.getMessage("01011.password.not.equals"));
         }
         //从缓存中获取验证码
-        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.registerMessageKey(mobile));
+        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.User.registerMessageKey(mobile));
         //验证码过期
         if (redisVerifyNum == null) {
             throw LogicException.le(I18nTools.getMessage("01012.email.redis.expired"));
@@ -184,7 +181,7 @@ public class UserServiceImpl implements UserService {
         //插入注册信息
         userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
         //从缓存中移除
-        redisTemplate.delete(RedisKeySet.registerMessageKey(mobile));
+        redisTemplate.delete(RedisKeySet.User.registerMessageKey(mobile));
 
     }
 
@@ -264,9 +261,11 @@ public class UserServiceImpl implements UserService {
         }
         //用户登录信息存入redis
         String sessionValue = CommonTools.uuid();
-        String redisKey = SystemConfig.SESSION_KEY + ":" + sessionValue;
-        userRedisTemplate.opsForSet().add(redisKey, user);
-        userRedisTemplate.expire(redisKey, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
+        String redisKey = RedisKeySet.User.userSessionKey(sessionValue);
+        redisTemplate.opsForValue().set(redisKey, user.getId(), systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
+        redisTemplate.opsForSet().add(RedisKeySet.Set.LOGIN_USER_ID_SET, user.getId());
+        redisTemplate.expire(RedisKeySet.Set.LOGIN_USER_ID_SET, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
+
         Cookie cookie = new Cookie(SystemConfig.SESSION_KEY, sessionValue);
         //https
         cookie.setSecure(false);

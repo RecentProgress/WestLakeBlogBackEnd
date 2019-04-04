@@ -1,11 +1,10 @@
 package com.west.lake.blog.foundation.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.foundation.exception.LogicException;
+import com.west.lake.blog.model.RedisKeySet;
 import com.west.lake.blog.model.SystemConfig;
-import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.tools.RequestTools;
 import com.west.lake.blog.tools.ThreadLocalTools;
 import org.apache.commons.lang3.ObjectUtils;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Set;
 
 /**
  * 对请求标记了LoginUser的方法进行拦截
@@ -33,7 +31,7 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginUserInterceptor.class);
 
     @Resource
-    private RedisTemplate<String, User> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     /**
      * 在请求到达Controller之前进行拦截并处理
@@ -57,12 +55,12 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
                     //前端cookie不存在->未登录
                     throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);
                 } else {
-                    Set<User> members = redisTemplate.opsForSet().members(SystemConfig.SESSION_KEY + ":" + cookieValue);
-                    if (members == null || members.isEmpty()) {
+                    String sessionKey = redisTemplate.opsForValue().get(RedisKeySet.User.userSessionKey(cookieValue));
+                    if (sessionKey == null || sessionKey.isEmpty()) {
                         //后端redis中不存在sessionKey->未登录
                         throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);
                     }
-                    ThreadLocalTools.set(((JSONObject) members.toArray()[0]).toJavaObject(User.class).getId());
+                    ThreadLocalTools.set(sessionKey);
                 }
             }
             //未被标记，直接放行
