@@ -1,8 +1,12 @@
 package com.west.lake.blog.model.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.west.lake.blog.annotation.EnumStatus;
+import com.west.lake.blog.model.entity.enums.ArticleType;
 import lombok.*;
 
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 
 /**
  * 文章
@@ -34,7 +38,7 @@ public class Article extends BaseEntity {
     /**
      * 内容
      */
-    @Size(min = 1, max = 5000)
+    @Size(min = 1, max = 100000)
     private String content;
     /**
      * 访问次数
@@ -47,4 +51,16 @@ public class Article extends BaseEntity {
      */
     private int likeTimes;
 
+
+    /**
+     * 第三方地址
+     */
+    @JSONField(serialize = false)
+    private String thirdLink;
+
+    /**
+     * 文章类型
+     */
+    @EnumStatus(ArticleType.class)
+    private int type;
 }

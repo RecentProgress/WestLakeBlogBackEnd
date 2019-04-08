@@ -3,15 +3,17 @@ package com.west.lake.blog.controller;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.entity.Article;
+import com.west.lake.blog.model.entity.enums.ArticleType;
 import com.west.lake.blog.service.ArticleService;
+import com.west.lake.blog.service.ArticleSyncService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,6 +30,9 @@ public class ArticleController {
     @Resource
     private ArticleService articleService;
 
+    @Resource
+    private ArticleSyncService articleSyncService;
+
     /**
      * 新增文章
      *
@@ -42,7 +47,7 @@ public class ArticleController {
             @RequestParam("content") String content
     ) {
 //TODO("not implement")
-        return articleService.add(title, desc, content);
+        return articleService.add(title, desc, content, ArticleType.ORIGINAL.getType(), null);
     }
 
     /**
@@ -93,5 +98,16 @@ public class ArticleController {
     @GetMapping("{id}")
     public Article byId(@PathVariable("id") String id) {
         return articleService.byId(id);
+    }
+
+
+    @ApiIgnore
+    @PostMapping("sync")
+    @LoginUser
+    public SingleValueResult<String> sync(@RequestParam("thirdPartType") int thirdPartType,
+                                          @RequestParam("syncType") int syncType,
+                                          @RequestParam("url") String url) throws IOException {
+        articleSyncService.sync(thirdPartType, syncType, url);
+        return new SingleValueResult<>("success");
     }
 }

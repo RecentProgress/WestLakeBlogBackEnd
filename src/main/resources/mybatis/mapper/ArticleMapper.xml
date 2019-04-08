@@ -13,8 +13,10 @@
 
     <insert id="add" parameterType="article">
         insert
-        into wlb_article(id, user, title, `desc`, content, visit_times, like_times, create_time, last_modify_time)
-        values (#{id}, #{user.id}, #{title}, #{desc}, #{content}, #{visitTimes}, #{likeTimes}, #{createTime},
+        into wlb_article(id, user, title, `desc`, content, visit_times, like_times, third_link, type, create_time,
+                         last_modify_time)
+        values (#{id}, #{user.id}, #{title}, #{desc}, #{content}, #{visitTimes}, #{likeTimes}, #{thirdLink}, #{type},
+                #{createTime},
                 #{lastModifyTime});
     </insert>
 

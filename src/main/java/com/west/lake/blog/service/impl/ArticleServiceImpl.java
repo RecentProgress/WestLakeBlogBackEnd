@@ -5,16 +5,25 @@ import com.west.lake.blog.dao.ArticleDao;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.Article;
 import com.west.lake.blog.model.entity.User;
+import com.west.lake.blog.model.entity.enums.ArticleType;
+import com.west.lake.blog.model.entity.enums.face.IEnum;
 import com.west.lake.blog.service.ArticleService;
 import com.west.lake.blog.service.UserService;
 import com.west.lake.blog.tools.CommonTools;
 import com.west.lake.blog.tools.ServiceTools;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -24,6 +33,7 @@ import java.util.List;
  * @author futao
  * Created on 2019-03-23.
  */
+@Slf4j
 @Transactional(isolation = Isolation.DEFAULT, timeout = SystemConfig.SERVICE_TRANSACTION_TIMEOUT_SECOND, rollbackFor = Exception.class)
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -39,7 +49,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return 文章
      */
     @Override
-    public Article add(String title, String desc, String content) {
+    public Article add(String title, String desc, String content, int type, String thirdLink) {
         //参数封装成对象
         Article article = new Article();
         article.setUser(new User(userService.currentUserId()));
@@ -47,6 +57,8 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDesc(desc);
         article.setContent(content);
         article.setId(CommonTools.uuid());
+        article.setType(type);
+        article.setThirdLink(thirdLink);
         ServiceTools.setCreateAndLastModiftTimeNow(article);
         //参数合法性校验
         HibernateValidatorConfig.validate(article);
@@ -109,6 +121,5 @@ public class ArticleServiceImpl implements ArticleService {
         //调用dao层
         return articleDao.byId(id);
     }
-
 
 }

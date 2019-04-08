@@ -276,7 +276,6 @@ public class UserServiceImpl implements UserService {
         response.addCookie(cookie);
         updateLoginTimesAndLastLoginTime(user);
         ThreadLocalTools.set(user.getId());
-        //
         return user;
     }
 

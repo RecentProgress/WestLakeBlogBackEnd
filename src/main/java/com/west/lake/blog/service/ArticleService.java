@@ -2,6 +2,7 @@ package com.west.lake.blog.service;
 
 import com.west.lake.blog.model.entity.Article;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface ArticleService {
      *
      * @return 文章
      */
-    Article add(String title, String desc, String content);
+    Article add(String title, String desc, String content, int type, String thirdLink);
 
     /**
      * 删除文章
@@ -50,4 +51,5 @@ public interface ArticleService {
      * @return 文章
      */
     Article byId(String id);
+
 }

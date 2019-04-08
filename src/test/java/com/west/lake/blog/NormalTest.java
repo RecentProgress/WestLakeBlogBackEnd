@@ -10,8 +10,13 @@ import com.west.lake.blog.service.impl.MessageTengcentServiceImpl;
 import com.west.lake.blog.tools.DateTools;
 import com.west.lake.blog.tools.http.AbstractBaseRequest;
 import com.west.lake.blog.tools.http.PostRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Date;
 import java.sql.Timestamp;
 
@@ -19,7 +24,34 @@ import java.sql.Timestamp;
  * @author futao
  * Created on 2019-03-25.
  */
+@Slf4j
 public class NormalTest {
+
+    @Test
+    public void test4() throws IOException {
+        String domain = "https://www.jianshu.com";
+        Document document = Jsoup.connect(domain + "/u/9e2e579df7dd").get();
+//        log.info(String.valueOf(document));
+        System.out.println(document.title());
+        Element element = document.selectFirst("ul.note-list");
+        element.children().forEach(it -> {
+            Element article = it.selectFirst("a.title");
+            //标题
+            String title = article.text();
+            //链接
+            String link = article.attr("href");
+            System.out.println(title);
+            try {
+                Document articleContent = Jsoup.connect(domain + link).get();
+                System.out.println(link);
+                System.out.println(articleContent.selectFirst("div.show-content-free"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("----------------");
+        });
+    }
 
 
     @Test
