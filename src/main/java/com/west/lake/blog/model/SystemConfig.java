@@ -67,6 +67,11 @@ public class SystemConfig {
      */
     private int sessionExpiredSecond;
 
+    /**
+     * mybatis二级缓存在redis中的有效时长
+     */
+    public static final int MYBATIS_CACHE_REDIS_SECOND = 300;
+
 
     /**
      * 腾讯短信配置
@@ -149,4 +154,5 @@ public class SystemConfig {
     public void setSessionExpiredSecond(int sessionExpiredSecond) {
         this.sessionExpiredSecond = sessionExpiredSecond;
     }
+
 }

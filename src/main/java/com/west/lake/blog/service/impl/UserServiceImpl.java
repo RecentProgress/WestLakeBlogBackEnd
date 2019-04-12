@@ -7,6 +7,7 @@ import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.RedisKeySet;
 import com.west.lake.blog.model.SystemConfig;
+import com.west.lake.blog.model.entity.Article;
 import com.west.lake.blog.model.entity.MessageTemplateEnum;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.model.entity.enums.UserSexEnum;

@@ -9,7 +9,8 @@
         SOFT    软引用策略，移除基于垃圾回收器状态和软引用规则的对象
         WEAK    弱引用策略，更积极地移除基于垃圾回收器状态和软引用规则的对象
     -->
-    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+    <!--<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>-->
+    <cache type="com.west.lake.blog.foundation.MybatisCacheRedis"/>
 
     <insert id="add" parameterType="review">
         insert
@@ -25,8 +26,7 @@
 
     <update id="update" parameterType="review">
         update wlb_review
-        set
-        where id = #{id}
+        set where id = #{id}
     </update>
 
     <select id="list" resultType="review">

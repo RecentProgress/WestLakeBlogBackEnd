@@ -76,7 +76,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void delete(String id) {
         //调用dao层
-        articleDao.delete(articleDao.byId(id).getId());
+        articleDao.delete(id);
     }
 
     /**

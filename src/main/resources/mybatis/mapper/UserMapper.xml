@@ -7,8 +7,10 @@
 <mapper namespace="com.west.lake.blog.dao.UserDao">
 
     <!--<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>-->
+    <cache type="com.west.lake.blog.foundation.MybatisCacheRedis"/>
 
-    <select id="selectByEmail" parameterType="string" resultType="user">
+
+    <select id="selectByEmail" parameterType="string" resultType="user" useCache="false">
         select *
         from west_lake_blog.wlb_user
         where email = #{email}
@@ -16,7 +18,7 @@
     </select>
 
 
-    <select id="selectByMobile" parameterType="string" resultType="user">
+    <select id="selectByMobile" parameterType="string" resultType="user" useCache="false">
         select *
         from wlb_user
         where mobile = #{mobile}

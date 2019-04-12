@@ -76,6 +76,7 @@ west:
           enableSwagger: true
           originMaxAge: 86400
           sessionExpiredSecond: 7200
+
 debug: false
 
 # 线程池配置

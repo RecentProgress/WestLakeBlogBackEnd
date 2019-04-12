@@ -1,5 +1,6 @@
 package com.west.lake.blog.configuration;
 
+import com.alibaba.fastjson.parser.ParserConfig;
 import com.west.lake.blog.model.SystemConfig;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -62,11 +63,13 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 这里的FastJsonRedisSerializer引用的自己定义的
      * 不自定义的话redisTemplate会乱码
      */
-    @Bean
+    @Bean("redisTemplate")
     public <T> RedisTemplate<String, T> redisTemplate(RedisConnectionFactory factory) {
+        //redis反序列化 开启fastJson反序列化的autoType
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
-        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
+        FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer<T>();
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
         redisTemplate.setKeySerializer(stringRedisSerializer);

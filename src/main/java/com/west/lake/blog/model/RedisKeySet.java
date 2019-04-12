@@ -9,7 +9,7 @@ package com.west.lake.blog.model;
 public class RedisKeySet {
 
     public static class User {
-        private static final String PREFIX = User.class.getSimpleName();
+        private static final String PREFIX = "user";
 
         /**
          * 注册邮件
@@ -39,6 +39,22 @@ public class RedisKeySet {
          */
         public static String userSessionKey(String sessionKey) {
             return PREFIX + ":sessionKey:" + sessionKey;
+        }
+    }
+
+
+    public static class Mybatis {
+        private static final String PREFIX = "mybatis";
+
+        /**
+         * mybatis的查询二级缓存key
+         */
+        public static String mybatisSecondCacheMapperKey(Object key) {
+            return PREFIX + ":cache:mapper:" + key.toString();
+        }
+
+        public static String mybatisSecondCacheListKey(Object key) {
+            return PREFIX + ":cache:list:" + key.toString();
         }
     }
 
