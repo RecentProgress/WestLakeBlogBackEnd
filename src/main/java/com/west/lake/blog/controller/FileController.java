@@ -1,17 +1,18 @@
 package com.west.lake.blog.controller;
 
+import com.west.lake.blog.foundation.exception.ErrorMessage;
+import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.SingleValueResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * 文件操作
@@ -41,6 +42,45 @@ public class FileController {
         } catch (IOException e) {
             e.printStackTrace();
             return new SingleValueResult<>("上传失败!!!" + e.getMessage());
+        }
+    }
+
+
+    /**
+     * 文件下载
+     */
+    @ApiOperation("文件下载")
+    @GetMapping("download/{fileName}")
+    public void download(@PathVariable String fileName, HttpServletResponse response) {
+//        try (InputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir") + "/src/main/resources/uploadFiles/", fileName));
+//             OutputStream outputStream = response.getOutputStream()) {
+//            response.setContentType("application/x-download");
+//            response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+//            IOUtils.copy(inputStream, outputStream);
+//            outputStream.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw LogicException.le(ErrorMessage.LogicErrorMessage.FILE_DOWN_LOAD_FAIL);
+//        }
+
+        //下载的文件携带这个名称
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        //文件下载类型--二进制文件
+        response.setContentType("application/octet-stream");
+        try {
+            FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + "/src/main/resources/uploadFiles/" + fileName);
+            ;
+            byte[] content = new byte[fis.available()];
+            fis.read(content);
+            fis.close();
+
+            ServletOutputStream sos = response.getOutputStream();
+            sos.write(content);
+
+            sos.flush();
+            sos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

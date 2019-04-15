@@ -32,6 +32,8 @@ public class ErrorMessage {
 
         public static final String SEND_MESSAGE_FAIL = "00033_短信发送失败，请稍后重试";
 
+        public static final String FILE_DOWN_LOAD_FAIL = "00034_文件下载失败";
+
     }
 
 }

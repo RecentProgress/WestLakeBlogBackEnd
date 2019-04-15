@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    # 设置文件上传与下载的文件大小限制
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 100Mb
   messages:
     # 定义国际化文件的文件地址，读取的原则是顺序读取如果存在同名的则读取第一个
     basename: i18n/errorMessage
@@ -91,6 +96,6 @@ management:
         include: "*"
 tencent:
   message:
-    appId:
-    appKey:
-    smsSign:
+    appId:  1
+    appKey: 1
+    smsSign:  1

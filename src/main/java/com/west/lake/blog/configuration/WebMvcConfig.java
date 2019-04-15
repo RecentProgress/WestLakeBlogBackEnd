@@ -103,6 +103,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(httpMessageConverterConfiguration);
+//        converters.add(httpMessageConverterConfiguration);
     }
 }

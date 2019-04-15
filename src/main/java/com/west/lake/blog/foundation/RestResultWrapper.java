@@ -50,6 +50,7 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
         if (MediaType.IMAGE_JPEG.getType().equalsIgnoreCase(selectedContentType.getType())) {
             return body;
         }
-        return new RestResult(true, RestResult.SUCCESS_CODE, body, null);
+//        return new RestResult(true, RestResult.SUCCESS_CODE, body, null);
+        return body;
     }
 }

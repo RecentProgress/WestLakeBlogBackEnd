@@ -88,6 +88,6 @@ thread:
 
 tencent:
   message:
-    appId:
-    appKey:
-    smsSign:
+    appId:  1
+    appKey: 1
+    smsSign:  1
