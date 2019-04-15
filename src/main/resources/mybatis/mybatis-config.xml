@@ -41,7 +41,11 @@
         <typeAlias alias="linkedList" type="java.util.LinkedList"/>
         <typeAlias alias="string" type="java.lang.String"/>
 
-        <package name="com.west.lake.blog.model.entity"/>
+        <typeAlias type="com.west.lake.blog.model.entity.User" alias="user"/>
+        <typeAlias type="com.west.lake.blog.model.entity.Article" alias="article"/>
+        <typeAlias type="com.west.lake.blog.model.entity.Review" alias="review"/>
+        <typeAlias type="com.west.lake.blog.model.entity.Tag" alias="tag"/>
+
     </typeAliases>
 
     <plugins>
