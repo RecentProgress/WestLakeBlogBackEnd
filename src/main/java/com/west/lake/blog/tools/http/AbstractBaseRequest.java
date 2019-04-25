@@ -84,6 +84,13 @@ public abstract class AbstractBaseRequest {
     }
 
     /**
+     * addUserAgent
+     */
+    public void addUserAgent() {
+        this.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36");
+    }
+
+    /**
      * 添加权限信息
      *
      * @param userName 用户名
@@ -317,6 +324,7 @@ public abstract class AbstractBaseRequest {
                     .append("【请求地址】:").append(requestBase.getURI()).append("\n")
                     .append("【请求头】:").append(Arrays.toString(requestBase.getAllHeaders())).append("\n")
                     .append("【请求方式】:").append(requestBase.getMethod()).append("\n")
+                    .append("【请求cookie】").append(this.basicCookieStore)
                     .append("【请求体】:").append(this.entity).append("\n")
                     .append("【请求参数】:").append(this.parameters).append("\n");
         }

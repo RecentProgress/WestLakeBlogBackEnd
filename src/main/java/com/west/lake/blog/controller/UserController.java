@@ -137,14 +137,14 @@ public class UserController {
     @LoginUser
     @GetMapping("list")
     public PageResult<User> list(
-            @RequestParam(value = "startDate", required = false) String startDate,
-            @RequestParam(value = "endDate", required = false) String endDate,
-            @RequestParam(value = "userName", required = false) String userName,
-            @RequestParam(value = "status", required = false) Integer status,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) Integer status,
             @Positive
-            @RequestParam(value = "start", required = false, defaultValue = "1") int start,
+            @RequestParam(required = false, defaultValue = "1") int start,
             @PositiveOrZero
-            @RequestParam(value = "limit", required = false, defaultValue = "5") int limit
+            @RequestParam(required = false, defaultValue = "5") int limit
     ) {
         return userService.list(startDate, endDate, userName, status, start, limit);
     }

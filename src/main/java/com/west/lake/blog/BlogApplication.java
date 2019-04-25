@@ -1,6 +1,5 @@
 package com.west.lake.blog;
 
-import com.alibaba.fastjson.parser.ParserConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

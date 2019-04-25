@@ -1,5 +1,7 @@
 package com.west.lake.blog.foundation.exception;
 
+import com.west.lake.blog.tools.I18nTools;
+
 /**
  * 逻辑异常
  *
@@ -52,6 +54,16 @@ public class LogicException extends ApplicationException {
      */
     public static LogicException le(String errorMsg) {
         return new LogicException(errorMsg);
+    }
+
+    /**
+     * 抛出国际化异常提示
+     *
+     * @param key 国际化配置异常代码
+     * @return
+     */
+    public static LogicException leI18(String key) {
+        return new LogicException(I18nTools.getMessage(key));
     }
 
     /**

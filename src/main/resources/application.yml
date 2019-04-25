@@ -7,4 +7,9 @@ spring:
 logging:
   level:
     #    show sql
-    com.west.lake.blog.dao: debug
+    com:
+      west:
+        lake:
+          blog:
+            foundation: debug
+            dao: debug

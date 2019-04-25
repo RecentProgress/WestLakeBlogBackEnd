@@ -71,7 +71,7 @@ public class MybatisCacheRedis implements Cache {
             redisTemplate.opsForList().rightPush(RedisKeySet.Mybatis.mybatisSecondCacheListKey(id), redisKey);
             redisTemplate.opsForValue().set(redisKey, value, EXPIRE_TIME_IN_MINUTES, TimeUnit.SECONDS);
 
-            logger.info("\n<<< 结果插入redis缓存\n【key】{}\n【值】:{}", redisKey, value);
+            logger.debug("\n<<< 结果插入redis缓存\n【key】{}\n【值】:{}", redisKey, value);
         }
     }
 
@@ -87,7 +87,7 @@ public class MybatisCacheRedis implements Cache {
         ValueOperations opsForValue = redisTemplate.opsForValue();
         String redisKey = RedisKeySet.Mybatis.mybatisSecondCacheMapperKey(id + ":" + key);
         Object result = opsForValue.get(redisKey);
-        logger.info("\n<<< 从redis中查询缓存\n【key】{}\n【结果】:{}", redisKey, result);
+        logger.debug("\n<<< 从redis中查询缓存\n【key】{}\n【结果】:{}", redisKey, result);
         return result;
     }
 
@@ -101,7 +101,7 @@ public class MybatisCacheRedis implements Cache {
     public Object removeObject(Object key) {
         RedisTemplate redisTemplate = getRedisTemplate();
         String redisKey = RedisKeySet.Mybatis.mybatisSecondCacheMapperKey(id + ":" + key);
-        logger.info("\n<<< 从redis中移除缓存\n【key】{}", redisKey);
+        logger.debug("\n<<< 从redis中移除缓存\n【key】{}", redisKey);
         //TODO(...)
         return redisTemplate.delete(redisKey);
     }
@@ -125,7 +125,7 @@ public class MybatisCacheRedis implements Cache {
         range.add(key);
         //删除mapper kv
         Long delete = redisTemplate.delete(range);
-        logger.info("\n<<< 删除redis中【{}】的缓存\n删除条数【{}】", key, delete);
+        logger.debug("\n<<< 删除redis中【{}】的缓存\n删除条数【{}】", key, delete);
     }
 
     @Override
