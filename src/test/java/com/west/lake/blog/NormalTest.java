@@ -38,7 +38,6 @@ public class NormalTest {
         request.addHeader(":method", "GET");
         request.addHeader(":path", "/translate_a/single?client=webapp&sl=auto&tl=en&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=gt&otf=1&ssel=0&tsel=0&kc=5&tk=149201.319068&q=" + word);
         request.addHeader(":scheme","https");
-        request.addCookieString("_ga=GA1.3.2088289985.1553480491; _gid=GA1.3.1043000485.1556168730; _gat=1; 1P_JAR=2019-4-25-5; NID=182=irzRKiUK9evC-i7fTVCfwby0QhpC0t_yCD9zAYUh9AuXd2nTbLkk_RKsX9Jt35_PLb6m0pYNCliZnswobhykthjhoP3PcgURiTWaZl9dqMOGGVo3vNcQq-BolKRyfNZ5sWVuPAJEb14H1sJmZUFInWmshBCsedxfaX-HbeMPgpk");
         request.addUserAgent();
         request.send();
     }

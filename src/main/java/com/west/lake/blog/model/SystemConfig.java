@@ -16,7 +16,7 @@ public class SystemConfig {
     /**
      * 允许的域名
      */
-    public static final String[] ALLOW_ORIGINS = new String[]{"http://localhost:8080", "http://localhost:8081"};
+    public static final String[] ALLOW_ORIGINS = new String[]{"http://localhost:8080", "http://localhost:8081", "http://localhost:4200"};
 
     /**
      * Service层事物超时时间
