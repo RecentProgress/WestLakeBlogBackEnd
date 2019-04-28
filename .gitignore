@@ -70,3 +70,5 @@ out
 dump.rdb
 .log
 /bin/
+
+uploadFiles
