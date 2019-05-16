@@ -69,7 +69,7 @@ spring:
     dispatch-options-request: false
     throw-exception-if-no-handler-found: true
 server:
-  port: 8888
+  port: 443
 
 # 系统配置
 west:
