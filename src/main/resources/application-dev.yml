@@ -65,11 +65,8 @@ spring:
         starttls:
           enable: true
           required: true
-  mvc:
-    dispatch-options-request: false
-    throw-exception-if-no-handler-found: true
 server:
-  port: 8888
+  port: 443
 
 # 系统配置
 west:
@@ -82,7 +79,7 @@ west:
           originMaxAge: 86400
           sessionExpiredSecond: 7200
 
-debug: true
+debug: false
 # 线程池配置
 thread:
   pool:
