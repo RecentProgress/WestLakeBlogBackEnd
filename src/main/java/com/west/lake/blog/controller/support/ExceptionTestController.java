@@ -1,7 +1,7 @@
 package com.west.lake.blog.controller.support;
 
-import com.west.lake.blog.foundation.exception.ApplicationException;
-import com.west.lake.blog.foundation.exception.LogicException;
+import com.lazyer.foundation.foundation.exception.ApplicationException;
+import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.tools.I18nTools;
 import io.swagger.annotations.Api;

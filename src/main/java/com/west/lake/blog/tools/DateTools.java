@@ -1,6 +1,6 @@
 package com.west.lake.blog.tools;
 
-import com.west.lake.blog.foundation.exception.ApplicationException;
+import com.lazyer.foundation.foundation.exception.ApplicationException;
 import com.west.lake.blog.model.entity.BaseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -206,5 +206,6 @@ public class DateTools {
 
         public int getType() {
             return type;
-        }}
+        }
+    }
 }

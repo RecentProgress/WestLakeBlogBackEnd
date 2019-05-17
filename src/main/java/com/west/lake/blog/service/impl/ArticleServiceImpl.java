@@ -1,29 +1,21 @@
 package com.west.lake.blog.service.impl;
 
-import com.west.lake.blog.configuration.HibernateValidatorConfig;
+import com.lazyer.foundation.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.ArticleDao;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.Article;
 import com.west.lake.blog.model.entity.User;
-import com.west.lake.blog.model.entity.enums.ArticleType;
-import com.west.lake.blog.model.entity.enums.face.IEnum;
 import com.west.lake.blog.service.ArticleService;
 import com.west.lake.blog.service.UserService;
 import com.west.lake.blog.tools.CommonTools;
 import com.west.lake.blog.tools.ServiceTools;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.List;
 
 

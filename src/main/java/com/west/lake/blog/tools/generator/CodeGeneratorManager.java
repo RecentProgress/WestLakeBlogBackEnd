@@ -1,6 +1,6 @@
 package com.west.lake.blog.tools.generator;
 
-import com.west.lake.blog.foundation.exception.ApplicationException;
+import com.lazyer.foundation.foundation.exception.ApplicationException;
 import com.west.lake.blog.tools.DateTools;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

@@ -3,6 +3,7 @@ package com.west.lake.blog.dao;
 import com.west.lake.blog.model.entity.Tag;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -20,6 +21,22 @@ public interface TagDao {
      * @return 标签
      */
     void add(Tag tag);
+
+    /**
+     * 添加标签
+     *
+     * @param id             主键
+     * @param tagName        标签名
+     * @param type           类型
+     * @param createTime     创建时间
+     * @param lastModifyTime 最后修改时间
+     */
+    void addByField(
+            @Param("id") String id,
+            @Param("tagName") String tagName,
+            @Param("type") int type,
+            @Param("createTime") Timestamp createTime,
+            @Param("lastModifyTime") Timestamp lastModifyTime);
 
     /**
      * 删除标签

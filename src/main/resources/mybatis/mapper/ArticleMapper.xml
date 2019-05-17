@@ -10,7 +10,7 @@
         WEAK    弱引用策略，更积极地移除基于垃圾回收器状态和软引用规则的对象
     -->
     <!--<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>-->
-    <cache type="com.west.lake.blog.foundation.MybatisCacheRedis"/>
+    <cache type="com.lazyer.mybatis.cache.MybatisCacheRedis"/>
 
     <insert id="add" parameterType="article">
         insert

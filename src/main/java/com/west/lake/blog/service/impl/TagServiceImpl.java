@@ -1,5 +1,6 @@
 package com.west.lake.blog.service.impl;
 
+import com.lazyer.foundation.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.TagDao;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.SystemConfig;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.west.lake.blog.configuration.HibernateValidatorConfig;
 
 import javax.annotation.Resource;
 

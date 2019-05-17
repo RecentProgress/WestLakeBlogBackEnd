@@ -1,21 +1,34 @@
 package com.west.lake.blog.service.impl;
 
+import com.west.lake.blog.dao.TagDao;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.TestService;
+import com.west.lake.blog.tools.CommonTools;
+import com.west.lake.blog.tools.DateTools;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 
 /**
  * @author futao
  * Created on 2019-04-12.
  */
+@Slf4j
 @Service
 public class TestServiceImpl implements TestService {
 
     @Resource
     private RedisTemplate<String, User> redisTemplate;
+
+    @Resource
+    private TagDao tagDao;
+
+    @Resource
+    private Executor executor;
 
     @Override
     public User save(int i) {
@@ -28,4 +41,38 @@ public class TestServiceImpl implements TestService {
         }
         return null;
     }
+
+    @Override
+    public void insertDb() {
+        long l = System.currentTimeMillis();
+//        singleThread();
+        threads();
+        log.info("耗时:" + (System.currentTimeMillis() - l));
+    }
+
+    private void singleThread() {
+        for (int i = 0; i < 10000; i++) {
+            tagDao.addByField(CommonTools.uuid(), 1 + "-" + 1, 1, DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
+        }
+    }
+
+    private void threads() {
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+        for (int i = 0; i < 10; i++) {
+            int finalI = i;
+            executor.execute(() -> {
+                        for (int j = 0; j < 10000; j++) {
+                            tagDao.addByField(CommonTools.uuid(), finalI + "-" + j, 1, DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
+                        }
+                        countDownLatch.countDown();
+                    }
+            );
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

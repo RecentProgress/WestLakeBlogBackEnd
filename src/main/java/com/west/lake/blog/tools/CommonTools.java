@@ -1,7 +1,7 @@
 package com.west.lake.blog.tools;
 
 import com.alibaba.fastjson.JSON;
-import com.west.lake.blog.configuration.HttpMessageConverterConfig;
+import com.lazyer.foundation.foundation.FastJson2HttpMessageConverter;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 
@@ -68,7 +68,7 @@ public class CommonTools {
 
     public static String formatJsonString(String jsonString) {
         try {
-            return StringUtils.isEmpty(jsonString) ? "{}" : JSON.toJSONString(JSON.parseObject(jsonString), HttpMessageConverterConfig.SERIALIZER_FEATURES);
+            return StringUtils.isEmpty(jsonString) ? "{}" : JSON.toJSONString(JSON.parseObject(jsonString), FastJson2HttpMessageConverter.SERIALIZER_FEATURES);
         } catch (Exception e) {
             return jsonString;
         }

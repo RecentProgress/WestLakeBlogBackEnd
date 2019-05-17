@@ -1,6 +1,5 @@
 package com.west.lake.blog.foundation;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -17,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.*;
 import java.util.regex.Matcher;
 
 /**
@@ -44,27 +43,8 @@ public class MybatisInterceptor implements Interceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(MybatisInterceptor.class);
     private static final String UPDATE = "update";
 
-    /**
-     * 线程池
-     */
-    private static final ThreadPoolExecutor THREAD_POOL_EXECUTOR;
-
-    /**
-     * 初始化线程池
-     */
-    static {
-        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
-        threadFactoryBuilder.setNameFormat("wlb-tpe-%s");
-        ThreadFactory threadFactory = threadFactoryBuilder.build();
-        THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(
-                2,
-                8,
-                60,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(100),
-                threadFactory,
-                (r, e) -> LOGGER.error("线程池ThreadPoolExecutor发生异常，超出最大可分配线程"));
-    }
+    @Resource
+    private java.util.concurrent.Executor executor;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -78,7 +58,7 @@ public class MybatisInterceptor implements Interceptor {
         long endTime = System.currentTimeMillis();
         //sql执行时间
         long sqlTime = endTime - startTime;
-        if (true) {
+        if (false) {
             try {
                 Object[] args = invocation.getArgs();
                 MappedStatement ms = (MappedStatement) args[0];
@@ -93,7 +73,7 @@ public class MybatisInterceptor implements Interceptor {
                 //开启新线程记录慢sql
                 if (sqlTime > SLOW_SQL_TIME_MILLS) {
                     SlowSql slowSql = new SlowSql(sqlTime);
-                    THREAD_POOL_EXECUTOR.execute(slowSql);
+                    executor.execute(slowSql);
                 }
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);

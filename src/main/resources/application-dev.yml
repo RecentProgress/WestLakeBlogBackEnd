@@ -79,7 +79,7 @@ west:
           originMaxAge: 86400
           sessionExpiredSecond: 7200
 
-debug: false
+debug: true
 # 线程池配置
 thread:
   pool:
@@ -96,3 +96,11 @@ tencent:
     appId:  1
     appKey: 1
     smsSign:  1
+
+
+
+lazyer:
+  mybatis:
+    mybatisRedisCacheExpireTimeInMinutes: 200
+  foundation:
+    show-banner: false

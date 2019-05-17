@@ -1,8 +1,8 @@
 package com.west.lake.blog.foundation.interceptor;
 
+import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
-import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.RedisKeySet;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.tools.RequestTools;

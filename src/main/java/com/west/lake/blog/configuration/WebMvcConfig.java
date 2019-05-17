@@ -1,7 +1,8 @@
 package com.west.lake.blog.configuration;
 
+import com.lazyer.foundation.foundation.FastJson2HttpMessageConverter;
+import com.lazyer.foundation.interceptors.RequestLogInterceptor;
 import com.west.lake.blog.foundation.interceptor.LoginUserInterceptor;
-import com.west.lake.blog.foundation.interceptor.RequestLogInterceptor;
 import com.west.lake.blog.model.SystemConfig;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Resource
     private LocaleChangeInterceptor localeChangeInterceptor;
     @Resource
-    private HttpMessageConverterConfig httpMessageConverterConfiguration;
+    private FastJson2HttpMessageConverter fastJson2HttpMessageConverterConfiguration;
 
     @Resource
     private LoginUserInterceptor loginUserInterceptor;
@@ -103,6 +104,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(httpMessageConverterConfiguration);
+        converters.add(fastJson2HttpMessageConverterConfiguration);
     }
 }

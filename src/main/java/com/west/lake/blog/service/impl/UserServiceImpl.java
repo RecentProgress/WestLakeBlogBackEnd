@@ -1,13 +1,12 @@
 package com.west.lake.blog.service.impl;
 
-import com.west.lake.blog.configuration.HibernateValidatorConfig;
+import com.lazyer.foundation.configuration.HibernateValidatorConfig;
+import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.dao.UserDao;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
-import com.west.lake.blog.foundation.exception.LogicException;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.RedisKeySet;
 import com.west.lake.blog.model.SystemConfig;
-import com.west.lake.blog.model.entity.Article;
 import com.west.lake.blog.model.entity.MessageTemplateEnum;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.model.entity.enums.UserSexEnum;

@@ -1,5 +1,6 @@
 package com.west.lake.blog.service.impl;
 
+import com.lazyer.foundation.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.ArticleDao;
 import com.west.lake.blog.dao.ReviewDao;
 import com.west.lake.blog.model.SystemConfig;
@@ -17,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.west.lake.blog.configuration.HibernateValidatorConfig;
 
 
 /**

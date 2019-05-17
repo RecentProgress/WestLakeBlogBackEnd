@@ -1,7 +1,7 @@
 package com.west.lake.blog.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.west.lake.blog.foundation.exception.LogicException;
+import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.service.EmailService;
 import com.west.lake.blog.tools.I18nTools;
 import lombok.extern.slf4j.Slf4j;

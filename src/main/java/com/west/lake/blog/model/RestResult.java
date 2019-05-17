@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -18,7 +19,10 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-public class RestResult {
+public class RestResult<T> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 请求成功code
      */

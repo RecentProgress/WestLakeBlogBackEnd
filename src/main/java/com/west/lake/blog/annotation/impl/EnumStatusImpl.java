@@ -1,7 +1,7 @@
 package com.west.lake.blog.annotation.impl;
 
+import com.lazyer.foundation.foundation.exception.ApplicationException;
 import com.west.lake.blog.annotation.EnumStatus;
-import com.west.lake.blog.foundation.exception.ApplicationException;
 import com.west.lake.blog.model.entity.enums.face.IEnum;
 import com.west.lake.blog.tools.I18nTools;
 

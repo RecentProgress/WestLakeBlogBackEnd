@@ -2,15 +2,13 @@ package com.west.lake.blog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.west.lake.blog.configuration.HttpMessageConverterConfig;
-import com.west.lake.blog.model.SingleValueResult;
+import com.lazyer.foundation.foundation.FastJson2HttpMessageConverter;
+import com.lazyer.httpclient.AbstractBaseRequest;
+import com.lazyer.httpclient.GetRequest;
+import com.lazyer.httpclient.PostRequest;
+import com.lazyer.httpclient.enums.UserAgentEnum;
 import com.west.lake.blog.model.SystemConfig;
-import com.west.lake.blog.model.entity.MessageTemplateEnum;
-import com.west.lake.blog.service.impl.MessageTengcentServiceImpl;
 import com.west.lake.blog.tools.DateTools;
-import com.west.lake.blog.tools.http.AbstractBaseRequest;
-import com.west.lake.blog.tools.http.GetRequest;
-import com.west.lake.blog.tools.http.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,8 +35,8 @@ public class NormalTest {
         request.addHeader(":authority", "translate.google.cn");
         request.addHeader(":method", "GET");
         request.addHeader(":path", "/translate_a/single?client=webapp&sl=auto&tl=en&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=gt&otf=1&ssel=0&tsel=0&kc=5&tk=149201.319068&q=" + word);
-        request.addHeader(":scheme","https");
-        request.addUserAgent();
+        request.addHeader(":scheme", "https");
+        request.addUserAgent(UserAgentEnum.CHROME);
         request.send();
     }
 
@@ -75,7 +73,7 @@ public class NormalTest {
         JSONObject jsonObject = new JSONObject();
         jsonObject.fluentPut("reqType", 0).fluentPut("perception", new JSONObject().fluentPut("inputText", new JSONObject().fluentPut("ques", ques))).fluentPut("userInfo", new JSONObject().fluentPut("apiKey", "c9610a0052f04ff685b56887720c658a").fluentPut("userId", "FutaoSmile"));
         AbstractBaseRequest request = new PostRequest(SystemConfig.TULING);
-        System.out.println(JSON.toJSONString(jsonObject, HttpMessageConverterConfig.SERIALIZER_FEATURES));
+        System.out.println(JSON.toJSONString(jsonObject, FastJson2HttpMessageConverter.SERIALIZER_FEATURES));
         ((PostRequest) request).addEntity(jsonObject);
         request.send();
 

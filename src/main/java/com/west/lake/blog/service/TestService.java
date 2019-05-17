@@ -8,4 +8,6 @@ import com.west.lake.blog.model.entity.User;
  */
 public interface TestService {
     User save(int i);
+
+    void insertDb();
 }
