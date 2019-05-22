@@ -1,5 +1,6 @@
 package com.west.lake.blog.controller;
 
+import com.west.lake.blog.tools.RequestTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -21,7 +22,7 @@ import java.util.TreeSet;
 public class WxServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("nononono");
+        System.out.println(RequestTools.queryParameters(request));
     }
 
     @Override
