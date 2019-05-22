@@ -7,9 +7,11 @@ import com.west.lake.blog.model.entity.enums.UserSexEnum;
 import com.west.lake.blog.model.entity.enums.UserStatusEnum;
 import lombok.*;
 
-import javax.validation.constraints.*;
-import java.util.Date;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 用户
