@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.TreeSet;
 
 
@@ -49,11 +50,9 @@ public class WxController {
         for (String s : treeSet) {
             stringBuilder.append(s);
         }
-        String result = Hex.encodeHex(stringBuilder.toString().getBytes(Charset.forName("UTF-8"))).toString();
+        String result = Arrays.toString(Hex.encodeHex(stringBuilder.toString().getBytes(Charset.forName("UTF-8"))));
         log.info("result:[{}]", result);
-        if (result.equals(signature)) {
-
-        }
+        log.error("equals???[{}]", result.equals(signature));
         return echostr;
     }
 }
