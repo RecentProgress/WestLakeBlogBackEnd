@@ -101,10 +101,10 @@ public final class RequestTools {
      * @param request 请求
      * @return
      */
-    public static String queryParameters(HttpServletRequest request) {
+    public static JSONObject queryParameters(HttpServletRequest request) {
         Map<String, String[]> map = request.getParameterMap();
         JSONObject jsonObject = new JSONObject();
         map.forEach((k, v) -> jsonObject.put(k, Arrays.toString(v)));
-        return jsonObject.toJSONString();
+        return jsonObject;
     }
 }

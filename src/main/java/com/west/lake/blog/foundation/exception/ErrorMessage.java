@@ -34,6 +34,10 @@ public class ErrorMessage {
 
         public static final String FILE_DOWN_LOAD_FAIL = "00034_文件下载失败";
 
+        public static class WX {
+            public static final String BIND_FAIL = "验签失败";
+        }
+
     }
 
 }
