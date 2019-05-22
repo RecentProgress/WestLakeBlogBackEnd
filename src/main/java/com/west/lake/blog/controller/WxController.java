@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.TreeSet;
 
@@ -22,19 +23,21 @@ import java.util.TreeSet;
 public class WxController {
 
     /**
-     * @param echostr   随机字符串
-     * @param signature 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
-     * @param timestamp 时间戳
-     * @param nonce     随机数
      * @return
      */
     @RestSkip
     @GetMapping("/token")
-    public int token(
-            @RequestParam int echostr,
-            @RequestParam String signature,
-            @RequestParam String timestamp,
-            @RequestParam String nonce) {
+    public String token(HttpServletRequest request) {
+        String timestamp = request.getParameter("timestamp");
+        String nonce = request.getParameter("nonce");
+        String signature = request.getParameter("signature");
+        String echostr = request.getParameter("echostr");
+        /**
+         *    * @param echostr   随机字符串
+         *      * @param signature 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
+         *      * @param timestamp 时间戳
+         *      * @param nonce     随机数
+         */
 
         /*
         1）将token、timestamp、nonce三个参数进行字典序排序
