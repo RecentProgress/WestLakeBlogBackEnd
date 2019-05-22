@@ -92,7 +92,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("Content-Type")
-                .allowedOrigins(SystemConfig.ALLOW_ORIGINS)
+                .allowedOrigins("*")
+//                .allowedOrigins(SystemConfig.ALLOW_ORIGINS)
                 .maxAge(systemConfig.getOriginMaxAge());
     }
 
