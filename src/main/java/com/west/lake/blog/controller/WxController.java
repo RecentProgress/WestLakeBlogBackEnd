@@ -3,6 +3,7 @@ package com.west.lake.blog.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,8 @@ import java.util.TreeSet;
  * Created on 2019-05-22.
  */
 @Slf4j
-@RestController("/wx")
+@RestController
+@RequestMapping("/wx")
 public class WxController {
 
     /**
