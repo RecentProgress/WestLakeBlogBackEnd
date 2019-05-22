@@ -1,5 +1,6 @@
 package com.west.lake.blog.foundation;
 
+import com.west.lake.blog.annotation.RestSkip;
 import com.west.lake.blog.model.RestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.lang.reflect.Method;
 
 /**
  * 返回Rest风格的数据
@@ -31,6 +34,10 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        Method returnTypeMethod = returnType.getMethod();
+        if (returnTypeMethod != null) {
+            return !returnTypeMethod.isAnnotationPresent(RestSkip.class);
+        }
         return true;
     }
 

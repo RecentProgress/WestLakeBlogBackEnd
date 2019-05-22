@@ -1,7 +1,9 @@
 package com.west.lake.blog.controller;
 
+import com.west.lake.blog.annotation.RestSkip;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,7 @@ public class WxController {
      * @param nonce     随机数
      * @return
      */
+    @RestSkip
     @GetMapping("/token")
     public String token(
             @RequestParam String echostr,
@@ -50,7 +53,7 @@ public class WxController {
         for (String s : treeSet) {
             stringBuilder.append(s);
         }
-        String result = Arrays.toString(Hex.encodeHex(stringBuilder.toString().getBytes(Charset.forName("UTF-8"))));
+        String result = (DigestUtils.sha1Hex(stringBuilder.toString().getBytes(Charset.forName("UTF-8"))));
         log.info("result:[{}]", result);
         log.error("equals???[{}]", result.equals(signature));
         return echostr;
