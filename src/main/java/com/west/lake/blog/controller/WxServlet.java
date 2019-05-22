@@ -18,7 +18,7 @@ import java.util.TreeSet;
  * Created on 2019-05-22.
  */
 @Slf4j
-@WebServlet(name = "WxServlet", urlPatterns = "/wx/token")
+//@WebServlet(name = "WxServlet", urlPatterns = "/wx/token")
 public class WxServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

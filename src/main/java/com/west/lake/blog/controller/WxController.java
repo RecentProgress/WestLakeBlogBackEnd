@@ -27,7 +27,7 @@ public class WxController {
      */
     @RestSkip
     @GetMapping("/token")
-    public String token(HttpServletRequest request) {
+    public long token(HttpServletRequest request) {
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
         String signature = request.getParameter("signature");
@@ -57,6 +57,6 @@ public class WxController {
         String result = (DigestUtils.sha1Hex(stringBuilder.toString().getBytes(Charset.forName("UTF-8"))));
         log.info("result:[{}]", result);
         log.error("equals:[{}]", result.equals(signature));
-        return echostr;
+        return Long.valueOf(echostr);
     }
 }
