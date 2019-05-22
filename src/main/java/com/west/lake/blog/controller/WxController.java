@@ -2,7 +2,6 @@ package com.west.lake.blog.controller;
 
 import com.west.lake.blog.annotation.RestSkip;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.TreeSet;
 
 
@@ -32,8 +30,8 @@ public class WxController {
      */
     @RestSkip
     @GetMapping("/token")
-    public String token(
-            @RequestParam String echostr,
+    public int token(
+            @RequestParam int echostr,
             @RequestParam String signature,
             @RequestParam String timestamp,
             @RequestParam String nonce) {
@@ -55,7 +53,7 @@ public class WxController {
         }
         String result = (DigestUtils.sha1Hex(stringBuilder.toString().getBytes(Charset.forName("UTF-8"))));
         log.info("result:[{}]", result);
-        log.error("equals???[{}]", result.equals(signature));
+        log.error("equals:[{}]", result.equals(signature));
         return echostr;
     }
 }
