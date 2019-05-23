@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.TreeSet;
@@ -45,7 +46,7 @@ public class WxController {
                 reader.read(request.getInputStream()).asXML()
         );
         log.info("正常解密消息:[{}]", decryptMsg);
-        Document read = reader.read(decryptMsg);
+        Document read = reader.read(new ByteArrayInputStream(decryptMsg.getBytes(StandardCharsets.UTF_8)));
         Element rootElement = read.getRootElement();
         String toUserName = rootElement.element("ToUserName").getStringValue();
         String fromUserName = rootElement.element("FromUserName").getStringValue();
