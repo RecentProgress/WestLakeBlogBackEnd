@@ -1,10 +1,8 @@
 package com.west.lake.blog.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.annotation.RestSkip;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
-import com.west.lake.blog.tools.RequestTools;
 import com.west.lake.blog.tools.wx.WXBizMsgCrypt;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,17 +11,15 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.SAXWriter;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.TreeSet;
 
 
@@ -35,77 +31,39 @@ import java.util.TreeSet;
 @RestController
 @RequestMapping("/wx")
 public class WxController {
-
-    public static String readAsChars(HttpServletRequest request) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder("");
-        try {
-            br = request.getReader();
-            String str;
-            while ((str = br.readLine()) != null) {
-                sb.append(str);
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (null != br) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return sb.toString();
-    }
-
     @RestSkip
     @PostMapping
     @SneakyThrows
     public void handler(HttpServletRequest request, HttpServletResponse response) {
-
-        System.out.println("---" + readAsChars(request));
         SAXReader reader = new SAXReader();
         WXBizMsgCrypt wxBizMsgCrypt = new WXBizMsgCrypt("wxToken", "eKO1LbabymYBO7Ai0YFi4fRqnfFNQnWLazUo7PS3n4Z", "wxd0b4ee6746f31122");
-        ServletInputStream servletInputStream = request.getInputStream();
-        Document document = reader.read(servletInputStream);
-        wxBizMsgCrypt.decryptMsg(
+        String nonce = request.getParameter("nonce");
+        String decryptMsg = wxBizMsgCrypt.decryptMsg(
                 request.getParameter("msg_signature"),
                 request.getParameter("timestamp"),
-                request.getParameter("nonce"),
-                "<xml>\n" +
-                        "  <ToUserName><![CDATA[13213123]]></ToUserName>\n" +
-                        "  <FromUserName><![CDATA[fromUser]]></FromUserName>\n" +
-                        "  <CreateTime>1348831860</CreateTime>\n" +
-                        "  <MsgType><![CDATA[text]]></MsgType>\n" +
-                        "  <Content><![CDATA[this is a test]]></Content>\n" +
-                        "  <MsgId>1234567890123456</MsgId>\n" +
-                        "</xml>"
+                nonce,
+                reader.read(request.getInputStream()).asXML()
         );
+        log.info("正常解密消息:[{}]", decryptMsg);
+        Document read = reader.read(decryptMsg);
+        Element rootElement = read.getRootElement();
+        String toUserName = rootElement.element("ToUserName").getStringValue();
+        String fromUserName = rootElement.element("FromUserName").getStringValue();
+        String createTime = rootElement.element("CreateTime").getStringValue();
+        String msgType = rootElement.element("MsgType").getStringValue();
+        String content = rootElement.element("Content").getStringValue();
+        String msgId = rootElement.element("MsgId").getStringValue();
 
 
-//        Document read = reader.read(inputStream);
-//        Element rootElement = read.getRootElement();
-//        String toUserName = rootElement.element("ToUserName").getStringValue();
-//        String fromUserName = rootElement.element("FromUserName").getStringValue();
-//        String createTime = rootElement.element("CreateTime").getStringValue();
-//        String msgType = rootElement.element("MsgType").getStringValue();
-//        String content = rootElement.element("Content").getStringValue();
-//        String msgId = rootElement.element("MsgId").getStringValue();
-//
-//        Document document = DocumentHelper.createDocument();
-//        Element xml = document.addElement("xml");
-//        xml.addElement("ToUserName").setText(fromUserName);
-//        xml.addElement("FromUserName").setText(toUserName);
-//        xml.addElement("CreateTime").setText(String.valueOf(System.currentTimeMillis()));
-//        xml.addElement("MsgType").setText("text");
-//        xml.addElement("Content").setText("[noReply:]" + content);
-//        response.getOutputStream().write(xml.asXML().getBytes(StandardCharsets.UTF_8));
-
-        System.out.println(00);
-
+        Document document = DocumentHelper.createDocument();
+        Element xml = document.addElement("xml");
+        xml.addElement("ToUserName").setText(fromUserName);
+        xml.addElement("FromUserName").setText(toUserName);
+        xml.addElement("CreateTime").setText(String.valueOf(System.currentTimeMillis()));
+        xml.addElement("MsgType").setText("text");
+        xml.addElement("Content").setText("[noReply:]" + content);
+        String result = wxBizMsgCrypt.encryptMsg(xml.asXML(), String.valueOf(System.currentTimeMillis()), nonce);
+        response.getOutputStream().write(result.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
