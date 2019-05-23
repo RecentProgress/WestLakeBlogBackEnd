@@ -36,6 +36,7 @@ public class ErrorMessage {
 
         public static class WX {
             public static final String BIND_FAIL = "验签失败";
+            public static final String INIT_FAIL = "初始化微信配置失败";
         }
 
     }

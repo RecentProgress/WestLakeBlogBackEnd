@@ -58,6 +58,14 @@ public class RedisKeySet {
         }
     }
 
+    public static class Wx {
+        private static final String PREFIX = "weChat";
+
+        public static String wxMessageUserList(String openId) {
+            return PREFIX + ":message:user:" + openId;
+        }
+    }
+
 
     /**
      * Set key

@@ -3,6 +3,8 @@ package com.west.lake.blog.controller;
 import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.annotation.RestSkip;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
+import com.west.lake.blog.model.RedisKeySet;
+import com.west.lake.blog.tools.wx.AesException;
 import com.west.lake.blog.tools.wx.WXBizMsgCrypt;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +36,31 @@ import java.util.TreeSet;
 @RestController
 @RequestMapping("/wx")
 public class WxController {
+
+    private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    public WxController(RedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    private static WXBizMsgCrypt wxBizMsgCrypt;
+
+    static {
+        try {
+            wxBizMsgCrypt = new WXBizMsgCrypt("wxToken", "eKO1LbabymYBO7Ai0YFi4fRqnfFNQnWLazUo7PS3n4Z", "wxd0b4ee6746f31122");
+        } catch (AesException e) {
+            log.error("初始化微信配置失败:[{}]", e.getMessage(), e);
+            throw LogicException.le(ErrorMessage.LogicErrorMessage.WX.INIT_FAIL);
+        }
+    }
+
+
     @RestSkip
     @PostMapping
     @SneakyThrows
     public void handler(HttpServletRequest request, HttpServletResponse response) {
         SAXReader reader = new SAXReader();
-        WXBizMsgCrypt wxBizMsgCrypt = new WXBizMsgCrypt("wxToken", "eKO1LbabymYBO7Ai0YFi4fRqnfFNQnWLazUo7PS3n4Z", "wxd0b4ee6746f31122");
         String nonce = request.getParameter("nonce");
         String decryptMsg = wxBizMsgCrypt.decryptMsg(
                 request.getParameter("msg_signature"),
@@ -55,6 +78,7 @@ public class WxController {
         String content = rootElement.element("Content").getStringValue();
         String msgId = rootElement.element("MsgId").getStringValue();
 
+        redisTemplate.opsForList().rightPush(RedisKeySet.Wx.wxMessageUserList(fromUserName), content);
 
         Document document = DocumentHelper.createDocument();
         Element xml = document.addElement("xml");
