@@ -72,3 +72,4 @@ dump.rdb
 /bin/
 
 uploadFiles
+LOG_PATH_IS_UNDEFINED
