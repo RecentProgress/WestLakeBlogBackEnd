@@ -2,6 +2,10 @@ package com.west.lake.blog;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.OSSObject;
+import com.aliyun.oss.model.PutObjectResult;
 import com.lazyer.foundation.foundation.FastJson2HttpMessageConverter;
 import com.lazyer.httpclient.AbstractBaseRequest;
 import com.lazyer.httpclient.GetRequest;
@@ -9,22 +13,223 @@ import com.lazyer.httpclient.PostRequest;
 import com.lazyer.httpclient.enums.UserAgentEnum;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.tools.DateTools;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.MultiPartEmail;
+import org.apache.commons.mail.SimpleEmail;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.ClassUtils;
 
-import java.io.IOException;
+import java.io.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author futao
  * Created on 2019-03-25.
  */
+@Getter
+@Setter
+class A {
+    String a;
+    int b;
+    String c;
+}
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+class B {
+    String a;
+    int b;
+}
+
 @Slf4j
 public class NormalTest {
+    @Test
+    public void test20(){
+        System.out.println("9a7bdf43-e621-4852-a6ee-406f12d92e6".length());
+        System.out.println("054a3a7a-8fa9-4e5b-aa8b-fd8e16e3fb58".length());
+    }
+    @Test
+    public void test19() {
+        String rule = "PACK AND AAA";
+        Pattern pattern = Pattern.compile("[^ ]*\\{.*?}");
+        Matcher matcher = pattern.matcher(rule);
+        List<String> list = new ArrayList<>();
+        while (matcher.find()) {
+            list.add(matcher.group(0).replace("(", StringUtils.EMPTY));
+        }
+        System.out.println(list.isEmpty());
+        System.out.println(list);
+    }
+
+
+    @Test
+    public void test18() {
+        List<String> strings = JSON.parseArray("[\"解析configuration rule失败，缺少必要字段[action]\",\"解析Configuration rule失败，不支持的RuleType[t]\",\"解析configuration rule失败，feature字段中的值[RCO000001APROFILE]为无效值\",\"解析configuration rule失败，feature字段中的值[WHEEL]为无效值\"]", String.class);
+        System.out.println(strings);
+
+
+    }
+
+    @Test
+    public void test17() {
+        String p = "[^ ]*\\{.*?}";
+        String str = "NOT (AAACCCA{A1,A2} AND (B{B1,B2} OR NOT C{C1,C2})) AND D{D1} OR E{E1}";
+        Pattern pattern = Pattern.compile(p);
+        Matcher matcher = pattern.matcher(str);
+        while (matcher.find()) {
+            System.out.println("----" + matcher.group(0).replace("(", StringUtils.EMPTY));
+        }
+    }
+
+    @Test
+    public void test16() {
+        List<A> as = new ArrayList<>();
+        A e = new A();
+        e.setA("1");
+        as.add(e);
+        System.out.println(as);
+
+        as.set(0, null);
+        System.out.println(as);
+
+    }
+
+    @Test
+
+    public void test15() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String documentDate = simpleDateFormat.format(calendar.getTime());
+        calendar.add(Calendar.DATE, -7);
+        String startDate = simpleDateFormat.format(calendar.getTime());
+
+        System.out.println("--" + documentDate);
+        System.out.println("==" + startDate);
+    }
+
+    @Test
+    public void test14() {
+        Long a = 23L;
+        DecimalFormat df = new DecimalFormat("#0.00");
+
+        System.out.println(df.format(a.doubleValue() / 100.0));
+        System.out.println(a / 100.00f);
+    }
+
+    private static String replace(String content) {
+        return content.replaceAll("(?<=\\d{4})\\d(?=\\d{4})", "*");
+    }
+
+    @Test
+    public void test13() {
+        System.out.println(NormalTest.replace("12345"));
+        System.out.println(NormalTest.replace("123456789"));
+        System.out.println(NormalTest.replace("123"));
+    }
+
+    @Test
+    public void test12() {
+        System.out.println(0.1 + 0.2);
+    }
+
+    @Test
+    public void test11() {
+        A a = new A();
+        B b = new B("1111", 2222);
+        BeanUtils.copyProperties(a, b);
+        System.out.println(b.a);
+    }
+
+
+    @Test
+    public void test10() {
+        Email email = new SimpleEmail();
+        email.setHostName("1111");
+        email.setSmtpPort(100);
+        Email multiPartEmail = new MultiPartEmail();
+        multiPartEmail.setHostName("11");
+        System.out.println(multiPartEmail.getHostName());
+        BeanUtils.copyProperties(email, multiPartEmail, "sendPartial");
+        System.out.println(multiPartEmail.getHostName());
+    }
+
+
+    @Test
+    public void test9() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String documentDate = simpleDateFormat.format(calendar.getTime());
+        System.out.println(documentDate);
+    }
+
+    @Test
+    public void test8() throws IOException {
+        File file = new File("SAP/12.xls");
+        if (file.exists()) {
+            file.delete();
+        }
+        file.createNewFile();
+    }
+
+    @Test
+    public void test7() {
+        OSSClient ossClient = new OSSClient("oss-cn-shanghai.aliyuncs.com", "Qx1pJWvQTpF1Aldb", "F77bMtYop1rgDI2KqdLxL4FIxdEGUP");
+        try {
+//            PutObjectResult result = ossClient.putObject("pic-wise-com", "1testExcel", new FileInputStream(new File("/Users/futao/Desktop/testExcel.xls")));
+//            System.out.println(result.getETag());
+            String url = "http://pic-wise-com" + "." + "oss-cn-shanghai.aliyuncs.com" + "/" + "1testExcel";
+            System.out.println();
+            OSSObject object = ossClient.getObject("pic-wise-com", "1testExcel");
+
+            InputStream input = object.getObjectContent();
+
+            int index;
+            byte[] bytes = new byte[1024];
+            File file = new File("/Users/futao/Desktop/555555555.xls");
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+            FileOutputStream downloadFile = new FileOutputStream(file);
+            while ((index = input.read(bytes)) != -1) {
+                downloadFile.write(bytes, 0, index);
+                downloadFile.flush();
+            }
+            downloadFile.close();
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void test6() {
+        String s = ClassUtils.convertClassNameToResourcePath("123.!@#****.10-sdaskdna");
+        System.out.println(s);
+    }
 
     @Test
     public void test5() {

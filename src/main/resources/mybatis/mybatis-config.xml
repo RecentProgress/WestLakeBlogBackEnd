@@ -49,6 +49,6 @@
     </typeAliases>
 
     <plugins>
-        <plugin interceptor="com.west.lake.blog.foundation.MybatisInterceptor"/>
+        <plugin interceptor="com.lazyer.mybatis.cache.MybatisInterceptor"/>
     </plugins>
 </configuration>

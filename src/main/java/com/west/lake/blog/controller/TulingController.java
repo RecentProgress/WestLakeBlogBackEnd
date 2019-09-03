@@ -24,7 +24,7 @@ public class TulingController {
     @PostMapping("/")
     public SingleValueResult<String> reply(String ques) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.fluentPut("reqType", 0).fluentPut("perception", new JSONObject().fluentPut("inputText", new JSONObject().fluentPut("ques", ques))).fluentPut("userInfo", new JSONObject().fluentPut("apiKey", "c9610a0052f04ff685b56887720c658a").fluentPut("userId", "WLBlog"));
+        jsonObject.fluentPut("reqType", 0).fluentPut("perception", new JSONObject().fluentPut("inputText", new JSONObject().fluentPut("text", ques))).fluentPut("userInfo", new JSONObject().fluentPut("apiKey", "c9610a0052f04ff685b56887720c658a").fluentPut("userId", "WLBlog"));
         AbstractBaseRequest request = new PostRequest(SystemConfig.TULING);
         System.out.println(JSON.toJSONString(jsonObject, FastJson2HttpMessageConverter.SERIALIZER_FEATURES));
         ((PostRequest) request).addEntity(jsonObject);

@@ -50,22 +50,4 @@ public class CommonConfig {
         lci.setParamName("lang");
         return lci;
     }
-
-
-    @Primary
-    @Bean(destroyMethod = "shutdown")
-    public ThreadPoolExecutor a() {
-        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
-        threadFactoryBuilder.setNameFormat("wlb-tpe-%s");
-        ThreadFactory threadFactory = threadFactoryBuilder.build();
-        return new ThreadPoolExecutor(
-                4,
-                10,
-                60,
-                TimeUnit.SECONDS,
-                //可被阻塞的消息数量
-                new LinkedBlockingQueue<>(1024),
-                threadFactory,
-                (r, e) -> log.error("线程池ThreadPoolExecutor发生异常{}", e));
-    }
 }

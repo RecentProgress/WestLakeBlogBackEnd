@@ -3,7 +3,7 @@ package com.west.lake.blog.foundation.interceptor;
 import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
-import com.west.lake.blog.model.RedisKeySet;
+import com.west.lake.blog.model.RedisKeyFactory;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.tools.RequestTools;
 import com.west.lake.blog.tools.ThreadLocalTools;
@@ -55,7 +55,7 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
                     //前端cookie不存在->未登录
                     throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);
                 } else {
-                    String sessionKey = redisTemplate.opsForValue().get(RedisKeySet.User.userSessionKey(cookieValue));
+                    String sessionKey = redisTemplate.opsForValue().get(RedisKeyFactory.User.userSessionKey(cookieValue));
                     if (sessionKey == null || sessionKey.isEmpty()) {
                         //后端redis中不存在sessionKey->未登录
                         throw LogicException.le(ErrorMessage.LogicErrorMessage.NOT_LOGIN);

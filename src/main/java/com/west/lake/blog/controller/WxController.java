@@ -3,7 +3,7 @@ package com.west.lake.blog.controller;
 import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.annotation.RestSkip;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
-import com.west.lake.blog.model.RedisKeySet;
+import com.west.lake.blog.model.RedisKeyFactory;
 import com.west.lake.blog.tools.wx.AesException;
 import com.west.lake.blog.tools.wx.WXBizMsgCrypt;
 import lombok.SneakyThrows;
@@ -78,7 +78,7 @@ public class WxController {
         String content = rootElement.element("Content").getStringValue();
         String msgId = rootElement.element("MsgId").getStringValue();
 
-        redisTemplate.opsForList().rightPush(RedisKeySet.Wx.wxMessageUserList(fromUserName), content);
+        redisTemplate.opsForList().rightPush(RedisKeyFactory.Wx.wxMessageUserList(fromUserName), content);
 
         Document document = DocumentHelper.createDocument();
         Element xml = document.addElement("xml");

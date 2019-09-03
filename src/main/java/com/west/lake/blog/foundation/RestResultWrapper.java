@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.reflect.Method;
@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * @author futao
  * Created on 2018/9/22-20:24.
  */
-@ControllerAdvice(basePackages = "com.west.lake.blog.controller")
+@RestControllerAdvice(basePackages = "com.west.lake.blog.controller")
 public class RestResultWrapper implements ResponseBodyAdvice<Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestResultWrapper.class);

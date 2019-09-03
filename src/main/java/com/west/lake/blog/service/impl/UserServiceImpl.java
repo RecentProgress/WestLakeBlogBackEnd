@@ -5,7 +5,7 @@ import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.dao.UserDao;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.model.PageResult;
-import com.west.lake.blog.model.RedisKeySet;
+import com.west.lake.blog.model.RedisKeyFactory;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.MessageTemplateEnum;
 import com.west.lake.blog.model.entity.User;
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         if (user == null || UserStatusEnum.PRE_REGISTER.getCode() == user.getStatus()) {
             //未注册成功
             //从redis中查询是否已经发送邮件
-            String registerEmailKey = RedisKeySet.User.registerEmailKey(email);
+            String registerEmailKey = RedisKeyFactory.User.registerEmailKey(email);
             if (redisTemplate.opsForValue().get(registerEmailKey) == null) {
                 if (user == null) {
                     userDao.insertEmailPreRegister(CommonTools.uuid(), email, UserStatusEnum.PRE_REGISTER.getCode(), DateTools.currentTimeStamp());
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         User user = userDao.selectByMobile(mobile);
         if (user == null || UserStatusEnum.PRE_REGISTER.getCode() == user.getStatus()) {
             //未注册成功
-            String registerMessageKey = RedisKeySet.User.registerMessageKey(mobile);
+            String registerMessageKey = RedisKeyFactory.User.registerMessageKey(mobile);
             if (redisTemplate.opsForValue().get(registerMessageKey) == null) {
                 if (user == null) {
                     //插预注册信息
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         if (password == null || !password.equals(confirmPassword)) {
             throw LogicException.le(I18nTools.getMessage("01011.password.not.equals"));
         }
-        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.User.registerEmailKey(email));
+        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeyFactory.User.registerEmailKey(email));
         //验证码过期
         if (redisVerifyNum == null) {
             throw LogicException.le(I18nTools.getMessage("01012.email.redis.expired"));
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
         //插入注册信息
         userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
         //从缓存中移除
-        redisTemplate.delete(RedisKeySet.User.registerEmailKey(email));
+        redisTemplate.delete(RedisKeyFactory.User.registerEmailKey(email));
     }
 
 
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
             throw LogicException.le(I18nTools.getMessage("01011.password.not.equals"));
         }
         //从缓存中获取验证码
-        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeySet.User.registerMessageKey(mobile));
+        String redisVerifyNum = redisTemplate.opsForValue().get(RedisKeyFactory.User.registerMessageKey(mobile));
         //验证码过期
         if (redisVerifyNum == null) {
             throw LogicException.le(I18nTools.getMessage("01012.email.redis.expired"));
@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
         //插入注册信息
         userDao.register(user.getId(), CommonTools.md5(password + SALT), UserStatusEnum.NORMAL.getCode(), DateTools.currentTimeStamp(), DateTools.currentTimeStamp());
         //从缓存中移除
-        redisTemplate.delete(RedisKeySet.User.registerMessageKey(mobile));
+        redisTemplate.delete(RedisKeyFactory.User.registerMessageKey(mobile));
 
     }
 
@@ -261,10 +261,10 @@ public class UserServiceImpl implements UserService {
         }
         //用户登录信息存入redis
         String sessionValue = CommonTools.uuid();
-        String redisKey = RedisKeySet.User.userSessionKey(sessionValue);
+        String redisKey = RedisKeyFactory.User.userSessionKey(sessionValue);
         redisTemplate.opsForValue().set(redisKey, user.getId(), systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
-        redisTemplate.opsForSet().add(RedisKeySet.Set.LOGIN_USER_ID_SET, user.getId());
-        redisTemplate.expire(RedisKeySet.Set.LOGIN_USER_ID_SET, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
+        redisTemplate.opsForSet().add(RedisKeyFactory.Set.LOGIN_USER_ID_SET, user.getId());
+        redisTemplate.expire(RedisKeyFactory.Set.LOGIN_USER_ID_SET, systemConfig.getSessionExpiredSecond(), TimeUnit.SECONDS);
 
         Cookie cookie = new Cookie(SystemConfig.SESSION_KEY, sessionValue);
         //https

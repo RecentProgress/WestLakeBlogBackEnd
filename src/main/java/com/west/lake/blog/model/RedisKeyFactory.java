@@ -6,7 +6,7 @@ package com.west.lake.blog.model;
  * @author futao
  * Created on 2019-03-22.
  */
-public class RedisKeySet {
+public class RedisKeyFactory {
 
     public static class User {
         private static final String PREFIX = "user";

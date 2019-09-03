@@ -97,10 +97,20 @@ tencent:
     appKey: 1
     smsSign:  1
 
-
-
 lazyer:
   mybatis:
-    mybatisRedisCacheExpireTimeInMinutes: 200
+    show-sql: true
+    slow-sql-millis: 10
+    mybatis-redis-cache-expire-time-in-second: 300
   foundation:
     show-banner: false
+    core-pool-size: 2
+    maximum-pool-size: 4
+    blocking-msg-size: 10
+    thread-prefix: wlb-thread-pool-
+logging:
+  level:
+    com:
+      lazyer:
+        mybatis:
+          cache: debug
