@@ -1,5 +1,9 @@
 package com.west.lake.blog.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.lazyer.foundation.configuration.HibernateValidatorConfig;
 import com.lazyer.foundation.foundation.exception.LogicException;
 import com.west.lake.blog.dao.UserDao;
@@ -24,6 +28,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -208,6 +213,21 @@ public class UserServiceImpl implements UserService {
             endTimestamp = ServiceTools.parseEndTimestampAddOneDay(endDateString);
         }
         return new PageResult<>(userDao.listCount(startTimestamp, endTimestamp, userName, status, start, limit), userDao.list(startTimestamp, endTimestamp, userName, status, start, limit));
+    }
+
+    @Override
+    public PageInfo<User> list4page(String startDateString, String endDateString, String userName, Integer status, int start, int limit) {
+        Timestamp startTimestamp = null;
+        Timestamp endTimestamp = null;
+        if (StringUtils.isNotEmpty(startDateString)) {
+            startTimestamp = ServiceTools.parseStartTimestamp(startDateString);
+        }
+        if (StringUtils.isNotEmpty(endDateString)) {
+            endTimestamp = ServiceTools.parseEndTimestampAddOneDay(endDateString);
+        }
+        PageMethod.startPage(start, limit);
+        List<User> list = userDao.list4page(startTimestamp, endTimestamp, userName, status);
+        return new PageInfo<>(list);
     }
 
     /**

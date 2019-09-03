@@ -1,15 +1,3 @@
 spring:
   profiles:
     active: dev
-  application:
-    name: westLakeBlog
-
-logging:
-  level:
-    #    show sql
-    com:
-      west:
-        lake:
-          blog:
-            foundation: debug
-            dao: debug

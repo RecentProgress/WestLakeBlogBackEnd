@@ -73,6 +73,8 @@ public interface UserDao {
      */
     List<User> list(@Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp") Timestamp endTimestamp, @Param("userName") String userName, @Param("status") Integer status, @Param("start") int start, @Param("limit") int limit);
 
+    List<User> list4page(@Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp") Timestamp endTimestamp, @Param("userName") String userName, @Param("status") Integer status);
+
     /**
      * count
      *

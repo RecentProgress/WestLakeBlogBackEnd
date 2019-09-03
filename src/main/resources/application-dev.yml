@@ -79,7 +79,7 @@ west:
           originMaxAge: 86400
           sessionExpiredSecond: 7200
 
-debug: true
+debug: false
 # 线程池配置
 thread:
   pool:
@@ -100,7 +100,7 @@ tencent:
 lazyer:
   mybatis:
     show-sql: true
-    slow-sql-millis: 10
+    slow-sql-millis: 50
     mybatis-redis-cache-expire-time-in-second: 300
   foundation:
     show-banner: false
@@ -108,9 +108,3 @@ lazyer:
     maximum-pool-size: 4
     blocking-msg-size: 10
     thread-prefix: wlb-thread-pool-
-logging:
-  level:
-    com:
-      lazyer:
-        mybatis:
-          cache: debug

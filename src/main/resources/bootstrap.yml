@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: west-lake-blog
+
+  # Spring容器在Logback初始化之后设置LOG_PATH ，
+  # 所以在 logback-spring.xml 找不到 LOG_PATH。
+  # 但 bootstrap.yml 由父Spring ApplicationContext加载，父ApplicationContext被加载到使用application.yml的之前
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com:
+      lazyer:
+        mybatis:
+          cache: debug
+      west:
+        lake:
+          blog:
+            foundation: debug
+            dao: debug
+  path: logs/${spring.application.name}/  #  as LOG_PATH
+  file: logs/log.log

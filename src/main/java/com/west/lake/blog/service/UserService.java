@@ -1,5 +1,7 @@
 package com.west.lake.blog.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.entity.User;
 import org.springframework.validation.annotation.Validated;
@@ -61,6 +63,8 @@ public interface UserService {
      * @return
      */
     PageResult<User> list(String startDateString, String endDateString, String userName, Integer status, int start, int limit);
+
+    PageInfo<User> list4page(String startDateString, String endDateString, String userName, Integer status, int start, int limit);
 
     /**
      * 通过邮箱登录

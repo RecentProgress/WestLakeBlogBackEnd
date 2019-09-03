@@ -1,5 +1,7 @@
 package com.west.lake.blog.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.west.lake.blog.annotation.LoginUser;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.SingleValueResult;
@@ -148,6 +150,23 @@ public class UserController {
     ) {
         return userService.list(startDate, endDate, userName, status, start, limit);
     }
+
+    @ApiOperation("用户列表")
+    @LoginUser
+    @GetMapping("list4page")
+    public PageInfo<User> list4page(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) Integer status,
+            @Positive
+            @RequestParam(required = false, defaultValue = "1") int start,
+            @PositiveOrZero
+            @RequestParam(required = false, defaultValue = "5") int limit
+    ) {
+        return userService.list4page(startDate, endDate, userName, status, start, limit);
+    }
+
 
     /**
      * @param email    邮箱

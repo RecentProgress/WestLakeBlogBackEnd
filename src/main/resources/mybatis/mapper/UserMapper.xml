@@ -31,6 +31,11 @@
         <include refid="pageable"/>
     </select>
 
+    <select id="list4page" resultType="user">
+        select *
+        <include refid="listSql"/>
+    </select>
+
     <select id="listCount" resultType="int">
         select count(*)
         <include refid="listSql"/>
