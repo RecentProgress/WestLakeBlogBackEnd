@@ -63,11 +63,70 @@ class B {
 
 @Slf4j
 public class NormalTest {
+
+    public static void main(String[] args) {
+        String a = "woniubi";
+        String b = "woniubi";
+        System.out.println(a.hashCode() + "," + b.hashCode() + "," + (a == b));                                 //true（都是指向常量池，所以相等）
+        String c = new String("woniubi");
+        String d = new String("woniubi");
+        System.out.println(c.hashCode() + "," + d.hashCode() + "," + (c == d));                                 //false（new(String)都是在堆内存上分配的地址，所以不相等)
+        System.out.println(c.hashCode() + "," + a.hashCode() + "," + (c == a));                                 //false （一个在常量池，一个在堆内存，内存地址不一样，所以不相等）
+        String woniubi = new String("woniubi").intern();
+        System.out.println("intern----");
+        System.out.println(woniubi.hashCode() + "," + c.hashCode() + "," + (woniubi == c));                           //false（intern会先从常量池中取，取到了就直接指向常量池的地址，否则将此字符串添加到常量池中，并返回字符串的引用）
+        System.out.println(woniubi.hashCode() + "," + d.hashCode() + "," + (woniubi == d));                           //false
+        System.out.println(woniubi.hashCode() + "," + a.hashCode() + "," + (woniubi == a));                           //true
+        String woniubi2 = new String("woniubi").intern();
+
+        System.out.println("--===========");
+        System.out.println(woniubi.hashCode() + "," + woniubi2.hashCode() + "," + (woniubi == woniubi2));                    //true
+
+
+        System.out.println("int ======↓↓↓↓");
+        int ai = 123;
+        Integer bi = new Integer(123);
+        System.out.println(ai == bi);               //true相等，因为bi会自动拆箱
+        Integer i1 = new Integer(123);
+        Integer i2 = new Integer(123);
+
+        System.out.println(i1 == i2);                 //false   堆内存，内存地址不一致
+        Integer integer1 = (Integer) 100;
+        Integer integer2 = (Integer) 100;
+        System.out.println(integer1 == integer2);       //true JVM已缓存-128~127的Integer，所以直接引用
+
+        Integer integer3 = (Integer) 200;
+        Integer integer4 = (Integer) 200;
+        System.out.println(integer3 == integer4);           //false 超过缓存的数值，则在堆内存上开辟内存
+    }
+
     @Test
-    public void test20(){
+    public void test23() {
+        System.out.println(new Integer(10) == new Integer(10));
+
+        System.out.println(10 == 10);
+        System.out.println(new Integer(310) == new Integer(310));
+    }
+
+    @Test
+    public void test22() {
+        GetRequest request = new GetRequest("http://api.choviwu.top/garbage/uploadFile");
+//     request.addParameter();
+    }
+
+    @Test
+    public void test21() {
+        GetRequest request = new GetRequest("http://api.choviwu.top/garbage/getGarbage");
+        request.addParameter("garbageName", "男朋友");
+        System.out.println(JSON.toJSONString(request.send(), SerializerFeature.PrettyFormat));
+    }
+
+    @Test
+    public void test20() {
         System.out.println("9a7bdf43-e621-4852-a6ee-406f12d92e6".length());
         System.out.println("054a3a7a-8fa9-4e5b-aa8b-fd8e16e3fb58".length());
     }
+
     @Test
     public void test19() {
         String rule = "PACK AND AAA";
