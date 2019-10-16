@@ -1,7 +1,7 @@
 package com.west.lake.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.lazyer.httpclient.GetRequest;
+import com.lazy.httpclient.GetRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

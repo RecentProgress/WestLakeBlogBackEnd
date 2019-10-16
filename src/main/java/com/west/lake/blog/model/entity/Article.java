@@ -1,12 +1,9 @@
 package com.west.lake.blog.model.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.west.lake.blog.annotation.EnumStatus;
-import com.west.lake.blog.model.entity.enums.ArticleType;
 import lombok.*;
 
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 
 /**
  * 文章
@@ -61,6 +58,5 @@ public class Article extends BaseEntity {
     /**
      * 文章类型
      */
-    @EnumStatus(ArticleType.class)
     private int type;
 }

@@ -1,6 +1,6 @@
 package com.west.lake.blog.controller;
 
-import com.lazyer.foundation.foundation.exception.LogicException;
+import com.lazy.rest.exception.LogicException;
 import com.west.lake.blog.annotation.RestSkip;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.model.RedisKeyFactory;

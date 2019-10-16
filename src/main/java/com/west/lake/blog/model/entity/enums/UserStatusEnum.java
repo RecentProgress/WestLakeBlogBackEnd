@@ -1,14 +1,12 @@
 package com.west.lake.blog.model.entity.enums;
 
-import com.west.lake.blog.model.entity.enums.face.IEnum;
-
 /**
  * 用户状态
  *
  * @author futao
  * Created on 2018-12-11.
  */
-public enum UserStatusEnum implements IEnum {
+public enum UserStatusEnum {
     /**
      * 0=预注册
      */
@@ -44,7 +42,7 @@ public enum UserStatusEnum implements IEnum {
         return description;
     }
 
-    @Override
     public String getStatus() {
         return String.valueOf(this.code);
-    }}
+    }
+}

@@ -35,7 +35,7 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/log_debug_%d{dd-MM-yyyy}.log
+                ${LOG_PATH}/log_debug_%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <!--每个日志文件的最大大小-->
             <!--            <maxFileSize>10MB</maxFileSize>-->
@@ -60,7 +60,7 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/log_info_%d{dd-MM-yyyy}.log
+                ${LOG_PATH}/log_info_%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <!--每个日志文件的最大大小-->
             <!--            <maxFileSize>10MB</maxFileSize>-->
@@ -85,7 +85,7 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/log_warn_%d{dd-MM-yyyy}.log
+                ${LOG_PATH}/log_warn_%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <!--每个日志文件的最大大小-->
             <!--            <maxFileSize>10MB</maxFileSize>-->
@@ -110,7 +110,7 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/log_error_%d{dd-MM-yyyy}.log
+                ${LOG_PATH}/log_error_%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <!--每个日志文件的最大大小-->
             <!--            <maxFileSize>10MB</maxFileSize>-->

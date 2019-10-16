@@ -1,7 +1,7 @@
 package com.west.lake.blog.tools;
 
-import com.lazyer.foundation.foundation.exception.LogicException;
-import com.lazyer.foundation.utils.SpringTools;
+import com.lazy.rest.exception.LogicException;
+import com.lazy.rest.utils.SpringTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.NoSuchMessageException;

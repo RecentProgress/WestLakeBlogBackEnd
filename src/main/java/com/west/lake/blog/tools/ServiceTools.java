@@ -1,6 +1,6 @@
 package com.west.lake.blog.tools;
 
-import com.lazyer.foundation.foundation.exception.LogicException;
+import com.lazy.rest.exception.LogicException;
 import com.west.lake.blog.model.entity.BaseEntity;
 
 import java.lang.reflect.Method;

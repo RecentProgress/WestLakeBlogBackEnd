@@ -1,8 +1,8 @@
 package com.west.lake.blog.controller;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.west.lake.blog.annotation.LoginUser;
+import com.west.lake.blog.annotation.Role;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.entity.User;
@@ -24,6 +24,7 @@ import javax.validation.constraints.*;
  * @author futao
  * Created on 2019-03-22.
  */
+@Role
 @Validated
 @Api("用户")
 @RestController
@@ -135,6 +136,7 @@ public class UserController {
      * @param limit     分页大小
      * @return
      */
+    @Role
     @ApiOperation("用户列表")
     @LoginUser
     @GetMapping("list")

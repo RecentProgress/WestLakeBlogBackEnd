@@ -1,7 +1,6 @@
 package com.west.lake.blog.configuration;
 
-import com.lazyer.foundation.foundation.FastJson2HttpMessageConverter;
-import com.lazyer.foundation.interceptors.RequestLogInterceptor;
+import com.lazy.foundation.foundation.FastJson2HttpMessageConverter;
 import com.west.lake.blog.foundation.interceptor.LoginUserInterceptor;
 import com.west.lake.blog.model.SystemConfig;
 import org.springframework.boot.SpringBootConfiguration;
@@ -24,12 +23,14 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
 
-    @Resource
-    private RequestLogInterceptor requestLogInterceptor;
+//    @Resource
+//    private RequestLogInterceptor requestLogInterceptor;
     @Resource
     private LocaleChangeInterceptor localeChangeInterceptor;
-    @Resource
+
+//    @Resource
     private FastJson2HttpMessageConverter fastJson2HttpMessageConverterConfiguration;
+
 
     @Resource
     private LoginUserInterceptor loginUserInterceptor;
@@ -45,7 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(requestLogInterceptor).addPathPatterns("/**");
+//        registry.addInterceptor(requestLogInterceptor).addPathPatterns("/**");
         registry.addInterceptor(loginUserInterceptor).addPathPatterns("/**");
         //  "/**"和"/*"是有区别的
         registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/**");
@@ -105,6 +106,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(fastJson2HttpMessageConverterConfiguration);
+//        converters.add(fastJson2HttpMessageConverterConfiguration);
     }
 }

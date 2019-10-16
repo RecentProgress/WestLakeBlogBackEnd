@@ -1,11 +1,13 @@
 package com.west.lake.blog.foundation.interceptor;
 
+import com.west.lake.blog.annotation.Role;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
 
 /**
  * @author futao
@@ -27,5 +29,12 @@ public class RoleInterceptor {
     @After(value = "pointCut()")
     public void after(JoinPoint point) {
         System.out.println("after: " + point.getSignature());
+    }
+
+    @Around(value = "pointCut()")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        Method method = ((MethodSignature) point.getSignature()).getMethod();
+        System.out.println("被标记" + method.isAnnotationPresent(Role.class));
+        return point.proceed();
     }
 }

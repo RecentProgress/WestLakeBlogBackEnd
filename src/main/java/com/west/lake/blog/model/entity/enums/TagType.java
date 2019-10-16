@@ -1,6 +1,5 @@
 package com.west.lake.blog.model.entity.enums;
 
-import com.west.lake.blog.model.entity.enums.face.IEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +11,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum TagType implements IEnum {
+public enum TagType {
 
     /**
      * 1=系统级标签
@@ -26,7 +25,7 @@ public enum TagType implements IEnum {
     private int type;
     private String desc;
 
-    @Override
     public String getStatus() {
         return String.valueOf(type);
-    }}
+    }
+}

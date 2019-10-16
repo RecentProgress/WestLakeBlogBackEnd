@@ -1,7 +1,6 @@
 package com.west.lake.blog.model.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.west.lake.blog.annotation.EnumStatus;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.model.entity.enums.UserSexEnum;
 import com.west.lake.blog.model.entity.enums.UserStatusEnum;
@@ -50,13 +49,11 @@ public class User extends BaseEntity {
     /**
      * 用户状态
      */
-    @EnumStatus(value = UserStatusEnum.class, message = ErrorMessage.LogicErrorMessage.USER_STATUS_ILLEGAL)
     private int status;
 
     /**
      * 用户性别
      */
-    @EnumStatus(value = UserSexEnum.class, message = ErrorMessage.LogicErrorMessage.USER_SEX_ILLEGAL)
     private int sex;
 
     /**

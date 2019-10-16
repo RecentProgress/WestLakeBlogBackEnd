@@ -1,6 +1,5 @@
 package com.west.lake.blog.model.entity;
 
-import com.west.lake.blog.annotation.EnumStatus;
 import com.west.lake.blog.model.entity.enums.TagType;
 import lombok.*;
 
@@ -28,6 +27,5 @@ public class Tag extends BaseEntity {
     /**
      * 标签类型
      */
-    @EnumStatus(TagType.class)
     private int type;
 }

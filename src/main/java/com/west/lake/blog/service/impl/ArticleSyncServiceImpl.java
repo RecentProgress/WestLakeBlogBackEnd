@@ -1,7 +1,6 @@
 package com.west.lake.blog.service.impl;
 
 import com.west.lake.blog.model.entity.enums.ArticleType;
-import com.west.lake.blog.model.entity.enums.face.IEnum;
 import com.west.lake.blog.service.ArticleService;
 import com.west.lake.blog.service.ArticleSyncService;
 import lombok.AllArgsConstructor;
@@ -67,7 +66,7 @@ public class ArticleSyncServiceImpl implements ArticleSyncService {
      */
     @AllArgsConstructor
     @Getter
-    public enum ThirdPartTypeEnum implements IEnum {
+    public enum ThirdPartTypeEnum {
         /**
          * 1=简书
          */
@@ -86,7 +85,6 @@ public class ArticleSyncServiceImpl implements ArticleSyncService {
          */
         private String domain;
 
-        @Override
         public String getStatus() {
             return String.valueOf(type);
         }
@@ -109,7 +107,7 @@ public class ArticleSyncServiceImpl implements ArticleSyncService {
      */
     @AllArgsConstructor
     @Getter
-    public enum SyncTypeEnum implements IEnum {
+    public enum SyncTypeEnum {
         /**
          * 1=用户
          */
@@ -122,7 +120,6 @@ public class ArticleSyncServiceImpl implements ArticleSyncService {
         private int type;
         private String desc;
 
-        @Override
         public String getStatus() {
             return String.valueOf(type);
         }

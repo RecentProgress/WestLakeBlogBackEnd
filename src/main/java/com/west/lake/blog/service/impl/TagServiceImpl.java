@@ -1,6 +1,6 @@
 package com.west.lake.blog.service.impl;
 
-import com.lazyer.foundation.configuration.HibernateValidatorConfig;
+import com.lazy.foundation.configuration.HibernateValidatorConfig;
 import com.west.lake.blog.dao.TagDao;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.SystemConfig;

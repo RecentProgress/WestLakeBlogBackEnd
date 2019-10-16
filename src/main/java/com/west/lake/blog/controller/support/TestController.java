@@ -48,4 +48,8 @@ public class TestController {
         return new SingleValueResult<>("");
     }
 
+    @GetMapping("/testString")
+    public String testString(){
+        return "S";
+    }
 }

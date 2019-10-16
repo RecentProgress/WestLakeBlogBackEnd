@@ -1,6 +1,7 @@
 package com.west.lake.blog.model.entity.enums;
 
-import com.west.lake.blog.model.entity.enums.face.IEnum;
+import com.lazy.validator.annotations.enums.EnumDesc;
+import com.lazy.validator.annotations.enums.IEnum;
 
 /**
  * 用户性别
@@ -8,7 +9,8 @@ import com.west.lake.blog.model.entity.enums.face.IEnum;
  * @author futao
  * Created on 2018-12-11.
  */
-public enum UserSexEnum implements IEnum {
+@EnumDesc("用户性别")
+public enum UserSexEnum implements IEnum<Integer> {
     /**
      * 0=未知
      */
@@ -30,16 +32,14 @@ public enum UserSexEnum implements IEnum {
         this.description = description;
     }
 
-    public int getCode() {
+    @Override
+    public Integer getType() {
         return code;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
-
-    @Override
-    public String getStatus() {
-        return String.valueOf(this.code);
-    }}
+}
 

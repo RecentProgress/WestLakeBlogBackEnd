@@ -9,7 +9,7 @@ logging:
   config: classpath:logback-spring.xml
   level:
     com:
-      lazyer:
+      lazy:
         mybatis:
           cache: debug
       west:

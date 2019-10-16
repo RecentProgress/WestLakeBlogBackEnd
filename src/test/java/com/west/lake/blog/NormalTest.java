@@ -6,11 +6,11 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectResult;
-import com.lazyer.foundation.foundation.FastJson2HttpMessageConverter;
-import com.lazyer.httpclient.AbstractBaseRequest;
-import com.lazyer.httpclient.GetRequest;
-import com.lazyer.httpclient.PostRequest;
-import com.lazyer.httpclient.enums.UserAgentEnum;
+import com.lazy.foundation.foundation.FastJson2HttpMessageConverter;
+import com.lazy.httpclient.AbstractBaseRequest;
+import com.lazy.httpclient.GetRequest;
+import com.lazy.httpclient.PostRequest;
+import com.lazy.httpclient.enums.UserAgentEnum;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.tools.DateTools;
 import lombok.*;
@@ -31,14 +31,18 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.lazy.constant.Constant.SERIALIZER_FEATURES;
 
 /**
  * @author futao
@@ -63,6 +67,43 @@ class B {
 
 @Slf4j
 public class NormalTest {
+
+    @Test
+    public void test31() throws InterruptedException {
+        int threadCount = 20;
+        AtomicInteger atomicInteger = new AtomicInteger(1);
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount, (r) -> new Thread(r, "fu-thread-" + atomicInteger.getAndAdd(1)));
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        for (int i = 0; i < threadCount; i++) {
+            executorService.execute(() -> {
+                for (int j = 0; j < 100; j++) {
+                    GetRequest request = new GetRequest("http://127.0.0.1:8090/measureDevice/list");
+                    request.addParameter("pageIndex", "1");
+                    request.addParameter("pageSize", String.valueOf(Integer.MAX_VALUE));
+                    request.addParameter("forceInsp", "true");
+                    request.addParameter("meterStatus", "");
+                    request.addParameter("verificationState", "");
+                    request.addHeader("Authorization", "000001");
+                    ArrayList<Integer> es = new ArrayList<>();
+                    es.add(1);
+                    es.add(2);
+                    es.add(3);
+                    request.addParameter("meterStatus", es.toString());
+                    request.send();
+                }
+                countDownLatch.countDown();
+            });
+        }
+        countDownLatch.await();
+        Thread.sleep(1000 * 60 * 60);
+    }
+
+    @Test
+    public void test30() {
+        System.out.println("1234567".substring(0, 6));
+
+    }
+
 
     public static void main(String[] args) {
         String a = "woniubi";
@@ -337,7 +378,7 @@ public class NormalTest {
         JSONObject jsonObject = new JSONObject();
         jsonObject.fluentPut("reqType", 0).fluentPut("perception", new JSONObject().fluentPut("inputText", new JSONObject().fluentPut("ques", ques))).fluentPut("userInfo", new JSONObject().fluentPut("apiKey", "c9610a0052f04ff685b56887720c658a").fluentPut("userId", "FutaoSmile"));
         AbstractBaseRequest request = new PostRequest(SystemConfig.TULING);
-        System.out.println(JSON.toJSONString(jsonObject, FastJson2HttpMessageConverter.SERIALIZER_FEATURES));
+        System.out.println(JSON.toJSONString(jsonObject, SERIALIZER_FEATURES));
         ((PostRequest) request).addEntity(jsonObject);
         request.send();
 

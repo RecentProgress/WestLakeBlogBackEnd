@@ -14,14 +14,38 @@
     <name>blog</name>
     <description>基于SpringBoot的博客后台</description>
 
+    <profiles>
+        <profile>
+            <id>futao</id>
+        </profile>
+    </profiles>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <project.lazyer.version>1.1.2</project.lazyer.version>
+        <project.lazy.version>1.2.3</project.lazy.version>
     </properties>
 
     <dependencies>
+        <!--lazy框架 start-->
+        <dependency>
+            <groupId>com.lazy.starter</groupId>
+            <artifactId>lazy-api-generator</artifactId>
+            <version>${project.lazy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lazy.starter</groupId>
+            <artifactId>lazy-http-client</artifactId>
+            <version>${project.lazy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lazy.starter</groupId>
+            <artifactId>lazy-mybatis</artifactId>
+            <version>${project.lazy.version}</version>
+        </dependency>
+        <!--lazy框架 end-->
+
+        <!--springboot start-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -54,10 +78,44 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!--配置处理器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--测试框架-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <!--模板引擎-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!--模板引擎-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <!--需要引入该jar才能使bootstrap配置文件生效-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+
+        <!--springboot end-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>2.8.3</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.3.0</version>
         </dependency>
         <!--mybatis-->
         <dependency>
@@ -81,13 +139,6 @@
         </dependency>
         <!--</editor-fold>-->
 
-        <!--配置处理器-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!--精简代码-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -95,30 +146,17 @@
             <optional>true</optional>
         </dependency>
 
-        <!--测试框架-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
 
         <!--<editor-fold desc="JSR303 校验框架">-->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>javax.validation</groupId>-->
+        <!--            <artifactId>validation-api</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-email</artifactId>
             <version>1.5</version>
         </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-validator</artifactId>-->
-        <!--<version>5.3.6.Final</version>-->
-        <!--</dependency>-->
-        <!--</editor-fold>-->
 
         <!--apache通用工具-->
         <dependency>
@@ -151,6 +189,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>2.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -159,16 +203,10 @@
         </dependency>
         <!--</editor-fold>-->
 
-        <!--模板引擎-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <!--模板引擎-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
         </dependency>
 
         <!--腾讯短信-->
@@ -182,24 +220,6 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.11.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.lazyer.starter</groupId>
-            <artifactId>http-client</artifactId>
-            <version>${project.lazyer.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.lazyer.starter</groupId>
-            <artifactId>api-generator</artifactId>
-            <version>${project.lazyer.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.lazyer.starter</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${project.lazyer.version}</version>
         </dependency>
 
         <dependency>
@@ -219,12 +239,6 @@
             <version>5.1.10</version>
         </dependency>
 
-        <!--需要引入该jar才能使bootstrap配置文件生效-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
-            <version>2.1.2.RELEASE</version>
-        </dependency>
 
     </dependencies>
 

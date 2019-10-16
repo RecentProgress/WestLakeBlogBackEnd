@@ -7,7 +7,7 @@
 <mapper namespace="com.west.lake.blog.dao.UserDao">
 
     <!--<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>-->
-    <cache type="com.lazyer.mybatis.cache.MybatisCacheRedis"/>
+    <cache type="com.lazy.mybatis.cache.MybatisCacheRedis"/>
 
 
     <select id="selectByEmail" parameterType="string" resultType="user" useCache="false">

@@ -59,7 +59,7 @@
     </typeAliases>
 
     <plugins>
-        <plugin interceptor="com.lazyer.mybatis.cache.MybatisInterceptor"/>
+        <plugin interceptor="com.lazy.mybatis.cache.MybatisInterceptor"/>
         <!--pagehelper分页插件-->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
             <!--设置方言-->

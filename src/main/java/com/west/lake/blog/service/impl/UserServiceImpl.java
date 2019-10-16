@@ -4,8 +4,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
-import com.lazyer.foundation.configuration.HibernateValidatorConfig;
-import com.lazyer.foundation.foundation.exception.LogicException;
+import com.lazy.foundation.configuration.HibernateValidatorConfig;
+import com.lazy.rest.exception.LogicException;
 import com.west.lake.blog.dao.UserDao;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.model.PageResult;
@@ -351,7 +351,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(String id, String userName, int sex, String mobile, String desc, String birthday) {
         User user = ServiceTools.checkResultNullAndThrow(byId(id), "用户");
-        if (user.getSex() == UserSexEnum.UNKNOWN.getCode()) {
+        if (user.getSex() == UserSexEnum.UNKNOWN.getType()) {
             user.setSex(sex);
         }
         if (user.getMobile() == null) {

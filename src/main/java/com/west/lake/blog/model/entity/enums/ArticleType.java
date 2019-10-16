@@ -1,8 +1,8 @@
 package com.west.lake.blog.model.entity.enums;
 
-import com.west.lake.blog.model.entity.enums.face.IEnum;
+import com.lazy.validator.annotations.enums.EnumDesc;
+import com.lazy.validator.annotations.enums.IEnum;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 文章类型
@@ -10,10 +10,9 @@ import lombok.Getter;
  * @author futao
  * Created on 2019-04-08.
  */
-
-@Getter
+@EnumDesc("文章类型")
 @AllArgsConstructor
-public enum ArticleType implements IEnum {
+public enum ArticleType implements IEnum<Integer> {
 
     /**
      * 1=原创
@@ -40,9 +39,13 @@ public enum ArticleType implements IEnum {
      */
     private String desc;
 
+    @Override
+    public Integer getType() {
+        return type;
+    }
 
     @Override
-    public String getStatus() {
-        return String.valueOf(type);
+    public String getDescription() {
+        return desc;
     }
 }

@@ -1,6 +1,6 @@
 package com.west.lake.blog;
 
-import com.lazyer.foundation.annotation.EnableLazyer;
+import com.lazy.foundation.annotation.EnableLazy;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +21,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties
 @EnableScheduling
 @EnableAsync
-@EnableLazyer
+@EnableLazy
 public class BlogApplication implements CommandLineRunner {
 
     public static void main(String[] args) {

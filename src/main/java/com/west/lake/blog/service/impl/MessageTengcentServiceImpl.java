@@ -2,7 +2,7 @@ package com.west.lake.blog.service.impl;
 
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
-import com.lazyer.foundation.foundation.exception.LogicException;
+import com.lazy.rest.exception.LogicException;
 import com.west.lake.blog.foundation.exception.ErrorMessage;
 import com.west.lake.blog.model.SystemConfig;
 import com.west.lake.blog.model.entity.MessageTemplateEnum;
