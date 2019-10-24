@@ -30,6 +30,6 @@ public class TulingController {
         AbstractBaseRequest request = new PostRequest(SystemConfig.TULING);
         System.out.println(JSON.toJSONString(jsonObject, SERIALIZER_FEATURES));
         ((PostRequest) request).addEntity(jsonObject);
-        return new SingleValueResult<>(request.send());
+        return new SingleValueResult<>(request.send().getResult());
     }
 }

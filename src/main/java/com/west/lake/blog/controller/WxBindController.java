@@ -29,7 +29,7 @@ public class WxBindController {
         request.addParameter("secret", "148d2288f07e5048a84986f98f7401d1");
         request.addParameter("grant_type", "authorization_code");
         request.addParameter("js_code", code);
-        String result = request.send();
+        String result = request.send().getResult();
         WxUserInfo wxUserInfo = JSON.parseObject(result, WxUserInfo.class);
         log.info("code={},wxUserInfo={},", code, wxUserInfo);
         return wxUserInfo;
