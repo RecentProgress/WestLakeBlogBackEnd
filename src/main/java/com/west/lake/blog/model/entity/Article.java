@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  * @author futao
  * Created on 2019-03-23.
  */
-@ToString
+//@ToString
 @Getter
 @Setter
 @NoArgsConstructor

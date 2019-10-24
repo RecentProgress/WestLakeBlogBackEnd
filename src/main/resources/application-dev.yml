@@ -67,6 +67,7 @@ spring:
           required: true
 server:
   port: 8888
+  max-http-header-size: 1MB
 
 # 系统配置
 west:
@@ -104,3 +105,4 @@ lazy:
     show-banner: true
   mybatis:
     show-sql: true
+

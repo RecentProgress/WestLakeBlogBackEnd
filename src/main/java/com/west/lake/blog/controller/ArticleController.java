@@ -8,7 +8,7 @@ import com.west.lake.blog.service.ArticleService;
 import com.west.lake.blog.service.ArticleSyncService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.MediaType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -22,9 +22,10 @@ import java.util.List;
  * @author futao
  * Created on 2019-03-23.
  */
+@Slf4j
 @Api("文章")
 @RestController
-@RequestMapping(path = "article", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "article")
 public class ArticleController {
 
     @Resource
@@ -86,7 +87,9 @@ public class ArticleController {
      */
     @GetMapping("list")
     public List<Article> list() {
-        return articleService.list();
+        List<Article> list = articleService.list();
+        log.info("{}", list.get(0));
+        return list;
     }
 
     /**

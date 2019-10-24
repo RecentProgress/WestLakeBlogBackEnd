@@ -6,6 +6,7 @@ import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.MessageService;
 import com.west.lake.blog.service.TestService;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  * Created on 2019-03-25.
  */
 //@ApiIgnore
+@Slf4j
 @Api("测试")
 @RestController
 @RequestMapping("test")
@@ -49,7 +51,15 @@ public class TestController {
     }
 
     @GetMapping("/testString")
-    public String testString(){
+    public String testString() {
         return "S";
+    }
+
+
+    @GetMapping("/testGetLength")
+    public void testGetLength(
+            @RequestParam("param") String param
+    ) {
+        log.info(param);
     }
 }
