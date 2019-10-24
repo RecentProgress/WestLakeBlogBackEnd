@@ -1,15 +1,11 @@
 package com.west.lake.blog.configuration;
 
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.west.lake.blog.model.SystemConfig;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
 
@@ -19,8 +15,7 @@ import javax.annotation.Resource;
  * @author futao
  * Created on 2019-03-22.
  */
-@Configuration
-@EnableCaching
+@Configuration("rc")
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Resource
@@ -50,29 +45,6 @@ public class RedisConfig extends CachingConfigurerSupport {
 //                .cacheDefaults(configuration)
 //                .build();
 //    }
-
-
-    /**
-     * 自定义序列化
-     * 这里的FastJsonRedisSerializer引用的自己定义的
-     * 不自定义的话redisTemplate会乱码
-     */
-//    @Bean("redisTemplate")
-    @Bean
-    public <T> RedisTemplate<String, T> redisTemplate(RedisConnectionFactory factory) {
-        //redis反序列化 开启fastJson反序列化的autoType
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
-        RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(factory);
-        FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer<T>();
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
-        redisTemplate.setKeySerializer(stringRedisSerializer);
-        redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
-        return redisTemplate;
-    }
 
 
 //    @Bean

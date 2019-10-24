@@ -43,6 +43,11 @@
             <artifactId>lazy-mybatis</artifactId>
             <version>${project.lazy.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.lazy.starter</groupId>
+            <artifactId>lazy-cache</artifactId>
+            <version>${project.lazy.version}</version>
+        </dependency>
         <!--lazy框架 end-->
 
         <!--springboot start-->
