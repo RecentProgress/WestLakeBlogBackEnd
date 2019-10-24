@@ -1,10 +1,8 @@
 package com.west.lake.blog.service;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.west.lake.blog.model.PageResult;
 import com.west.lake.blog.model.entity.User;
-import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Email;
@@ -13,7 +11,6 @@ import javax.validation.constraints.Email;
  * @author futao
  * Created on 2019-03-22.
  */
-@Validated
 public interface UserService {
 
     /**

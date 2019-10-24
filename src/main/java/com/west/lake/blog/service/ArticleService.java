@@ -1,6 +1,7 @@
 package com.west.lake.blog.service;
 
 import com.west.lake.blog.model.entity.Article;
+import org.springframework.cache.annotation.CachePut;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * Created on 2019-03-23.
  */
 public interface ArticleService {
+
 
     /**
      * 新增文章

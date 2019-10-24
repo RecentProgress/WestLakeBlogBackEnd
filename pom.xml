@@ -146,6 +146,14 @@
         </dependency>
         <!--</editor-fold>-->
 
+        <!--pagehelper 开始-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <!--pagehelper 结束-->
+
         <!--精简代码-->
         <dependency>
             <groupId>org.projectlombok</groupId>

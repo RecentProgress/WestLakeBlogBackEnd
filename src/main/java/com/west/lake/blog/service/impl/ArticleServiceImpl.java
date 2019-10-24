@@ -11,20 +11,29 @@ import com.west.lake.blog.tools.CommonTools;
 import com.west.lake.blog.tools.ServiceTools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 
 /**
  * 文章
+ * * `@CacheConfig`定义该类下的一些公用配置
  *
  * @author futao
  * Created on 2019-03-23.
  */
+@CacheConfig(
+        cacheNames = "article",
+        cacheManager = "cacheManager",
+        keyGenerator = "keyGenerator"
+)
 @Slf4j
 @Transactional(isolation = Isolation.DEFAULT, timeout = SystemConfig.SERVICE_TRANSACTION_TIMEOUT_SECOND, rollbackFor = Exception.class)
 @Service
@@ -32,14 +41,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
-    @Resource
+
+    @Autowired
     private UserService userService;
 
     /**
      * 新增文章
+     * * `@CachePut`会在方法执行完毕之后直接将结果放到缓存中
      *
      * @return 文章
      */
+    @CachePut(cacheNames = "article", keyGenerator = "keyGenerator")
     @Override
     public Article add(String title, String desc, String content, int type, String thirdLink) {
         //参数封装成对象
@@ -61,10 +73,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 删除文章
+     * * `allEntries`是否`cacheNames`删除文件夹下所有的缓存缓存
+     * * `beforeInvocation`是否在方法之前执行删除缓存
      *
      * @param id 要删除的文章主键
      * @return 文章
      */
+    @CacheEvict(cacheNames = "article", keyGenerator = "keyGenerator", allEntries = false, beforeInvocation = false)
     @Override
     public void delete(String id) {
         //调用dao层
@@ -73,10 +88,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 修改文章
+     * * `@CacheEvict`删除缓存中的值
      *
      * @param id 要修改的文章主键
      * @return 文章
      */
+    @CachePut(cacheNames = "article", keyGenerator = "keyGenerator")
     @Override
     public Article update(String id) {
         //先查询数据是否存在
@@ -104,12 +121,19 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 获取文章详情
+     * * `@Cacheable`如何缓存存在则从缓存中取到直接返回，如果不存在则执行方法，将方法的返回值存入缓存
+     * * `cacheNames`相当于是缓存的文件夹
+     * *  `keyGenerator`和'key'二选一
+     * * `condition`满足条件才缓存
+     * * `unless`满足条件就不缓存
      *
      * @param id 要查询的文章主键
      * @return 文章
      */
+    @Cacheable(cacheNames = "article", keyGenerator = "keyGenerator", condition = "#id!=null && #id!=''", unless = "#id==1")
     @Override
     public Article byId(String id) {
+        log.info("查找id是{}的文章", id);
         //调用dao层
         return articleDao.byId(id);
     }

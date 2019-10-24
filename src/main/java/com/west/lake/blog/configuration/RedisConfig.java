@@ -2,23 +2,16 @@ package com.west.lake.blog.configuration;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.west.lake.blog.model.SystemConfig;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.interceptor.CacheErrorHandler;
-import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
-import java.time.Duration;
 
 /**
  * Redis配置类
@@ -47,15 +40,16 @@ public class RedisConfig extends CachingConfigurerSupport {
      *
      * @return
      */
-    @Override
-    public CacheManager cacheManager() {
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(systemConfig.getCacheExpiredSecond()))
-                .disableCachingNullValues();
-        return RedisCacheManager.builder(RedisCacheWriter.lockingRedisCacheWriter(connectionFactory))
-                .cacheDefaults(configuration)
-                .build();
-    }
+//    @Bean
+//    @Override
+//    public CacheManager cacheManager() {
+//        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+//                .entryTtl(Duration.ofSeconds(systemConfig.getCacheExpiredSecond()));
+////                .disableCachingNullValues();
+//        return RedisCacheManager.builder(RedisCacheWriter.lockingRedisCacheWriter(connectionFactory))
+//                .cacheDefaults(configuration)
+//                .build();
+//    }
 
 
     /**
@@ -63,7 +57,8 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 这里的FastJsonRedisSerializer引用的自己定义的
      * 不自定义的话redisTemplate会乱码
      */
-    @Bean("redisTemplate")
+//    @Bean("redisTemplate")
+    @Bean
     public <T> RedisTemplate<String, T> redisTemplate(RedisConnectionFactory factory) {
         //redis反序列化 开启fastJson反序列化的autoType
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
@@ -79,16 +74,19 @@ public class RedisConfig extends CachingConfigurerSupport {
         return redisTemplate;
     }
 
-    @Override
-    public CacheResolver cacheResolver() {
-        return super.cacheResolver();
-    }
+
+//    @Bean
+//    @Override
+//    public CacheResolver cacheResolver() {
+//        return super.cacheResolver();
+//    }
 
     /**
      * key生成规则
      *
      * @return key
      */
+    @Bean
     @Override
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
@@ -102,8 +100,8 @@ public class RedisConfig extends CachingConfigurerSupport {
         };
     }
 
-    @Override
-    public CacheErrorHandler errorHandler() {
-        return super.errorHandler();
-    }
+//    @Override
+//    public CacheErrorHandler errorHandler() {
+//        return super.errorHandler();
+//    }
 }
