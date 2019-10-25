@@ -130,10 +130,14 @@ public class ArticleServiceImpl implements ArticleService {
      * @param id 要查询的文章主键
      * @return 文章
      */
-    @Cacheable(cacheNames = "article", keyGenerator = "keyGenerator", condition = "#id!=null && #id!=''", unless = "#id==1")
+    @Cacheable(cacheNames = "article",
+            cacheManager = "cacheManager",
+            keyGenerator = "keyGenerator",
+            condition = "#id!=null && #id!=''",
+            unless = "#id==1")
     @Override
     public Article byId(String id) {
-        log.info("查找id是{}的文章", id);
+        log.info("查找id为{}的文章", id);
         //调用dao层
         return articleDao.byId(id);
     }
