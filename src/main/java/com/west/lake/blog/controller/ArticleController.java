@@ -107,7 +107,8 @@ public class ArticleController {
     @ApiIgnore
     @PostMapping("sync")
     @LoginUser
-    public SingleValueResult<String> sync(@RequestParam("thirdPartType") int thirdPartType,
+    public SingleValueResult<String> sync(@RequestParam("thirdPartType")
+                                                      int thirdPartType,
                                           @RequestParam("syncType") int syncType,
                                           @RequestParam("url") String url) throws IOException {
         articleSyncService.sync(thirdPartType, syncType, url);

@@ -103,7 +103,7 @@ lazy:
   validator:
     enum-package: com.west.lake.blog.model.entity.enums
   foundation:
-    show-banner: true
+    show-banner: false
   mybatis:
-    show-sql: true
+    show-sql: false
 
