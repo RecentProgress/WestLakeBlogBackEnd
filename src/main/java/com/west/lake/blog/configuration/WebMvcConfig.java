@@ -3,7 +3,7 @@ package com.west.lake.blog.configuration;
 import com.lazy.foundation.foundation.FastJson2HttpMessageConverter;
 import com.west.lake.blog.foundation.interceptor.LoginUserInterceptor;
 import com.west.lake.blog.model.SystemConfig;
-import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author futao
  * Created on 2018/9/18-15:15.
  */
-@SpringBootConfiguration
+@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
 
