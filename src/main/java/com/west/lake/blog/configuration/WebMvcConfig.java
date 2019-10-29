@@ -5,7 +5,10 @@ import com.west.lake.blog.foundation.interceptor.LoginUserInterceptor;
 import com.west.lake.blog.model.SystemConfig;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.annotation.Resource;
@@ -23,12 +26,12 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
 
-//    @Resource
+    //    @Resource
 //    private RequestLogInterceptor requestLogInterceptor;
     @Resource
     private LocaleChangeInterceptor localeChangeInterceptor;
 
-//    @Resource
+    //    @Resource
     private FastJson2HttpMessageConverter fastJson2HttpMessageConverterConfiguration;
 
 
@@ -66,15 +69,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
+        //这里不能随便乱改，否则SpringBoot默认的配置会失效
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations("classpath:/static/");
         if (systemConfig.isEnableSwagger()) {
             registry.addResourceHandler("/swagger-ui.html")
                     .addResourceLocations("classpath:/META-INF/resources/");
         }
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//
         registry.addResourceHandler("/file/**")
                 .addResourceLocations("classpath:/uploadFiles/");
     }

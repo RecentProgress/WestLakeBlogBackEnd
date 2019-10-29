@@ -11,13 +11,13 @@ import java.io.IOException;
  * @author futao
  * Created on 2019-03-25.
  */
-@Controller
-@ApiIgnore
-@RequestMapping("/")
-public class IndexController {
-
-    @RequestMapping("/")
-    public void index(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/swagger-ui.html#");
-    }
-}
+//@Controller
+//@ApiIgnore
+//@RequestMapping("/")
+//public class IndexController {
+//
+//    @RequestMapping("/")
+//    public void index(HttpServletResponse response) throws IOException {
+//        response.sendRedirect("/swagger-ui.html#");
+//    }
+//}
