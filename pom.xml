@@ -27,6 +27,16 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+        </dependency>
+        <!-- https://codecentric.github.io/spring-boot-admin/2.1.6/#getting-started-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.1.6</version>
+        </dependency>
         <!--lazy框架 start-->
         <dependency>
             <groupId>com.lazy.starter</groupId>
@@ -51,16 +61,16 @@
         <!--lazy框架 end-->
 
         <!--springboot start-->
-<!--        <dependency>-->
-<!--            <groupId>de.codecentric</groupId>-->
-<!--            <artifactId>spring-boot-admin-server</artifactId>-->
-<!--            <version>2.1.6</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>de.codecentric</groupId>-->
-<!--            <artifactId>spring-boot-admin-server-ui</artifactId>-->
-<!--            <version>2.1.6</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>de.codecentric</groupId>-->
+        <!--            <artifactId>spring-boot-admin-server</artifactId>-->
+        <!--            <version>2.1.6</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>de.codecentric</groupId>-->
+        <!--            <artifactId>spring-boot-admin-server-ui</artifactId>-->
+        <!--            <version>2.1.6</version>-->
+        <!--        </dependency>-->
         <!--监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

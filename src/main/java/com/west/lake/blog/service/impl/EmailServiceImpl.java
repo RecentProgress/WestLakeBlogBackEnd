@@ -5,16 +5,17 @@ import com.lazy.rest.exception.LogicException;
 import com.west.lake.blog.service.EmailService;
 import com.west.lake.blog.tools.I18nTools;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 
-import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -29,10 +30,11 @@ import javax.mail.internet.MimeMessage;
 @Async
 public class EmailServiceImpl implements EmailService {
 
-    @Resource
+    @Autowired
     private JavaMailSender sender;
 
-    @Resource
+    @Qualifier("templateEngine")
+    @Autowired
     private TemplateEngine template;
 
     @Value("${spring.mail.username}")

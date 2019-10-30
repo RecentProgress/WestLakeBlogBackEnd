@@ -59,13 +59,17 @@ spring:
     host: smtp.qq.com
     port: 587
     username: 1185172056@qq.com
-    password:
+    password: 123
     properties:
       smtp:
         auth: true
         starttls:
           enable: true
           required: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080
 server:
   port: 8888
   max-http-header-size: 1MB
@@ -93,6 +97,9 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
 tencent:
   message:
     appId:  1
@@ -106,4 +113,3 @@ lazy:
     show-banner: false
   mybatis:
     show-sql: false
-

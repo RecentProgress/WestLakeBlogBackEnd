@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <jmxConfigurator/>
     <!--引用springboot的配置-->
     <!--    <include resource="org/springframework/boot/logging/logback/base.xml"/>-->
 
@@ -7,7 +8,7 @@
     <!--    <property name="LOG_PATH" value="logback-logs"/>-->
     <!--或者在spring配置文件中设置logging.path-->
 
-<!--    <conversionRule conversionWord="msg" converterClass="com.lazy.tools.log.LogBackToStringLayout"/>-->
+    <!--    <conversionRule conversionWord="msg" converterClass="com.lazy.tools.log.LogBackToStringLayout"/>-->
 
     <!--输出到控制台-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
