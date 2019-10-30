@@ -2,8 +2,6 @@ package com.west.lake.blog.foundation;
 
 import com.west.lake.blog.annotation.RestSkip;
 import com.west.lake.blog.model.RestResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,10 +18,8 @@ import java.lang.reflect.Method;
  * @author futao
  * Created on 2018/9/22-20:24.
  */
-@RestControllerAdvice(basePackages = "com.west.lake.blog.controller")
+@RestControllerAdvice
 public class RestResultWrapper implements ResponseBodyAdvice<Object> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestResultWrapper.class);
 
     /**
      * 可指定针对某些返回值的类型才进行rest风格的封装
