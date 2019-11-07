@@ -1,7 +1,7 @@
 package com.west.lake.blog.foundation;
 
+import com.lazy.rest.rest.RestResult;
 import com.west.lake.blog.annotation.RestSkip;
-import com.west.lake.blog.model.RestResult;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -74,6 +74,9 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
         if (MediaType.IMAGE_JPEG.getType().equalsIgnoreCase(selectedContentType.getType())) {
             return body;
         }
-        return new RestResult(true, RestResult.SUCCESS_CODE, body, null);
+        if (body instanceof RestResult) {
+            return body;
+        }
+        return new RestResult(RestResult.SUCCESS_CODE, body, null);
     }
 }
