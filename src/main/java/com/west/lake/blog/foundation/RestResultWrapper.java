@@ -9,8 +9,12 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import springfox.documentation.swagger.web.ApiResourceController;
+import springfox.documentation.swagger2.web.Swagger2Controller;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 返回Rest风格的数据
@@ -21,6 +25,20 @@ import java.lang.reflect.Method;
 @RestControllerAdvice
 public class RestResultWrapper implements ResponseBodyAdvice<Object> {
 
+
+    /**
+     * 不需要拦截的类路径，这里写的是Class
+     * 如果该类所在项目没有相关的依赖，可以换成String-类的全路径
+     */
+    private static final List<Class<?>> SKIP_CLASS_LIST = new ArrayList<>(2);
+
+    static {
+        //Swagger
+        SKIP_CLASS_LIST.add(ApiResourceController.class);
+        //Swagger
+        SKIP_CLASS_LIST.add(Swagger2Controller.class);
+    }
+
     /**
      * 可指定针对某些返回值的类型才进行rest风格的封装
      *
@@ -30,6 +48,9 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        if (SKIP_CLASS_LIST.contains(returnType.getDeclaringClass())) {
+            return false;
+        }
         Method returnTypeMethod = returnType.getMethod();
         if (returnTypeMethod != null) {
             return !returnTypeMethod.isAnnotationPresent(RestSkip.class);
