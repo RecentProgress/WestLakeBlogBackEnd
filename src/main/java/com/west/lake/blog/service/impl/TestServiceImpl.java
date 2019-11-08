@@ -8,6 +8,7 @@ import com.west.lake.blog.tools.DateTools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.util.concurrent.CountDownLatch;
@@ -48,6 +49,11 @@ public class TestServiceImpl implements TestService {
 //        singleThread();
         threads();
         log.info("耗时:" + (System.currentTimeMillis() - l));
+    }
+
+    @Override
+    public void param(String p1, String p2) {
+        System.out.println("p1 = " + p1 + ", p2 = " + p2);
     }
 
     private void singleThread() {
