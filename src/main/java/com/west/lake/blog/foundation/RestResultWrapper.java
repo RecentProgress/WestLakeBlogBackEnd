@@ -55,14 +55,14 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        if (packages.contains(returnType.getDeclaringClass().getName())) {
-            Method returnTypeMethod = returnType.getMethod();
-            if (returnTypeMethod != null) {
-                return !returnTypeMethod.isAnnotationPresent(RestSkip.class);
-            }
-            return true;
+//        if (packages.contains(returnType.getDeclaringClass().getName())) {
+        Method returnTypeMethod = returnType.getMethod();
+        if (returnTypeMethod != null) {
+            return !returnTypeMethod.isAnnotationPresent(RestSkip.class);
         }
-        return false;
+        return true;
+//        }
+//        return false;
     }
 
     /**

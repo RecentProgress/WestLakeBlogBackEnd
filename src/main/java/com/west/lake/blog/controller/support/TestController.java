@@ -2,6 +2,7 @@ package com.west.lake.blog.controller.support;
 
 import com.west.lake.blog.model.SingleValueResult;
 import com.west.lake.blog.model.entity.MessageTemplateEnum;
+import com.west.lake.blog.model.entity.TestA;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.MessageService;
 import com.west.lake.blog.service.TestService;
@@ -61,5 +62,12 @@ public class TestController {
             @RequestParam("param") String param
     ) {
         log.info(param);
+    }
+
+    @PostMapping("/testA")
+    public TestA testA(
+            @RequestBody TestA testA
+    ) {
+        return testService.insertTestA(testA.getId(), testA.getData());
     }
 }

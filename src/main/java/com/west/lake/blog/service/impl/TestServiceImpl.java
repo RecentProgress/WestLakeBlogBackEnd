@@ -1,16 +1,21 @@
 package com.west.lake.blog.service.impl;
 
 import com.west.lake.blog.dao.TagDao;
+import com.west.lake.blog.dao.TestADao;
+import com.west.lake.blog.model.entity.TestA;
 import com.west.lake.blog.model.entity.User;
 import com.west.lake.blog.service.TestService;
 import com.west.lake.blog.tools.CommonTools;
 import com.west.lake.blog.tools.DateTools;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 
@@ -30,6 +35,9 @@ public class TestServiceImpl implements TestService {
 
     @Resource
     private Executor executor;
+
+    @Autowired
+    private TestADao testADao;
 
     @Override
     public User save(int i) {
@@ -79,6 +87,21 @@ public class TestServiceImpl implements TestService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Transactional(rollbackFor = Exception.class, timeout = 10)
+    @Override
+    public TestA insertTestA(String id, String data) {
+        Date date = new Date();
+
+        System.out.println(TransactionAspectSupport.currentTransactionStatus());
+        testADao.insert(new TestA(id, data, date, date));
+        System.out.println(TransactionAspectSupport.currentTransactionStatus());
+        TestA testA = testADao.selectById(id);
+        System.out.println(TransactionAspectSupport.currentTransactionStatus());
+        return testA;
+
     }
 }
 

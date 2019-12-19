@@ -1,5 +1,6 @@
 package com.west.lake.blog.service;
 
+import com.west.lake.blog.model.entity.TestA;
 import com.west.lake.blog.model.entity.User;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,4 +17,6 @@ public interface TestService {
     void insertDb();
 
     void param(@NotEmpty(message = "not ") String p1, String p2);
+
+    TestA insertTestA(String id, String data);
 }

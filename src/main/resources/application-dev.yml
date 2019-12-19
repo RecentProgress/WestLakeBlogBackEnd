@@ -85,7 +85,7 @@ west:
           originMaxAge: 86400
           sessionExpiredSecond: 7200
 
-debug: true
+debug: false
 # 线程池配置
 thread:
   pool:
@@ -116,4 +116,8 @@ lazy:
 
 rest:
   controller:
-    packages: ["com.west.lake.blog.controller","com.west.lake.blog.dao"]
+    packages: ["com.west.lake.blog.controller","com.west.lake.blog.dao","com.west.lake.blog.controller.support"]
+logging:
+  level:
+    springfox.documentation: warn
+
